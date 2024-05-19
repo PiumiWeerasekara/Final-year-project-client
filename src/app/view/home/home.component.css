@@ -1,0 +1,93 @@
+mat-grid-list {
+  /*padding: 10% 20% 10% 20% !important;*/
+  margin: 8px;
+}
+
+mat-grid-tile:nth-child(1) mat-card{
+  /*padding-top: 20px;*/
+  align-items: center;
+  /*background-color: darkslategray;*/
+}
+
+mat-card {
+  height: 99% !important;
+  width: 100%;
+  margin: 5px;
+  overflow: auto;
+  border-radius: 12px;
+}
+
+mat-card-title{
+  color: white;
+  margin-left: 5px;
+  margin-top: 5px;
+  /*background-color: #8aa88a;*/
+  border-radius: 6px;
+  padding-left: 10px;
+}
+
+mat-card #headImg{
+  height: 100%;
+}
+
+#quicklinks mat-card img{
+  scale: 210%;
+  width: 50%;
+  height: 80%;
+  /*padding-left: 18px;*/
+  padding-top: 15px;
+}
+
+#quicklinks mat-card{
+  height: unset!important;
+  padding-top: 4px;
+  /*width: 150px;*/
+  width: 25%;
+  margin: 0 20px 0 20px;
+  border: solid #01b6ad;
+}
+/*#quicklinks mat-card{*/
+/*  height: unset!important;*/
+/*  padding-top: 4px;*/
+/*  width: 150px;*/
+/*  margin: 0 20px 0 20px;*/
+/*  border: solid gold;*/
+/*}*/
+
+mat-card-footer{
+  font-size: 18px;
+  margin-top: 55px;
+  text-align: center;
+  /*background-color: gold;*/
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+mat-card-footer a{
+  text-decoration: none;
+  color: #01b6ad;
+}
+mat-card div{
+  font-size: 20px;
+  /*margin-top: 55px;*/
+  text-align: center;
+  /*background-color: gold;*/
+  /*padding-top: 10px;*/
+  /*padding-bottom: 10px;*/
+}
+
+mat-card div a{
+  text-decoration: none;
+  color: #04c0b8;
+}
+
+mat-card div div{
+  padding-top: 10%;
+  padding-bottom: 10%;
+  padding-left: 10%;
+}
+
+mat-card img{
+  height: 40px;
+  width: 30%;
+}

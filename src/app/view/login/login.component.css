@@ -1,0 +1,63 @@
+mat-card {
+  width: 30%;
+  border: #003300;
+  box-shadow: black 2px 2px 15px;
+}
+
+
+mat-card-header {
+  /*background: #003300;*/
+  /*background: #6eab47;*/
+  /*added by me*/
+  background: #4458BE;
+  padding: 0;
+}
+
+mat-card-title img {
+  /*width: 26.5rem;*/
+  width: 32.4rem;
+  height: 100%;
+  text-align: center;
+}
+
+mat-card-title p {
+  color: white;
+  text-align: center;
+}
+
+mat-card-content {
+  padding: 10%;
+}
+
+mat-card-actions {
+  child-align: middle !important;
+}
+
+mat-card-actions button:nth-child(2) {
+  margin-left: 10px;
+}
+
+button {
+  color: white !important;
+}
+
+button[btn-login] {
+  background: #0271B9 !important;
+
+}
+
+button[btn-signup] {
+  background: #00B6AD !important;
+}
+.title-with-image {
+  display: flex;
+  align-items: center; /* Align image and text vertically */
+}
+
+.title-with-image img {
+  max-width: 100%; /* Set the maximum width for the image */
+  max-height: 100%; /* Set the maximum height for the image */
+  margin-right: 0; /* Optional: Add some spacing between the image and text */
+}
+
+

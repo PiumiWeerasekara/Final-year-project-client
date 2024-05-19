@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+mat-form-field {
+  margin: -5px !important;
+  width: 100%;
+}
+
+.mat-mdc-form-field-infix {
+  min-height: 28px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.mat-mdc-form-field .mat-mdc-floating-label.mdc-floating-label {
+  padding-bottom: 15px;
+  font-size: 14px !important;
+}
+
+mat-form-field input {
+  font-size: 14px !important;
+}
+
+
+.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: darkred !important;
+}
+
+
+.mdc-text-field--valid:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: darkgreen !important;
+}
+
+.dark-mode {
+  filter: invert(100%) hue-rotate(180deg);
+}
+
+/*added by me*/
+
+mat-card-header {
+  border-bottom: 1px solid #b4aeae;
+  font-size: 1rem;
+  color: black;
+  padding: 10px 10px !important;
+}
+
+mat-card-header .col-6{
+  padding: 0px 0px !important;
+}
+
+.header-btn-add{
+  background-color: #0dc9d4 !important;
+}
+
+.table-filter{
+  margin: 0px !important;
+}
+
+.table-Container{
+  margin-right: 21px !important;
+}
+
+
