@@ -47,6 +47,8 @@ import { ClassComponent } from './view/modules/class/class.component';
 import { BookdistributionComponent } from './view/modules/bookdistribution/bookdistribution.component';
 import { DoctorComponent } from './view/modules/doctor/doctor.component';
 import {MatSortModule} from "@angular/material/sort";
+import { PatientComponent } from './view/modules/patient/patient.component';
+import { RoomComponent } from './view/modules/room/room.component';
 
 
 @NgModule({
@@ -69,7 +71,9 @@ import {MatSortModule} from "@angular/material/sort";
     BatchregistrationComponent,
     ClassComponent,
     BookdistributionComponent,
-    DoctorComponent
+    DoctorComponent,
+    PatientComponent,
+    RoomComponent
 
   ],
   imports: [

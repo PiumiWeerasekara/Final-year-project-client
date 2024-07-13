@@ -1,10 +1,5 @@
 import {Gender} from "./gender";
-import {Specialization} from "./specialization";
-// import {Designation} from "./designation";
-// import {Empstatus} from "./empstatus";
-// import {Emptype} from "./emptype";
-
-export class Doctor{
+export class Patient{
 
   public id !: number;
   public title !: string;
@@ -17,12 +12,11 @@ export class Doctor{
   public contactNo !: string;
   public email !: string;
   public gender !: Gender;
-  public speciality !: Specialization;
-  public  medicalLicenseNo !: string;
-  public  licenseEXPDate !: string;
+  public guardianName !: string;
+  public guardianContactNo !: string;
 
 
-  constructor(id: number, title: string, firstName: string, lastName: string, photo: string, dob: string, nic: string, address: string, contactNo: string, email: string, gender: Gender, speciality: Specialization, medicalLicenseNo: string, licenseEXPDate: string) {
+  constructor(id: number, title: string, firstName: string, lastName: string, photo: string, dob: string, nic: string, address: string, contactNo: string, email: string, gender: Gender, guardianName: string, guardianContactNo: string) {
     this.id = id;
     this.title = title;
     this.firstName = firstName;
@@ -34,9 +28,8 @@ export class Doctor{
     this.contactNo = contactNo;
     this.email = email;
     this.gender = gender;
-    this.speciality = speciality;
-    this.medicalLicenseNo = medicalLicenseNo;
-    this.licenseEXPDate = licenseEXPDate;
+    this.guardianName = guardianName;
+    this.guardianContactNo = guardianContactNo;
   }
 }
 

@@ -16,6 +16,8 @@ import {BatchregistrationComponent} from "./view/modules/batchregistration/batch
 import {ClassComponent} from "./view/modules/class/class.component";
 import {BookdistributionComponent} from "./view/modules/bookdistribution/bookdistribution.component";
 import {DoctorComponent} from "./view/modules/doctor/doctor.component";
+import {PatientComponent} from "./view/modules/patient/patient.component";
+import {RoomComponent} from "./view/modules/room/room.component";
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -41,6 +43,8 @@ const routes: Routes = [
       {path:"attendance",component:AttendanceComponent},
       {path: "home/attendance", redirectTo: 'attendance', pathMatch: 'full'},
       {path: "doctor",component:DoctorComponent},
+      {path: "patient",component:PatientComponent},
+      {path: "room",component:RoomComponent},
 
     ]
   }];

@@ -54,20 +54,100 @@ mat-card-header {
   padding: 10px 10px !important;
 }
 
-mat-card-header .col-6{
+mat-card-header .col-6 {
   padding: 0px 0px !important;
 }
 
-.header-btn-add{
+.header-btn-add {
   background-color: #0dc9d4 !important;
 }
 
-.table-filter{
+.table-filter {
   margin: 0px !important;
 }
 
-.table-Container{
-  margin-right: 21px !important;
+.table-container {
+  /*margin-right: 21px !important;*/
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
+.form-container {
+  padding-left: 10px;
+}
 
+.search-container {
+  margin-bottom: 15px;
+}
+
+.mat-mdc-table .mdc-data-table__row {
+  height: 40px;
+}
+
+.btn-edit {
+  color: #0dc9d4 !important;
+}
+
+.btn-delete {
+  color: #ff6565 !important;
+}
+
+.cdk-mouse-focused {
+  outline: none !important;
+  border: none !important;
+}
+
+.search-container .mat-mdc-card-content {
+  padding-bottom: 20px !important;
+  padding-top: 20px !important;
+}
+
+.search-container {
+  margin-bottom: 35px !important;
+}
+
+#ssearch mat-form-field {
+  padding: 0px 30px !important;
+}
+
+.search-btn-container {
+  padding: 0px 30px !important;
+}
+
+.btn-search {
+  background: #0970b7 !important;
+}
+
+.btn-clear {
+  background: #13bcb1 !important;
+}
+
+.btn-clear-form {
+  background: #bec3c2 !important;
+  color: #fff !important;
+}
+
+.btn-save {
+  background: #39cb6e !important;
+  color: #fff !important;
+}
+
+#selectbutton, #clearbutton {
+  width: 150px;
+  display: block;
+  margin-left: 150px;
+  margin-bottom: 5px;
+  background-color: #44ccc4;
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.button-pannel button {
+  margin-left: 20px !important;
+}
+
+.form-field{
+  margin-bottom: 10px !important;
+}

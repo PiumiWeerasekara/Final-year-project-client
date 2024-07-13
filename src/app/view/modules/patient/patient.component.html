@@ -5,7 +5,7 @@
   <mat-card-header>
     <div class="row col-12 col-md-12">
       <div class="col-6 col-md-6">
-        <mat-card-title>Doctor Details Management</mat-card-title>
+        <mat-card-title>Patient Details Management</mat-card-title>
       </div>
       <div class="col-6 col-md-6 text-right button-pannel">
         <button *ngIf="!isFormEnable" mat-raised-button color="primary" class="header-btn-add" (click)="create()">
@@ -47,16 +47,6 @@
                 <mat-form-field appearance="outline">
                   <mat-label>NIC</mat-label>
                   <input matInput formControlName="ssNic">
-                </mat-form-field>
-              </div>
-
-              <div class="col-4 col-md-4">
-                <mat-form-field appearance="outline">
-                  <mat-label>Specialization</mat-label>
-                  <mat-select formControlName="ssSpecification">
-                    <mat-option [value]="null" selected>Not Selected</mat-option>
-                    <mat-option *ngFor="let spec of specializations" [value]="spec.id">{{ spec.name }}</mat-option>
-                  </mat-select>
                 </mat-form-field>
               </div>
             </div>
@@ -107,9 +97,9 @@
             <td mat-cell *matCellDef="let row"> {{ row.email }}</td>
           </ng-container>
 
-          <ng-container matColumnDef="specialization">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Specialization</th>
-            <td mat-cell *matCellDef="let row"> {{ row.speciality.name }}</td>
+          <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+            <td mat-cell *matCellDef="let row"> {{ row.address }}</td>
           </ng-container>
 
           <ng-container matColumnDef="edit">
@@ -121,14 +111,14 @@
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="delete">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Delete</th>
-            <td mat-cell *matCellDef="let row">
-              <button mat-icon-button class="btn-delete" (click)="delete(row)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </ng-container>
+          <!--          <ng-container matColumnDef="delete">-->
+          <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Delete</th>-->
+          <!--            <td mat-cell *matCellDef="let row">-->
+          <!--              <button mat-icon-button class="btn-delete" (click)="delete(row)">-->
+          <!--                <mat-icon>delete</mat-icon>-->
+          <!--              </button>-->
+          <!--            </td>-->
+          <!--          </ng-container>-->
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -184,13 +174,8 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <!--          <div class="col-3 col-md-3">-->
-          <!--            <mat-form-field appearance="outline">-->
-          <!--              <mat-label>Age</mat-label>-->
-          <!--              <input matInput formControlName="age">-->
-          <!--              <mat-datepicker #dob></mat-datepicker>-->
-          <!--            </mat-form-field>-->
-          <!--          </div>-->
+
+
           <div class="col-6 col-md-6 form-field">
             <mat-form-field appearance="outline">
               <mat-label>NIC</mat-label>
@@ -201,21 +186,28 @@
           <div class="col-6 col-md-6 form-field">
             <mat-form-field appearance="outline">
               <mat-label>Date of Birth</mat-label>
-              <input matInput [matDatepicker]="dob" formControlName="dob">
+              <input matInput [matDatepicker]="dob" formControlName="dob" [max]="maxDate">
               <mat-datepicker-toggle matIconSuffix [for]="dob"></mat-datepicker-toggle>
               <mat-datepicker #dob></mat-datepicker>
             </mat-form-field>
           </div>
 
-          <div id="imgpanel" class="col-6 col-md-6 form-field">
-            <img [src]="imageurl">
-            <input id="userImage" hidden="hidden" (change)="selectImage($event)" Select type="file"
-                   formControlName="photo">
-            <div style="margin: 10px">
-              <label for="userImage" id="selectbutton">Select</label>
-              <label id="clearbutton" (click)="clearImage()">Clear</label>
-            </div>
+          <div class="col-6 col-md-6 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Age</mat-label>
+              <input matInput formControlName="age" readonly>
+            </mat-form-field>
           </div>
+
+          <!--          <div id="imgpanel" class="col-6 col-md-6 form-field">-->
+          <!--            <img [src]="imageurl">-->
+          <!--            <input id="userImage" hidden="hidden" (change)="selectImage($event)" Select type="file"-->
+          <!--                   formControlName="photo">-->
+          <!--            <div style="margin: 10px">-->
+          <!--              <label for="userImage" id="selectbutton">Select</label>-->
+          <!--              <label id="clearbutton" (click)="clearImage()">Clear</label>-->
+          <!--            </div>-->
+          <!--          </div>-->
 
         </div>
 
@@ -248,35 +240,22 @@
         </div>
 
         <div class="col-md-12">
-          <h4>Professional Information</h4>
+          <h4>Guardian Contact Information</h4>
           <hr>
         </div>
 
         <div class="row" style="padding: 15px 15px">
           <div class="col-6 col-md-6 form-field">
             <mat-form-field appearance="outline">
-              <mat-label>Medical License Number</mat-label>
-              <input matInput formControlName="medicalLicenseNo">
+              <mat-label>Guardian Name</mat-label>
+              <input matInput formControlName="guardianName">
             </mat-form-field>
           </div>
 
           <div class="col-6 col-md-6 form-field">
             <mat-form-field appearance="outline">
-              <mat-label>License Expiry Date</mat-label>
-              <input matInput [matDatepicker]="expDate" formControlName="licenseEXPDate">
-              <mat-datepicker-toggle matIconSuffix [for]="expDate"></mat-datepicker-toggle>
-              <mat-datepicker #expDate></mat-datepicker>
-            </mat-form-field>
-          </div>
-
-          <div class="col-6 col-md-6 form-field">
-            <mat-form-field appearance="outline">
-              <mat-label>Specialization</mat-label>
-              <mat-select formControlName="speciality">
-                <mat-option [value]="null" selected>Not Selected</mat-option>
-                <mat-option *ngFor="let speciality of specializations" [value]="speciality">{{ speciality.name }}
-                </mat-option>
-              </mat-select>
+              <mat-label>Guardian Contact No</mat-label>
+              <input matInput formControlName="guardianContactNo">
             </mat-form-field>
           </div>
 
