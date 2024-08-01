@@ -1,0 +1,225 @@
+<mat-card>
+  <mat-card-header>
+    <div class="row col-12 col-md-12">
+      <div class="col-6 col-md-6">
+        <mat-card-title>Schedule Details Management</mat-card-title>
+      </div>
+      <div class="col-6 col-md-6 text-right button-pannel">
+        <button *ngIf="!isFormEnable" mat-raised-button color="primary" class="header-btn-add" (click)="create()">
+          <mat-icon>add</mat-icon>
+          Add
+        </button>
+
+        <button *ngIf="isFormEnable" mat-raised-button color="primary" class="header-btn-add" (click)="back()">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Back
+        </button>
+        <button *ngIf="isFormEnable" mat-raised-button (click)="save()" class="btn-save"
+                [disabled]="!authService.getEnaAdd()">
+          <mat-icon>save</mat-icon>
+          Save
+        </button>
+        <button *ngIf="isFormEnable" mat-raised-button (click)="clear()" class="btn-clear-form">
+          <mat-icon> clear_all</mat-icon>
+          Clear
+        </button>
+      </div>
+    </div>
+
+  </mat-card-header>
+  <mat-card-content id="form">
+
+
+    <div class="table-container" *ngIf="!isFormEnable">
+      <mat-card id="ssearch" class="search-container">
+        <mat-card-content>
+          <mat-form [formGroup]="ssearch">
+            <div class="row">
+              <div class="col-4 col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Doctor</mat-label>
+                  <mat-select formControlName="ssDoctor">
+                    <mat-option [value]="null" selected>Not Selected</mat-option>
+                    <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.title }}. {{ doctor.firstName }} {{ doctor.lastName }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-4 col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Schedule Date</mat-label>
+                  <input matInput [matDatepicker]="ssScheduleDate" formControlName="ssScheduleDate" [min]="minDate">
+                  <mat-datepicker-toggle matIconSuffix [for]="ssScheduleDate"></mat-datepicker-toggle>
+                  <mat-datepicker #ssScheduleDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="col-4 col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Room Number</mat-label>
+                  <mat-select formControlName="ssRoom">
+                    <mat-option [value]="null" selected>Not Selected</mat-option>
+                    <mat-option *ngFor="let room of rooms" [value]="room">{{ room.number }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+<!--              <div class="col-4 col-md-4">-->
+<!--                <mat-form-field appearance="outline">-->
+<!--                  <mat-label>Specialization</mat-label>-->
+<!--                  <mat-select formControlName="ssSpecification">-->
+<!--                    <mat-option [value]="null" selected>Not Selected</mat-option>-->
+<!--                    <mat-option *ngFor="let spec of specializations" [value]="spec.id">{{ spec.name }}</mat-option>-->
+<!--                  </mat-select>-->
+<!--                </mat-form-field>-->
+<!--              </div>-->
+            </div>
+
+            <div class="row search-btn-container">
+              <div class="col-4 col-md-4">
+                <button mat-raised-button color="primary" class="btn-search search-container-btn"
+                        style="margin-left: -5px;" (click)="btnSearchMc()">
+                  <mat-icon>search</mat-icon>
+                  Search
+                </button>
+                <button mat-raised-button color="primary" class="btn-clear search-container-btn"
+                        (click)="btnSearchClearMc()">
+                  <mat-icon>reorder</mat-icon>
+                  Clear
+                </button>
+              </div>
+            </div>
+          </mat-form>
+        </mat-card-content>
+      </mat-card>
+      <mat-form-field class="table-filter">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input>
+      </mat-form-field>
+
+      <div class="mat-elevation-z2">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="doctor">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Doctor</th>
+            <td mat-cell *matCellDef="let row"> {{ row.doctor.title }}. {{ row.doctor.firstName }} {{ row.doctor.lastName }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="room">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Room</th>
+            <td mat-cell *matCellDef="let row"> {{ row.room.number }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Schedule date</th>
+            <td mat-cell *matCellDef="let row"> {{ row.scheduleDate }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="startTime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Time</th>
+            <td mat-cell *matCellDef="let row"> {{ row.startTime }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="endTime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>End Time</th>
+            <td mat-cell *matCellDef="let row"> {{ row.endTime }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button class="btn-edit" (click)="fillForm(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cancel</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button class="btn-delete" (click)="delete(row)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
+          </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 100, 200]" aria-label="Select page of users"></mat-paginator>
+      </div>
+    </div>
+    <div *ngIf="isFormEnable" class="form-container">
+      <mat-form [formGroup]="form">
+        <div class="col-md-12">
+          <h4>Schedule Information</h4>
+          <hr>
+        </div>
+        <div class="row" style="padding: 15px 15px">
+          <div class="col-3 col-md-3 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Doctor</mat-label>
+              <mat-select formControlName="doctor">
+                <mat-option [value]="null" selected>Not Selected</mat-option>
+                <mat-option *ngFor="let doctor of doctors" [value]="doctor">{{ doctor.title }}. {{ doctor.firstName }} {{ doctor  .lastName }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-3 col-md-3 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Schedule Date</mat-label>
+              <input matInput [matDatepicker]="scheduleDate" formControlName="scheduleDate" [min]="minDate">
+              <mat-datepicker-toggle matIconSuffix [for]="scheduleDate"></mat-datepicker-toggle>
+              <mat-datepicker #scheduleDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="col-3 col-md-3 form-field">
+            <mat-form-field appearance="fill">
+              <input matInput [ngxTimepicker]="startTime" formControlName="startTime" placeholder="Select Start Time" readonly>
+              <ngx-material-timepicker #startTime></ngx-material-timepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="col-3 col-md-3 form-field">
+            <mat-form-field appearance="fill">
+              <input matInput [ngxTimepicker]="endTime" formControlName="endTime" placeholder="Select Start Time" readonly>
+              <ngx-material-timepicker #endTime></ngx-material-timepicker>
+            </mat-form-field>
+          </div>
+<!--          (closed)="onTimeChange('endTime')"-->
+
+<!--          <input matInput formControlName="status" hidden="hidden">-->
+
+        </div>
+        <div class="row" style="padding: 15px 15px">
+
+
+
+
+          <div class="col-3 col-md-3 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Room Number</mat-label>
+              <mat-select formControlName="room">
+                <mat-option [value]="null" selected>Not Selected</mat-option>
+                <mat-option *ngFor="let room of rooms" [value]="room">{{ room.number }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </mat-form>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+
+

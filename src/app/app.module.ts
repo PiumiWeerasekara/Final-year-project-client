@@ -49,6 +49,9 @@ import { DoctorComponent } from './view/modules/doctor/doctor.component';
 import {MatSortModule} from "@angular/material/sort";
 import { PatientComponent } from './view/modules/patient/patient.component';
 import { RoomComponent } from './view/modules/room/room.component';
+import { ScheduleComponent } from './view/modules/schedule/schedule.component';
+import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import { AppointmentComponent } from './view/modules/appointment/appointment.component';
 
 
 @NgModule({
@@ -73,7 +76,9 @@ import { RoomComponent } from './view/modules/room/room.component';
     BookdistributionComponent,
     DoctorComponent,
     PatientComponent,
-    RoomComponent
+    RoomComponent,
+    ScheduleComponent,
+    AppointmentComponent
 
   ],
   imports: [
@@ -100,7 +105,8 @@ import { RoomComponent } from './view/modules/room/room.component';
     MatChipsModule,
     ReactiveFormsModule,
     MatSlideToggleModule,
-    MatSortModule
+    MatSortModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [
     OperationComponent,

@@ -3,7 +3,7 @@
 
     <mat-card>
 <!--      <mat-card-header style="background-image: url('assets/S.png')">-->
-      <mat-card-header>
+      <mat-card-header style="padding: 0px 0px !important;">
         <mat-card-title>
 <!--          <p>-->
 <!--            <img src="/assets/logo.png">-->
@@ -11,7 +11,7 @@
 <!--          <p>Durdans Medical Centre Login</p>-->
 
           <div class="title-with-image">
-            <img src="/assets/logo.png" alt="Logo">
+            <img src="/assets/login.png" style="width: 100% !important;" alt="Logo">
           </div>
         </mat-card-title>
       </mat-card-header>
@@ -32,7 +32,7 @@
 
           <mat-card-actions align="end">
             <button btn-login mat-raised-button (click)="authenticate()">Login</button>
-            <button btn-signup mat-raised-button (click)="signup()">Sign Up</button>
+<!--            <button btn-signup mat-raised-button (click)="signup()">Sign Up</button>-->
           </mat-card-actions>
         </form>
       </mat-card-content>

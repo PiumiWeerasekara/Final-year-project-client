@@ -107,6 +107,9 @@ mat-nav-list mat-expansion-panel-header:hover {
 mat-nav-list mat-expansion-panel mat-list-item {
   height: 28px;
 }
+mat-list-item a{
+  color: white;
+}
 
 
 

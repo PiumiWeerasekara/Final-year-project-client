@@ -18,6 +18,8 @@ import {BookdistributionComponent} from "./view/modules/bookdistribution/bookdis
 import {DoctorComponent} from "./view/modules/doctor/doctor.component";
 import {PatientComponent} from "./view/modules/patient/patient.component";
 import {RoomComponent} from "./view/modules/room/room.component";
+import {ScheduleComponent} from "./view/modules/schedule/schedule.component";
+import {AppointmentComponent} from "./view/modules/appointment/appointment.component";
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -45,6 +47,8 @@ const routes: Routes = [
       {path: "doctor",component:DoctorComponent},
       {path: "patient",component:PatientComponent},
       {path: "room",component:RoomComponent},
+      {path: "schedule",component:ScheduleComponent},
+      {path: "appointment",component:AppointmentComponent},
 
     ]
   }];

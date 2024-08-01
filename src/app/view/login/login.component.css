@@ -60,4 +60,9 @@ button[btn-signup] {
   margin-right: 0; /* Optional: Add some spacing between the image and text */
 }
 
+::ng-deep mat-card-header .mat-mdc-card-header-text {
+  width: 100% !important;
+}
+
+
 

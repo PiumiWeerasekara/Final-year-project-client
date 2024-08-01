@@ -20,8 +20,4 @@ export class PatientService {
     return this.http.post<[]>('http://localhost:8080/patient', patient).toPromise();
   }
 
-  // async delete(id: number): Promise<[]|undefined>{
-  //   // @ts-ignore
-  //   return this.http.delete('http://localhost:8080/patient/' + id).toPromise();
-  // }
 }
