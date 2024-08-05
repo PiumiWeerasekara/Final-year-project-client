@@ -13,7 +13,7 @@
           Add
         </button>
 
-        <button *ngIf="isFormEnable" mat-raised-button color="primary" class="header-btn-add" (click)="back()">
+        <button *ngIf="isFormEnable && !isDisableBackButton" mat-raised-button color="primary" class="header-btn-add" (click)="back()">
           <mat-icon>arrow_back_ios</mat-icon>
           Back
         </button>

@@ -30,6 +30,7 @@ export class PatientComponent {
 
   public isFormEnable: boolean = false;
   public isCreate: boolean = false;
+  public isDisableBackButton: boolean = false;
 
   patient!: Patient;
   oldPatient!: Patient;
@@ -395,9 +396,10 @@ export class PatientComponent {
     }
   }
 
-  create() {
+  create(isExternal:boolean=false) {
     this.isFormEnable = true;
     this.isCreate = true;
+    this.isDisableBackButton= isExternal;
   }
 
   back() {

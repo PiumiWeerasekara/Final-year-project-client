@@ -35,4 +35,8 @@ export class ScheduleService {
     }
     return schedules;
   }
+  async getById(id: number): Promise<Schedule |undefined>{
+    // @ts-ignore
+    return this.http.get('http://localhost:8080/schedule/byScheduleId?id=' + id).toPromise();
+  }
 }

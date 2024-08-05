@@ -12,9 +12,8 @@ export class Appointment {
   public status !: number;
   public schedule !: Schedule;
   public patient !: Patient;
-  public user !: User;
 
-  constructor(id: number, appointmentDate: string, startTime: string, endTime: string, appointmentNo: number, status: number, schedule: Schedule, patient: Patient, user: User) {
+  constructor(id: number, appointmentDate: string, startTime: string, endTime: string, appointmentNo: number, status: number, schedule: Schedule, patient: Patient) {
     this.id = id;
     this.appointmentDate = appointmentDate;
     this.startTime = startTime;
@@ -23,7 +22,6 @@ export class Appointment {
     this.status = status;
     this.schedule = schedule;
     this.patient = patient;
-    this.user = user;
   }
 }
 

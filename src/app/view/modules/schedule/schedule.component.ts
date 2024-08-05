@@ -16,7 +16,7 @@ import {Schedule} from "../../../entity/schedule";
 import {ScheduleService} from "../../../service/schedule.service";
 import {Doctor} from "../../../entity/doctor";
 import {DoctorService} from "../../../service/doctor.service";
-import { ChangeDetectorRef } from '@angular/core';
+import {ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'app-schedule',
@@ -146,6 +146,7 @@ export class ScheduleComponent {
       this.form.updateValueAndValidity();
     });
   }
+
   // onTimeChange(controlName: string) {
   //   const control = this.form.controls[controlName];
   //   control.markAsDirty();
@@ -207,6 +208,7 @@ export class ScheduleComponent {
       });
 
   }
+
   btnSearchMc(): void {
 
     const sserchdata = this.ssearch.getRawValue();
@@ -242,6 +244,7 @@ export class ScheduleComponent {
     });
 
   }
+
   getErrors(): string {
 
     let errors: string = "";
@@ -291,6 +294,7 @@ export class ScheduleComponent {
     date.setHours(hours, minutes, 0, 0);
     return date;
   }
+
   getUpdates(): string {
 
     let updates: string = "";
@@ -394,6 +398,7 @@ export class ScheduleComponent {
     //this.clearImage();
 
   }
+
   save() {
 
     let errors = this.getErrors();
@@ -456,8 +461,8 @@ export class ScheduleComponent {
       confirm.afterClosed().subscribe(async result => {
         if (result) {
           // console.log("EmployeeService.add(emp)");
-this.schedule.startTime= this.convertTo24HourFormat(this.schedule.startTime);
-          this.schedule.endTime= this.convertTo24HourFormat(this.schedule.endTime);
+          this.schedule.startTime = this.convertTo24HourFormat(this.schedule.startTime);
+          this.schedule.endTime = this.convertTo24HourFormat(this.schedule.endTime);
           this.ss.save(this.schedule).then((responce: [] | undefined) => {
             //console.log("Res-" + responce);
             //console.log("Un-" + responce == undefined);
