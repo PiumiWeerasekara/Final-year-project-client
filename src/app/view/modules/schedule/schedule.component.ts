@@ -17,6 +17,7 @@ import {ScheduleService} from "../../../service/schedule.service";
 import {Doctor} from "../../../entity/doctor";
 import {DoctorService} from "../../../service/doctor.service";
 import {ChangeDetectorRef} from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-schedule',
@@ -46,7 +47,7 @@ export class ScheduleComponent {
 
   uiassist: UiAssist;
 
-  displayedColumns: string[] = ['doctor', 'room', 'date', 'startTime', 'endTime', 'edit', 'delete'];
+  displayedColumns: string[] = ['doctor', 'room', 'date', 'startTime', 'endTime', 'status', 'edit', 'delete'];
   dataSource: MatTableDataSource<Schedule>;
 
   schedules: Array<Schedule> = [];
@@ -80,11 +81,12 @@ export class ScheduleComponent {
       "startTime": new FormControl('', [Validators.required]),
       "endTime": new FormControl('', [Validators.required]),
       "room": new FormControl('', [Validators.required]),
+      "noOfPatient": new FormControl('', [Validators.required]),
     }, {updateOn: 'change'});
 
     this.dataSource = new MatTableDataSource(this.schedules);
     this.minDate = new Date();
-    this.minDate.setDate(this.minDate.getDate() - 1);
+    this.minDate.setDate(this.minDate.getDate());
   }
 
   ngAfterViewInit() {
@@ -158,6 +160,7 @@ export class ScheduleComponent {
     this.form.controls['startTime'].setValidators([Validators.required]);
     this.form.controls['endTime'].setValidators([Validators.required]);
     this.form.controls['room'].setValidators([Validators.required]);
+    this.form.controls['noOfPatient'].setValidators([Validators.required]);
 
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
@@ -219,8 +222,9 @@ export class ScheduleComponent {
 
     let query = "";
 
+
     if (docId != null) query = query + "&doctorId=" + docId;
-    if (scheduleDate != null) query = query + "&scheduleDate=" + scheduleDate;
+    if (scheduleDate != null) query = query + "&scheduleDate=" + moment(scheduleDate, 'dddd D MMMM YYYY').format('YYYY-MM-DD');
     if (roomId != null) query = query + "&roomId=" + roomId;
 
     if (query != "") query = query.replace(/^./, "?")
@@ -307,13 +311,14 @@ export class ScheduleComponent {
     return updates;
   }
 
-  delete(room: Room) {
+  delete(schedule: Schedule) {
 
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
       data: {
-        heading: "Confirmation - Patient Delete",
-        message: "Are you sure to Delete following Room? <br> <br>" + room.number
+        heading: "Confirmation - Cancel Schedule",
+        message: "Are you sure to Cancel this Schdule? "
+          // "<br> <br>" + schedule.
       }
     });
 
@@ -322,7 +327,7 @@ export class ScheduleComponent {
         let delstatus: boolean = false;
         let delmessage: string = "Server Not Found";
 
-        this.ros.delete(room.id).then((responce: [] | undefined) => {
+        this.ss.cancel(schedule.id).then((responce: [] | undefined) => {
 
           if (responce != undefined) { // @ts-ignore
             delstatus = responce['errors'] == "";
@@ -335,7 +340,7 @@ export class ScheduleComponent {
           }
         }).finally(() => {
           if (delstatus) {
-            delmessage = "Successfully Deleted";
+            delmessage = "Successfully Cancelled";
             this.form.reset();
             // this.clearImage();
             // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
@@ -345,7 +350,7 @@ export class ScheduleComponent {
 
           const stsmsg = this.dg.open(MessageComponent, {
             width: '500px',
-            data: {heading: "Status - Room Delete ", message: delmessage}
+            data: {heading: "Status - Schedule Cancel ", message: delmessage}
           });
           stsmsg.afterClosed().subscribe(async result => {
             if (!result) {
@@ -417,7 +422,17 @@ export class ScheduleComponent {
         }
       });
     } else {
+
       this.schedule = this.form.getRawValue();
+
+      if (this.convertTo24HourFormat(this.schedule.startTime) > this.convertTo24HourFormat(this.schedule.endTime)) {
+        const errmsg = this.dg.open(MessageComponent, {
+          width: '500px',
+          data: {heading: "Errors - Schedule Save ", message: "End time must be after the start time. Please ensure the end time is set correctly"}
+        });
+        return;
+      }
+
       if (!this.isCreate) {
         let updates: string = this.getUpdates();
 
@@ -440,7 +455,7 @@ export class ScheduleComponent {
       } else {
         let drData: string = "";
 
-        drData = this.schedule.scheduleDate + ". " + this.schedule.startTime + " to " + this.schedule.endTime;
+        drData = this.formatDate(this.schedule.scheduleDate) + " From " + this.schedule.startTime + " To " + this.schedule.endTime;
         heading = "Confirmation - Schedule Add";
         confirmationMessage = "Are you sure to Save the following Schedule? <br> <br>" + drData;
 
@@ -463,6 +478,7 @@ export class ScheduleComponent {
           // console.log("EmployeeService.add(emp)");
           this.schedule.startTime = this.convertTo24HourFormat(this.schedule.startTime);
           this.schedule.endTime = this.convertTo24HourFormat(this.schedule.endTime);
+          this.schedule.status = 1;
           this.ss.save(this.schedule).then((responce: [] | undefined) => {
             //console.log("Res-" + responce);
             //console.log("Un-" + responce == undefined);
@@ -549,4 +565,14 @@ export class ScheduleComponent {
     return `${hours}:${this.padZero(minutes)} ${modifier}`;
   }
 
+  formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long'
+    };
+    return date.toLocaleDateString('en-GB', options);
+  }
 }

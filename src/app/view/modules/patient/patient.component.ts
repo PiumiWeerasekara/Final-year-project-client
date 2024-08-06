@@ -118,7 +118,7 @@ export class PatientComponent {
       this.genders = gens;
     });
 
-    this.rs.get('patient').then((regs: []) => {
+    this.rs.get('employee').then((regs: []) => {
       this.regexes = regs;
       this.createForm();
     });

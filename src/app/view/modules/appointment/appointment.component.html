@@ -150,14 +150,14 @@
           </ng-container>
 
 
-          <!--          <ng-container matColumnDef="cancel" hidden>-->
-<!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cancel</th>-->
-<!--            <td mat-cell *matCellDef="let row">-->
-<!--              <button mat-icon-button class="btn-delete" (click)="cancel(row)">-->
-<!--                <mat-icon>clear</mat-icon>-->
-<!--              </button>-->
-<!--            </td>-->
-<!--          </ng-container>-->
+          <ng-container matColumnDef="cancel" hidden>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cancel</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button class="btn-delete cancel" (click)="cancel(row)" [disabled]="row.status == 0">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </td>
+          </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -247,15 +247,16 @@
 
           <ng-container matColumnDef="availableNo">
             <th mat-header-cell *matHeaderCellDef mat-sort-header hidden>Available No</th>
-            <td mat-cell *matCellDef="let row" style="color: #78c18b"> Next Available
-              Number: {{ row.nextAppointmentNo }}
+            <td  mat-cell *matCellDef="let row" style="color: #78c18b">
+              <ng-container *ngIf="row.nextAppointmentNo-1 <= row.noOfPatient"> Next Available Number: {{ row.nextAppointmentNo }} </ng-container>
+              <ng-container *ngIf="row.nextAppointmentNo-1 > row.noOfPatient"> Not Available </ng-container>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef mat-sort-header hidden>Select</th>
             <td mat-cell *matCellDef="let row">
-              <button mat-raised-button color="primary" class="header-btn-add" id='btnBook' (click)="create(row)">
+              <button mat-raised-button color="primary" class="header-btn-add" id='btnBook' (click)="create(row)" [disabled]="row.nextAppointmentNo > row.noOfPatient">
                 <mat-icon>add</mat-icon>
                 Book Now
               </button>

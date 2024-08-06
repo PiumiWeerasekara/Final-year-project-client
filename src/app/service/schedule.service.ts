@@ -23,9 +23,9 @@ export class ScheduleService {
   }
 
 
-  async delete(id: number): Promise<[]|undefined>{
+  async cancel(id: number): Promise<[]|undefined>{
     // @ts-ignore
-    return this.http.delete('http://localhost:8080/schedule/' + id).toPromise();
+    return this.http.post('http://localhost:8080/schedule/cancel/' + id).toPromise();
   }
 
   async getAll(query:string): Promise<Array<Schedule>> {

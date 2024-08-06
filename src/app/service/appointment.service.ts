@@ -69,4 +69,9 @@ export class AppointmentService {
     const appointment = await this.http.get<Appointment>('http://localhost:8080/appointment/lastAppointment?id='+id).toPromise();
     return appointment || null;
   }
+
+  async cancel(appointment: Appointment): Promise<[]|undefined>{
+    // @ts-ignore
+    return this.http.post('http://localhost:8080/appointment/cancel', appointment).toPromise();
+  }
 }

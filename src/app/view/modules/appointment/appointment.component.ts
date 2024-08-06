@@ -26,6 +26,7 @@ import {Observable} from "rxjs";
 import {map, startWith} from 'rxjs/operators';
 import {PatientComponent} from "../patient/patient.component";
 import {UserService} from "../../../service/userservice";
+import * as moment from "moment/moment";
 
 @Component({
   selector: 'app-appointment',
@@ -81,7 +82,7 @@ export class AppointmentComponent {
 
   uiassist: UiAssist;
 
-  displayedColumns: string[] = ['doctor', 'patient', 'nic', 'appointmentNo', 'date', 'time', 'view'];
+  displayedColumns: string[] = ['doctor', 'patient', 'nic', 'appointmentNo', 'date', 'time', 'view', 'cancel'];
   dataSource: MatTableDataSource<Appointment>;
   appointments: Array<Appointment> = [];
 
@@ -328,7 +329,7 @@ export class AppointmentComponent {
     if (name != null && name.trim() != "") query = query + "&name=" + name;
     if (nic != null && nic.trim() != "") query = query + "&nic=" + nic;
     if (docId != null) query = query + "&doctorId=" + docId;
-    if (appointmentDate != null) query = query + "&appointmentDate=" + appointmentDate;
+    if (appointmentDate != null) query = query + "&appointmentDate=" + moment(appointmentDate, 'dddd D MMMM YYYY').format('YYYY-MM-DD');
     if (appointmentNo != null && appointmentNo.trim() != "") query = query + "&appointmentNo=" + appointmentNo;
 
     if (query != "") query = query.replace(/^./, "?")
@@ -348,7 +349,7 @@ export class AppointmentComponent {
     let query = "";
 
     if (docId != null) query = query + "&doctorId=" + docId;
-    if (scheduleDate != null) query = query + "&scheduleDate=" + scheduleDate;
+    if (scheduleDate != null) query = query + "&scheduleDate=" + moment(scheduleDate, 'dddd D MMMM YYYY').format('YYYY-MM-DD');
     if (specialityId != null) query = query + "&specialityId=" + specialityId;
 
     if (query != "") query = query.replace(/^./, "?")
@@ -450,55 +451,55 @@ export class AppointmentComponent {
     return updates;
   }
 
-  cancel(appointment: Appointment) {
-
-    const confirm = this.dg.open(ConfirmComponent, {
-      width: '500px',
-      data: {
-        heading: "Confirmation - Cancel Appointment",
-        message: "Are you sure to Cancel following Appointment? <br> <br>" + appointment.appointmentNo
-      }
-    });
-
-    // confirm.afterClosed().subscribe(async result => {
-    //   if (result) {
-    //     let delstatus: boolean = false;
-    //     let delmessage: string = "Server Not Found";
-    //
-    //     this.dcs.delete(doctor.id).then((responce: [] | undefined) => {
-    //
-    //       if (responce != undefined) { // @ts-ignore
-    //         delstatus = responce['errors'] == "";
-    //         if (!delstatus) { // @ts-ignore
-    //           delmessage = responce['errors'];
-    //         }
-    //       } else {
-    //         delstatus = false;
-    //         delmessage = "Content Not Found"
-    //       }
-    //     }).finally(() => {
-    //       if (delstatus) {
-    //         delmessage = "Successfully Deleted";
-    //         // this.form.reset();
-    //         // this.clearImage();
-    //         // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
-    //         this.loadTable("");
-    //       }
-    //
-    //       const stsmsg = this.dg.open(MessageComponent, {
-    //         width: '500px',
-    //         data: {heading: "Status - Doctor Delete ", message: delmessage}
-    //       });
-    //       stsmsg.afterClosed().subscribe(async result => {
-    //         if (!result) {
-    //           return;
-    //         }
-    //       });
-    //
-    //     });
-    //   }
-    // });
-  }
+  // cancel(appointment: Appointment) {
+  //
+  //   const confirm = this.dg.open(ConfirmComponent, {
+  //     width: '500px',
+  //     data: {
+  //       heading: "Confirmation - Cancel Appointment",
+  //       message: "Are you sure to Cancel following Appointment? <br> <br>" + appointment.appointmentNo
+  //     }
+  //   });
+  //
+  //   // confirm.afterClosed().subscribe(async result => {
+  //   //   if (result) {
+  //   //     let delstatus: boolean = false;
+  //   //     let delmessage: string = "Server Not Found";
+  //   //
+  //   //     this.dcs.delete(doctor.id).then((responce: [] | undefined) => {
+  //   //
+  //   //       if (responce != undefined) { // @ts-ignore
+  //   //         delstatus = responce['errors'] == "";
+  //   //         if (!delstatus) { // @ts-ignore
+  //   //           delmessage = responce['errors'];
+  //   //         }
+  //   //       } else {
+  //   //         delstatus = false;
+  //   //         delmessage = "Content Not Found"
+  //   //       }
+  //   //     }).finally(() => {
+  //   //       if (delstatus) {
+  //   //         delmessage = "Successfully Deleted";
+  //   //         // this.form.reset();
+  //   //         // this.clearImage();
+  //   //         // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
+  //   //         this.loadTable("");
+  //   //       }
+  //   //
+  //   //       const stsmsg = this.dg.open(MessageComponent, {
+  //   //         width: '500px',
+  //   //         data: {heading: "Status - Doctor Delete ", message: delmessage}
+  //   //       });
+  //   //       stsmsg.afterClosed().subscribe(async result => {
+  //   //         if (!result) {
+  //   //           return;
+  //   //         }
+  //   //       });
+  //   //
+  //   //     });
+  //   //   }
+  //   // });
+  // }
 
   clear(): void {
     const confirm = this.dg.open(ConfirmComponent, {
@@ -537,6 +538,7 @@ export class AppointmentComponent {
   book() {
     this.formNo = 2;
     this.isCreate = true;
+    this.loadScheduleTable('');
   }
 
   back() {
@@ -552,6 +554,9 @@ export class AppointmentComponent {
     this.isCreate = true;
     this.loadTable("");
     this.loadScheduleTable("");
+
+    this.btnSearchScheduleMc();
+    this.btnSearchClearMc()
   }
 
   findSschedule(scheduleId: number, nextAppointmentNo: string) {
@@ -651,6 +656,7 @@ export class AppointmentComponent {
           this.appointment.startTime = this.convertTo24HourFormat(this.appointment.startTime);
           this.appointment.endTime = this.convertTo24HourFormat(this.appointment.endTime);
           this.appointment.schedule = this.selectedSchedule;
+          this.appointment.status = 1;
           //this.appointment.user = this.user;
           // console.log("EmployeeService.add(emp)");
 
@@ -819,5 +825,56 @@ export class AppointmentComponent {
     }
 
     return `${this.padZero(hours)}:${this.padZero(minutes)}:00`;
+  }
+
+  cancel(appointment: Appointment) {
+
+    const confirm = this.dg.open(ConfirmComponent, {
+      width: '500px',
+      data: {
+        heading: "Confirmation - Cancel Appointment",
+        message: "Are you sure to Cancel following Appointment? " +
+          "<br> <br> Appointment No" + appointment.appointmentNo
+      }
+    });
+    confirm.afterClosed().subscribe(async result => {
+      if (result) {
+        let delstatus: boolean = false;
+        let delmessage: string = "Server Not Found";
+
+        this.ap.cancel(appointment).then((responce: [] | undefined) => {
+
+          if (responce != undefined) { // @ts-ignore
+            delstatus = responce['errors'] == "";
+            if (!delstatus) { // @ts-ignore
+              delmessage = responce['errors'];
+            }
+          } else {
+            delstatus = false;
+            delmessage = "Content Not Found"
+          }
+        }).finally(() => {
+          if (delstatus) {
+            delmessage = "Successfully Cancelled";
+            this.form.reset();
+            // this.clearImage();
+            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
+            this.loadTable("");
+            //this.getRoomNumber();
+          }
+
+          const stsmsg = this.dg.open(MessageComponent, {
+            width: '500px',
+            data: {heading: "Status - Appointment Cancel ", message: delmessage}
+          });
+          stsmsg.afterClosed().subscribe(async result => {
+            if (!result) {
+              return;
+            }
+          });
+
+        });
+      }
+    });
   }
 }

@@ -144,10 +144,10 @@ input[matInput] {
 }
 
 .mat-column-appointmentNo {
-  width: 10%; /* Wider columns for names */
+  width: 12%; /* Wider columns for names */
 }
 
-.view{
-  width: 10%; /* Narrower columns for date and time */
+.view. cancel{
+  width: 5%; /* Narrower columns for date and time */
 }
 
