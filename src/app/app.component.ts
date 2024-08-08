@@ -14,5 +14,4 @@ export class AppComponent {
     this.authService.initializeMenuState();
     this.authService.getAuth(this.authService.getUsername())
   }
-
 }

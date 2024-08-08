@@ -260,6 +260,11 @@
                 <mat-icon>add</mat-icon>
                 Book Now
               </button>
+            </td><td mat-cell *matCellDef="let row">
+              <button mat-raised-button color="primary" class="header-btn-add" id='btnBook' (click)="create(row)" [disabled]="row.nextAppointmentNo > row.noOfPatient">
+                <mat-icon>add</mat-icon>
+                Book Now
+              </button>
             </td>
           </ng-container>
 

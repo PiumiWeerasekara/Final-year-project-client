@@ -11,7 +11,7 @@ import {EmployeeComponent} from './view/modules/employee/employee.component';
 import {UserComponent} from './view/modules/user/user.component';
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatCardModule} from "@angular/material/card";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
@@ -52,6 +52,7 @@ import { RoomComponent } from './view/modules/room/room.component';
 import { ScheduleComponent } from './view/modules/schedule/schedule.component';
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import { AppointmentComponent } from './view/modules/appointment/appointment.component';
+import { PrescriptionComponent } from './view/modules/prescription/prescription.component';
 
 
 @NgModule({
@@ -78,8 +79,8 @@ import { AppointmentComponent } from './view/modules/appointment/appointment.com
     PatientComponent,
     RoomComponent,
     ScheduleComponent,
-    AppointmentComponent
-
+    AppointmentComponent,
+    PrescriptionComponent
   ],
   imports: [
     MatDatepickerModule,

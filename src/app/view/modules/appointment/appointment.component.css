@@ -138,8 +138,18 @@ input[matInput] {
   padding-top: 0; /* Adjust to ensure the input and options are well aligned */
 }
 
-.mat-column-doctor, .mat-column-patient, .mat-column-nic .mat-column-date, .mat-column-time{
+.mat-column-doctor, .mat-column-patient, .mat-column-nic {
   width: 16%; /* Adjust as needed */
+  /*text-align: left;*/
+}
+
+.mat-column-date{
+  width: 14%; /* Adjust as needed */
+  /*text-align: left;*/
+}
+
+.mat-column-time{
+  width: 18%; /* Adjust as needed */
   /*text-align: left;*/
 }
 

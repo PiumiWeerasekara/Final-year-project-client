@@ -436,22 +436,22 @@ export class ScheduleComponent {
       if (!this.isCreate) {
         let updates: string = this.getUpdates();
 
-        if (updates == "") {
-          const updmsg = this.dg.open(MessageComponent, {
-            width: '500px',
-            data: {heading: "Confirmation - Schedule Update", message: "Nothing Changed"}
-          });
-          return;
+        // if (updates == "") {
+        //   const updmsg = this.dg.open(MessageComponent, {
+        //     width: '500px',
+        //     data: {heading: "Confirmation - Schedule Update", message: "Nothing Changed"}
+        //   });
+        //   return;
           // updmsg.afterClosed().subscribe(async result => {
           //   if (!result) {
           //     return;
           //   }
           // });
-        } else {
+        // } else {
           this.schedule.id = this.selectedrow.id;
           heading = "Confirmation - Schedule Update";
           confirmationMessage = "Are you sure to Save following Updates?";
-        }
+        // }
       } else {
         let drData: string = "";
 

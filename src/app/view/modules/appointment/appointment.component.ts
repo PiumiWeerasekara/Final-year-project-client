@@ -50,7 +50,7 @@ export class AppointmentComponent {
     startTime: '',
     endTime: '',
     appointmentNo: 0,
-    status: 0,
+    status: 1,
     schedule: {} as Schedule,
     patient: {} as Patient
     // user: {} as User
@@ -555,8 +555,8 @@ export class AppointmentComponent {
     this.loadTable("");
     this.loadScheduleTable("");
 
-    this.btnSearchScheduleMc();
-    this.btnSearchClearMc()
+    this.ssearch.reset();
+    this.sSearchSchedule.reset();
   }
 
   findSschedule(scheduleId: number, nextAppointmentNo: string) {
@@ -686,7 +686,7 @@ export class AppointmentComponent {
               });
 
               this.loadTable("");
-              this.formNo = 1;
+              //this.formNo = 1;
             }
 
             const stsmsg = this.dg.open(MessageComponent, {
@@ -809,7 +809,7 @@ export class AppointmentComponent {
       dialogRef.componentInstance.create(true);
     });
     dialogRef.afterClosed().subscribe(() => {
-      dialogRef.componentInstance.clear();
+      dialogRef.componentInstance.form.reset();
       this.getPatients();
     });
   }

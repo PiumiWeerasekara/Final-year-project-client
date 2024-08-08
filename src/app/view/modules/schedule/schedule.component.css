@@ -85,11 +85,10 @@ table {
   width: 100%;
 }
 
-td, th {
-  width: 25%;
-}
+/*td, th {*/
+/*  width: 25%;*/
+/*}*/
 
 .search-container-btn{
   width: 208px !important;
 }
-

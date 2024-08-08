@@ -79,32 +79,32 @@
 
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-            <td mat-cell *matCellDef="let row"> {{ row.title }}. {{ row.firstName }} {{ row.lastName }}</td>
+            <td mat-cell *matCellDef="let row" class="mat-column-20"> {{ row.title }}. {{ row.firstName }} {{ row.lastName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="nic">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>NIC</th>
-            <td mat-cell *matCellDef="let row"> {{ row.nic }}</td>
+            <td mat-cell *matCellDef="let row" class="mat-column-15"> {{ row.nic }}</td>
           </ng-container>
 
           <ng-container matColumnDef="contactNo">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact No</th>
-            <td mat-cell *matCellDef="let row"> {{ row.contactNo }}</td>
+            <td mat-cell *matCellDef="let row" class="mat-column-15"> {{ row.contactNo }}</td>
           </ng-container>
 
           <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-            <td mat-cell *matCellDef="let row"> {{ row.email }}</td>
+            <td mat-cell *matCellDef="let row" class="mat-column-15"> {{ row.email }}</td>
           </ng-container>
 
           <ng-container matColumnDef="address">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
-            <td mat-cell *matCellDef="let row"> {{ row.address }}</td>
+            <td mat-cell *matCellDef="let row" class="mat-column-25"> {{ row.address }}</td>
           </ng-container>
 
           <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
-            <td mat-cell *matCellDef="let row">
+            <td mat-cell *matCellDef="let row" class="mat-column-10">
               <button mat-icon-button class="btn-edit" (click)="fillForm(row)">
                 <mat-icon>edit</mat-icon>
               </button>

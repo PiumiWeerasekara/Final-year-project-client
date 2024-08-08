@@ -101,37 +101,37 @@
 
           <ng-container matColumnDef="doctor">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Doctor</th>
-            <td mat-cell *matCellDef="let row"> {{ row.doctor.title }}. {{ row.doctor.firstName }} {{ row.doctor.lastName }}</td>
+            <td mat-cell class="mat-column-20" *matCellDef="let row"> {{ row.doctor.title }}. {{ row.doctor.firstName }} {{ row.doctor.lastName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="room">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Room</th>
-            <td mat-cell *matCellDef="let row"> {{ row.room.number }}</td>
+            <td mat-cell *matCellDef="let row" class="mat-column-10"> {{ row.room.number }}</td>
           </ng-container>
 
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Schedule date</th>
-            <td mat-cell *matCellDef="let row"> {{ row.scheduleDate }}</td>
+            <td mat-cell class="mat-column-15" *matCellDef="let row"> {{ row.scheduleDate }}</td>
           </ng-container>
 
           <ng-container matColumnDef="startTime">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Time</th>
-            <td mat-cell *matCellDef="let row"> {{ row.startTime }}</td>
+            <td mat-cell class="mat-column-15" *matCellDef="let row"> {{ convertTo12HourFormat(row.startTime) }}</td>
           </ng-container>
 
           <ng-container matColumnDef="endTime">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>End Time</th>
-            <td mat-cell *matCellDef="let row"> {{ row.endTime }}</td>
+            <td mat-cell class="mat-column-15" *matCellDef="let row"> {{ convertTo12HourFormat(row.endTime) }}</td>
           </ng-container>
 
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-            <td mat-cell *matCellDef="let row"> {{ row.status == 1 ? 'Available': 'Cancelled' }}</td>
+            <td mat-cell class="mat-column-15"  *matCellDef="let row"> {{ row.status == 1 ? 'Available': 'Cancelled' }}</td>
           </ng-container>
 
           <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
-            <td mat-cell *matCellDef="let row">
+            <td mat-cell class="mat-column-5"  *matCellDef="let row">
               <button mat-icon-button class="btn-edit" (click)="fillForm(row)" [disabled]="row.status == 0">
                 <mat-icon>edit</mat-icon>
               </button>
@@ -140,7 +140,7 @@
 
           <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Cancel</th>
-            <td mat-cell *matCellDef="let row">
+            <td mat-cell class="mat-column-5"  *matCellDef="let row">
               <button mat-icon-button class="btn-delete" (click)="delete(row)" [disabled]="row.status == 0">
                 <mat-icon>clear</mat-icon>
               </button>

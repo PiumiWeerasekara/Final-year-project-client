@@ -20,6 +20,7 @@ import {PatientComponent} from "./view/modules/patient/patient.component";
 import {RoomComponent} from "./view/modules/room/room.component";
 import {ScheduleComponent} from "./view/modules/schedule/schedule.component";
 import {AppointmentComponent} from "./view/modules/appointment/appointment.component";
+import {PrescriptionComponent} from "./view/modules/prescription/prescription.component";
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -49,6 +50,7 @@ const routes: Routes = [
       {path: "room",component:RoomComponent},
       {path: "schedule",component:ScheduleComponent},
       {path: "appointment",component:AppointmentComponent},
+      {path: "prescription",component:PrescriptionComponent},
 
     ]
   }];

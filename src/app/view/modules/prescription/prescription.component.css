@@ -15,7 +15,27 @@ mat-card-content { overflow: auto; height: 100%; }
 
 #ssearch button{ width: 195px; margin-left:10px; margin-top: 5px; background-color: #435f3b;   }
 
+#sSearchSchedule mat-card-content{   padding-top: 30px; }
 
+/*#ssearch mat-form-field { padding-left: 15px; width: 200px; }*/
+
+#sSearchSchedule button{ width: 195px; margin-left:10px; margin-top: 5px; background-color: #435f3b;   }
+
+#sSearchSchedule mat-form-field {
+  padding: 0px 30px !important;
+}
+
+#tblSchedule .mat-mdc-row {
+  height: 70px !important;
+}
+
+#tblSchedule .mat-mdc-cell {
+  font-size: 16px !important; /* Adjust the font size as needed */
+}
+
+#btnBook{
+  background: #13bcb1 !important;
+}
 
 /* Employee Form */
 #form {
@@ -93,3 +113,47 @@ table {
   width: 208px !important;
 }
 
+.docDetail_div{
+  background: #e8e8e8;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.drName{
+  color: #1577ce;
+  font-size: 30px;
+}
+
+input[matInput] {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.search-container {
+  padding: 8px; /* Adjust as needed */
+}
+
+.mat-select-panel {
+  padding-top: 0; /* Adjust to ensure the input and options are well aligned */
+}
+
+#tblAll .mat-mdc-row {
+  height: 70px !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  display: none;
+}
+
+.lbl{
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.text{
+  font-size: 16px;
+}
+
+.tblDrug{
+  margin-left: 35px;
+  margin-right: 35px;
+}

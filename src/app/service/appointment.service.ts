@@ -74,4 +74,12 @@ export class AppointmentService {
     // @ts-ignore
     return this.http.post('http://localhost:8080/appointment/cancel', appointment).toPromise();
   }
+
+  async getMyCurrentScheduleAppointments(query:string): Promise<Array<Appointment>> {
+    const appointments = await this.http.get<Array<Appointment>>('http://localhost:8080/appointment/currentAppointments'+query).toPromise();
+    if(appointments == undefined){
+      return [];
+    }
+    return appointments;
+  }
 }
