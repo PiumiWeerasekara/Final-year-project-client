@@ -1,9 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {Gender} from "../../../entity/gender";
 import {UiAssist} from "../../../util/ui/ui.assist";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatSort} from "@angular/material/sort";
 import {GenderService} from "../../../service/genderservice";
 import {RegexService} from "../../../service/regexservice";
 import {MatDialog} from "@angular/material/dialog";
@@ -11,34 +12,30 @@ import {DatePipe} from "@angular/common";
 import {AuthorizationManager} from "../../../service/authorizationmanager";
 import {ConfirmComponent} from "../../../util/dialog/confirm/confirm.component";
 import {MessageComponent} from "../../../util/dialog/message/message.component";
-import {MatSort} from '@angular/material/sort';
-import {Title} from "@angular/platform-browser";
 import {Titles} from "../../../shared/constant/titles";
-import {Specialization} from "../../../entity/specialization";
-import {Patient} from "../../../entity/patient";
-import {PatientService} from "../../../service/patient.service";
-import {Doctor} from "../../../entity/doctor";
-
+import {Staff} from "../../../entity/staff";
+import {StaffType} from "../../../entity/staffType";
+import {StaffTypeService} from "../../../service/StaffTypeService";
+import {StaffService} from "../../../service/staff.service";
 
 @Component({
-  selector: 'app-patient',
-  templateUrl: './patient.component.html',
-  styleUrls: ['./patient.component.css']
+  selector: 'app-staff',
+  templateUrl: './staff.component.html',
+  styleUrls: ['./staff.component.css']
 })
-export class PatientComponent {
+export class StaffComponent {
   public ssearch!: FormGroup;
   public form!: FormGroup;
 
   public isFormEnable: boolean = false;
   public isCreate: boolean = false;
-  public isDisableBackButton: boolean = false;
 
-  patient!: Patient;
-  oldPatient!: Patient;
+  staff!: Staff;
+  oldStaff!: Staff;
 
   selectedrow: any;
 
-  // imageurl: string = 'assets/default.png'
+  imageurl: string = 'assets/default.png'
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   // enaadd:boolean = false;
@@ -46,35 +43,36 @@ export class PatientComponent {
   // enadel:boolean = false;
 
   genders: Array<Gender> = [];
-  // specializations: Array<Specialization> = [];
-  Title = Title;
+  staffTypes: Array<StaffType> = [];
+  //Title = Title;
   Titles = Titles;
+
+  maxDate: Date;
 
   regexes: any;
 
   uiassist: UiAssist;
 
-  displayedColumns: string[] = ['name', 'nic', 'contactNo', 'email', 'address', 'edit', 'active'];
-  dataSource: MatTableDataSource<Patient>;
-  patients: Array<Patient> = [];
-  maxDate: Date;
+  displayedColumns: string[] = ['name', 'nic', 'contactNo', 'email', 'type', 'edit', 'active'];
+  dataSource: MatTableDataSource<Staff>;
+  staffs: Array<Staff> = [];
 
-  @ViewChild(MatSort) sort!: MatSort;
-
-  constructor(
+  @ViewChild(MatSort) sort!: MatSort;constructor(
     private gs: GenderService,
     private rs: RegexService,
     private fb: FormBuilder,
     private dg: MatDialog,
     private dp: DatePipe,
-    private dcs: PatientService,
+    private dcs: StaffService,
+    private sp: StaffTypeService,
     public authService: AuthorizationManager) {
 
     this.uiassist = new UiAssist(this);
 
     this.ssearch = this.fb.group({
       "ssName": new FormControl(),
-      "ssNic": new FormControl()
+      "ssNic": new FormControl(),
+      "ssType": new FormControl(),
     });
 
 
@@ -83,23 +81,22 @@ export class PatientComponent {
       "firstName": new FormControl('', [Validators.required]),
       "lastName": new FormControl('', [Validators.required]),
       "dob": new FormControl('', [Validators.required]),
-      "age": new FormControl(''),
-      "nic": new FormControl(''),
+      "nic": new FormControl('', [Validators.required]),
       "gender": new FormControl('', [Validators.required]),
+      "photo": new FormControl('', [Validators.required]),
 
       "email": new FormControl('', [Validators.required]),
       "contactNo": new FormControl('', [Validators.required]),
       "address": new FormControl('', [Validators.required]),
-
-      "guardianName": new FormControl('', [Validators.required]),
-      "guardianContactNo": new FormControl('', [Validators.required]),
+      "staffType": new FormControl('', [Validators.required]),
 
     }, {updateOn: 'change'});
 
 
-    this.dataSource = new MatTableDataSource(this.patients);
+    this.dataSource = new MatTableDataSource(this.staffs);
+
     this.maxDate = new Date();
-    this.maxDate.setDate(this.maxDate.getDate() - 1);
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
   ngAfterViewInit() {
@@ -119,24 +116,19 @@ export class PatientComponent {
       this.genders = gens;
     });
 
+    this.sp.getAllList().then((specs: StaffType[]) => {
+      this.staffTypes = specs;
+    });
+
     this.rs.get('employee').then((regs: []) => {
       this.regexes = regs;
       this.createForm();
     });
     this.loadTable("");
-
-    this.form.controls['dob'].valueChanges.subscribe((dob: Date) => {
-      if (dob) {
-        const age = this.calculateAge(dob);
-        this.form.controls['age'].setValue(age);
-      } else {
-        this.form.controls['age'].setValue('');
-      }
-    });
   }
 
   createView() {
-    // this.imageurl = 'assets/pending.gif';
+    this.imageurl = 'assets/pending.gif';
   }
 
 
@@ -144,16 +136,15 @@ export class PatientComponent {
     this.form.controls['title'].setValidators([Validators.required]);
     this.form.controls['firstName'].setValidators([Validators.required]);
     this.form.controls['lastName'].setValidators([Validators.required]);
-    this.form.controls['dob'];
-    this.form.controls['age'];
+    this.form.controls['dob'].setValidators([Validators.required]);
     this.form.controls['gender'].setValidators([Validators.required]);
-    this.form.controls['nic'].setValidators([Validators.pattern(this.regexes['nic']['regex'])]);
-    //this.form.controls['photo'].setValidators([Validators.required]);
+    this.form.controls['nic'].setValidators([Validators.required, Validators.pattern(this.regexes['nic']['regex'])]);
+    this.form.controls['photo'].setValidators([Validators.required]);
     this.form.controls['email'].setValidators([Validators.required, Validators.pattern(this.regexes['email']['regex'])]);
-    this.form.controls['contactNo'].setValidators([Validators.required, Validators.pattern(this.regexes['contactNo']['regex'])]);
+    this.form.controls['contactNo'].setValidators([Validators.required, Validators.pattern(this.regexes['mobile']['regex'])]);
     this.form.controls['address'].setValidators([Validators.required, Validators.pattern(this.regexes['address']['regex'])]);
-    this.form.controls['guardianName'].setValidators([Validators.required]);
-    this.form.controls['guardianContactNo'].setValidators([Validators.required]);
+    this.form.controls['staffType'].setValidators([Validators.required]);
+
 
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
@@ -166,9 +157,9 @@ export class PatientComponent {
           if (controlName == "dob" || controlName == "licenseExpDate")
             value = this.dp.transform(new Date(value), 'yyyy-MM-dd');
 
-          if (this.oldPatient != undefined && control.valid) {
+          if (this.oldStaff != undefined && control.valid) {
             // @ts-ignore
-            if (value === this.patient[controlName]) {
+            if (value === this.staff[controlName]) {
               control.markAsPristine();
             } else {
               control.markAsDirty();
@@ -189,20 +180,19 @@ export class PatientComponent {
   //   this.enadel=del;
   // }
 
-
   loadTable(query: string) {
 
     this.dcs.getAll(query)
-      .then((patients: Patient[]) => {
-        this.patients = patients;
-        // this.imageurl = 'assets/default.png';
+      .then((staffs: Staff[]) => {
+        this.staffs = staffs;
+        this.imageurl = 'assets/default.png';
       })
       .catch((error) => {
         console.log(error);
-        // this.imageurl = 'assets/rejected.png';
+        this.imageurl = 'assets/rejected.png';
       })
       .finally(() => {
-        this.dataSource = new MatTableDataSource(this.patients);
+        this.dataSource = new MatTableDataSource(this.staffs);
         this.dataSource.paginator = this.paginator;
       });
 
@@ -214,7 +204,7 @@ export class PatientComponent {
 
     let name = sserchdata.ssName;
     let nic = sserchdata.ssNic;
-    let specId = sserchdata.ssSpecification;
+    let specId = sserchdata.ssType;
 
     let query = "";
 
@@ -244,21 +234,21 @@ export class PatientComponent {
 
   }
 
-  // selectImage(e: any): void {
-  //   if (e.target.files) {
-  //     let reader = new FileReader();
-  //     reader.readAsDataURL(e.target.files[0]);
-  //     reader.onload = (event: any) => {
-  //       // this.imageurl = event.target.result;
-  //      // this.form.controls['photo'].clearValidators();
-  //     }
-  //   }
-  // }
+  selectImage(e: any): void {
+    if (e.target.files) {
+      let reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = (event: any) => {
+        this.imageurl = event.target.result;
+        this.form.controls['photo'].clearValidators();
+      }
+    }
+  }
 
-  // clearImage(): void {
-  //   // this.imageurl = 'assets/default.png';
-  //   //this.form.controls['photo'].setErrors({'required': true});
-  // }
+  clearImage(): void {
+    this.imageurl = 'assets/default.png';
+    this.form.controls['photo'].setErrors({'required': true});
+  }
 
   getErrors(): string {
 
@@ -279,29 +269,31 @@ export class PatientComponent {
     return errors;
   }
 
-  fillForm(patient: Patient) {
+  fillForm(stf: Staff) {
     this.isFormEnable = true;
     this.isCreate = false;
 
     // this.enableButtons(false,true,true);
 
-    this.selectedrow = patient;
+    this.selectedrow = stf;
 
-    this.patient = JSON.parse(JSON.stringify(patient));
-    this.oldPatient = JSON.parse(JSON.stringify(patient));
+    this.staff = JSON.parse(JSON.stringify(stf));
+    this.oldStaff = JSON.parse(JSON.stringify(stf));
 
-    // if (this.patient.photo != null) {
-    //   // this.imageurl = atob(this.patient.photo);
-    //   // this.form.controls['photo'].clearValidators();
-    // } else {
-    //   // this.clearImage();
-    // }
-    // this.patient.photo = "";
+    if (this.staff.photo != null) {
+      this.imageurl = atob(this.staff.photo);
+      this.form.controls['photo'].clearValidators();
+    } else {
+      this.clearImage();
+    }
+    this.staff.photo = "";
 
     //@ts-ignore
-    this.patient.gender = this.genders.find(g => g.id === this.patient.gender.id);
+    this.staff.gender = this.genders.find(g => g.id === this.staff.gender.id);
     //@ts-ignore
-    this.form.patchValue(this.patient);
+    this.staff.staffType = this.staffTypes.find(s => s.id === this.staff.speciality.id);
+
+    this.form.patchValue(this.staff);
     this.form.markAsPristine();
 
   }
@@ -319,61 +311,61 @@ export class PatientComponent {
     return updates;
   }
 
-  // delete(patient: Patient) {
-  //
-  //   const confirm = this.dg.open(ConfirmComponent, {
-  //     width: '500px',
-  //     data: {
-  //       heading: "Confirmation - Patient Delete",
-  //       message: "Are you sure to Delete following Patient? <br> <br>" + patient.title + ". " + patient.firstName + " " + patient.lastName
-  //     }
-  //   });
-  //
-  //   confirm.afterClosed().subscribe(async result => {
-  //     if (result) {
-  //       let delstatus: boolean = false;
-  //       let delmessage: string = "Server Not Found";
-  //
-  //       this.dcs.delete(patient.id).then((responce: [] | undefined) => {
-  //
-  //         if (responce != undefined) { // @ts-ignore
-  //           delstatus = responce['errors'] == "";
-  //           if (!delstatus) { // @ts-ignore
-  //             delmessage = responce['errors'];
-  //           }
-  //         } else {
-  //           delstatus = false;
-  //           delmessage = "Content Not Found"
-  //         }
-  //       }).finally(() => {
-  //         if (delstatus) {
-  //           delmessage = "Successfully Deleted";
-  //           // this.form.reset();
-  //           // this.clearImage();
-  //           // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
-  //           this.loadTable("");
-  //         }
-  //
-  //         const stsmsg = this.dg.open(MessageComponent, {
-  //           width: '500px',
-  //           data: {heading: "Status - Patient Delete ", message: delmessage}
-  //         });
-  //         stsmsg.afterClosed().subscribe(async result => {
-  //           if (!result) {
-  //             return;
-  //           }
-  //         });
-  //
-  //       });
-  //     }
-  //   });
-  // }
+  inactive(staff: Staff) {
+
+    const confirm = this.dg.open(ConfirmComponent, {
+      width: '500px',
+      data: {
+        heading: "Confirmation - Staff Member Inactive",
+        message: "Are you sure to Inactive following Staff Member? <br> <br>" + staff.title + ". " + staff.firstName + " " + staff.lastName
+      }
+    });
+
+    confirm.afterClosed().subscribe(async result => {
+      if (result) {
+        let delstatus: boolean = false;
+        let delmessage: string = "Server Not Found";
+
+        this.dcs.inactive(staff.id).then((responce: [] | undefined) => {
+
+          if (responce != undefined) { // @ts-ignore
+            delstatus = responce['errors'] == "";
+            if (!delstatus) { // @ts-ignore
+              delmessage = responce['errors'];
+            }
+          } else {
+            delstatus = false;
+            delmessage = "Content Not Found"
+          }
+        }).finally(() => {
+          if (delstatus) {
+            delmessage = "Successfully Inactivated";
+            // this.form.reset();
+            // this.clearImage();
+            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
+            this.loadTable("");
+          }
+
+          const stsmsg = this.dg.open(MessageComponent, {
+            width: '500px',
+            data: {heading: "Status - Staff Inactive ", message: delmessage}
+          });
+          stsmsg.afterClosed().subscribe(async result => {
+            if (!result) {
+              return;
+            }
+          });
+
+        });
+      }
+    });
+  }
 
   clear(): void {
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
       data: {
-        heading: "Confirmation - Patient Clear",
+        heading: "Confirmation - Staff Detail Clear",
         message: "Are you sure to Clear following Details ? <br> <br>"
       }
     });
@@ -397,17 +389,16 @@ export class PatientComponent {
     }
   }
 
-  create(isExternal:boolean=false) {
+  create() {
     this.isFormEnable = true;
     this.isCreate = true;
-    this.isDisableBackButton= isExternal;
   }
 
   back() {
     this.isCreate = true;
     this.isFormEnable = false;
     this.form.reset();
-    //this.clearImage();
+    this.clearImage();
 
   }
 
@@ -421,7 +412,7 @@ export class PatientComponent {
     if (errors != "") {
       const errmsg = this.dg.open(MessageComponent, {
         width: '500px',
-        data: {heading: "Errors - Patient Save ", message: "You have the following Errors <br> " + errors}
+        data: {heading: "Errors - Staff Member Save ", message: "You have the following Errors <br> " + errors}
       });
       errmsg.afterClosed().subscribe(async result => {
         if (!result) {
@@ -429,15 +420,15 @@ export class PatientComponent {
         }
       });
     } else {
-      this.patient = this.form.getRawValue();
-      this.patient.status = 1;
+      this.staff = this.form.getRawValue();
+      this.staff.status = 1;
       if (!this.isCreate) {
         let updates: string = this.getUpdates();
 
         if (updates == "") {
           const updmsg = this.dg.open(MessageComponent, {
             width: '500px',
-            data: {heading: "Confirmation - Patient Update", message: "Nothing Changed"}
+            data: {heading: "Confirmation - Staff Member Update", message: "Nothing Changed"}
           });
           return;
           // updmsg.afterClosed().subscribe(async result => {
@@ -446,19 +437,19 @@ export class PatientComponent {
           //   }
           // });
         } else {
-          this.patient.id = this.selectedrow.id;
-          heading = "Confirmation - Patient Update";
+          this.staff.id = this.selectedrow.id;
+          heading = "Confirmation - Staff Member Update";
           confirmationMessage = "Are you sure to Save following Updates?";
         }
       } else {
         let drData: string = "";
 
-        drData = this.patient.title + ". " + this.patient.firstName + " " + this.patient.lastName;
-        heading = "Confirmation - Patient Add";
-        confirmationMessage = "Are you sure to Save the following Patient? <br> <br>" + drData;
+        drData = this.staff.title + ". " + this.staff.firstName + " " + this.staff.lastName;
+        heading = "Confirmation - Staff MEmber Add";
+        confirmationMessage = "Are you sure to Save the following Staff Member? <br> <br>" + drData;
       }
 
-      // this.patient.photo = btoa(this.imageurl);
+      this.staff.photo = btoa(this.imageurl);
 
       let status: boolean = false;
       let message: string = "Server Not Found";
@@ -475,7 +466,7 @@ export class PatientComponent {
         if (result) {
           // console.log("EmployeeService.add(emp)");
 
-          this.dcs.save(this.patient).then((responce: [] | undefined) => {
+          this.dcs.save(this.staff).then((responce: [] | undefined) => {
             //console.log("Res-" + responce);
             //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
@@ -496,7 +487,7 @@ export class PatientComponent {
             if (status) {
               message = "Successfully Saved";
               this.form.reset();
-              //this.clearImage();
+              this.clearImage();
               Object.values(this.form.controls).forEach(control => {
                 control.markAsTouched();
               });
@@ -505,7 +496,7 @@ export class PatientComponent {
 
             const stsmsg = this.dg.open(MessageComponent, {
               width: '500px',
-              data: {heading: "Status -Patient Save", message: message}
+              data: {heading: "Status -Staff Member Save", message: message}
             });
 
             stsmsg.afterClosed().subscribe(async result => {
@@ -518,65 +509,6 @@ export class PatientComponent {
       });
     }
   }
-
-  calculateAge(dob: Date): number {
-    const today = new Date();
-    let age = today.getFullYear() - dob.getFullYear();
-    const monthDiff = today.getMonth() - dob.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-      age--;
-    }
-    return age;
-  }
-
-  inactive(patient: Patient) {
-
-    const confirm = this.dg.open(ConfirmComponent, {
-      width: '500px',
-      data: {
-        heading: "Confirmation - Patient Inactive",
-        message: "Are you sure to Inactive following Patient? <br> <br>" + patient.title + ". " + patient.firstName + " " + patient.lastName
-      }
-    });
-
-    confirm.afterClosed().subscribe(async result => {
-      if (result) {
-        let delstatus: boolean = false;
-        let delmessage: string = "Server Not Found";
-
-        this.dcs.inactive(patient.id).then((responce: [] | undefined) => {
-
-          if (responce != undefined) { // @ts-ignore
-            delstatus = responce['errors'] == "";
-            if (!delstatus) { // @ts-ignore
-              delmessage = responce['errors'];
-            }
-          } else {
-            delstatus = false;
-            delmessage = "Content Not Found"
-          }
-        }).finally(() => {
-          if (delstatus) {
-            delmessage = "Successfully Inactivated";
-            // this.form.reset();
-            // this.clearImage();
-            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
-            this.loadTable("");
-          }
-
-          const stsmsg = this.dg.open(MessageComponent, {
-            width: '500px',
-            data: {heading: "Status - Patient Inactive ", message: delmessage}
-          });
-          stsmsg.afterClosed().subscribe(async result => {
-            if (!result) {
-              return;
-            }
-          });
-
-        });
-      }
-    });
-  }
-
 }
+
+

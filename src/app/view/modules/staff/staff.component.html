@@ -5,7 +5,7 @@
   <mat-card-header>
     <div class="row col-12 col-md-12">
       <div class="col-6 col-md-6">
-        <mat-card-title>Doctor Details Management</mat-card-title>
+        <mat-card-title>Staff Details Management</mat-card-title>
       </div>
       <div class="col-6 col-md-6 text-right button-pannel">
         <button *ngIf="!isFormEnable" mat-raised-button color="primary" class="header-btn-add" (click)="create()">
@@ -18,7 +18,7 @@
           Back
         </button>
         <button *ngIf="isFormEnable" mat-raised-button (click)="save()" class="btn-save"
-                [disabled]="!isCreate && doctor.status == 0">
+                [disabled]="!isCreate && staff.status == 0">
           <mat-icon>save</mat-icon>
           Save
         </button>
@@ -52,10 +52,10 @@
 
               <div class="col-4 col-md-4">
                 <mat-form-field appearance="outline">
-                  <mat-label>Specialization</mat-label>
-                  <mat-select formControlName="ssSpecification">
+                  <mat-label>Type</mat-label>
+                  <mat-select formControlName="ssType">
                     <mat-option [value]="null" selected>Not Selected</mat-option>
-                    <mat-option *ngFor="let spec of specializations" [value]="spec.id">{{ spec.name }}</mat-option>
+                    <mat-option *ngFor="let spec of staffTypes" [value]="spec.id">{{ spec.type }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -107,9 +107,9 @@
             <td mat-cell *matCellDef="let row"> {{ row.email }}</td>
           </ng-container>
 
-          <ng-container matColumnDef="specialization">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Specialization</th>
-            <td mat-cell *matCellDef="let row"> {{ row.speciality.name }}</td>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+            <td mat-cell *matCellDef="let row"> {{ row.staffType.type }}</td>
           </ng-container>
 
           <ng-container matColumnDef="edit">
@@ -125,9 +125,9 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Activation</th>
             <td mat-cell *matCellDef="let row">
               <mat-slide-toggle (click)="inactive(row)"
-                class="example-margin"
-                [checked]="row.status == 1"
-                [disabled]="row.status == 0">
+                                class="example-margin"
+                                [checked]="row.status == 1"
+                                [disabled]="row.status == 0">
               </mat-slide-toggle>
             </td>
           </ng-container>
@@ -219,6 +219,17 @@
             </div>
           </div>
 
+          <div class="col-6 col-md-6 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Staff Member Type</mat-label>
+              <mat-select formControlName="staffType">
+                <mat-option [value]="null" selected>Not Selected</mat-option>
+                <mat-option *ngFor="let st of staffTypes" [value]="st">{{ st.type }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
         </div>
 
         <div class="col-md-12">
@@ -241,47 +252,12 @@
             </mat-form-field>
           </div>
 
-          <div class="col-12 col-md-12 form-field">
+          <div class="col-6 col-md-6 form-field">
             <mat-form-field appearance="outline">
               <mat-label>Address</mat-label>
               <input matInput formControlName="address">
             </mat-form-field>
           </div>
-        </div>
-
-        <div class="col-md-12">
-          <h4>Professional Information</h4>
-          <hr>
-        </div>
-
-        <div class="row" style="padding: 15px 15px">
-          <div class="col-6 col-md-6 form-field">
-            <mat-form-field appearance="outline">
-              <mat-label>Medical License Number</mat-label>
-              <input matInput formControlName="medicalLicenseNo">
-            </mat-form-field>
-          </div>
-
-          <div class="col-6 col-md-6 form-field">
-            <mat-form-field appearance="outline">
-              <mat-label>License Expiry Date</mat-label>
-              <input matInput [matDatepicker]="expDate" formControlName="licenseEXPDate">
-              <mat-datepicker-toggle matIconSuffix [for]="expDate"></mat-datepicker-toggle>
-              <mat-datepicker #expDate></mat-datepicker>
-            </mat-form-field>
-          </div>
-
-          <div class="col-6 col-md-6 form-field">
-            <mat-form-field appearance="outline">
-              <mat-label>Specialization</mat-label>
-              <mat-select formControlName="speciality">
-                <mat-option [value]="null" selected>Not Selected</mat-option>
-                <mat-option *ngFor="let speciality of specializations" [value]="speciality">{{ speciality.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-
         </div>
       </mat-form>
     </div>

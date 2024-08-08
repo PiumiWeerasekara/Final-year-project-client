@@ -18,7 +18,7 @@
           Back
         </button>
         <button *ngIf="isFormEnable" mat-raised-button (click)="save()" class="btn-save"
-                [disabled]="!authService.getEnaAdd()">
+                [disabled]="!isCreate && patient.status == 0">
           <mat-icon>save</mat-icon>
           Save
         </button>
@@ -108,6 +108,17 @@
               <button mat-icon-button class="btn-edit" (click)="fillForm(row)">
                 <mat-icon>edit</mat-icon>
               </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="active">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Activation</th>
+            <td mat-cell *matCellDef="let row">
+              <mat-slide-toggle (click)="inactive(row)"
+                                class="example-margin"
+                                [checked]="row.status == 1"
+                                [disabled]="row.status == 0">
+              </mat-slide-toggle>
             </td>
           </ng-container>
 

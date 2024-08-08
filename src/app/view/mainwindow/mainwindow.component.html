@@ -48,7 +48,7 @@
       </mat-list-item>
 
       <mat-list-item>
-        <a routerLink="schedule"><mat-icon>people</mat-icon>Staff</a>
+        <a routerLink="staff"><mat-icon>people</mat-icon>Staff</a>
       </mat-list-item>
 
       <mat-list-item>
@@ -63,19 +63,19 @@
         <a routerLink="prescription"><mat-icon>receipt</mat-icon>Presctiption</a>
       </mat-list-item>
 
-<!--      <mat-expansion-panel *ngIf="isMenuVisible('Admin')">-->
-<!--        <mat-expansion-panel-header>-->
-<!--          <mat-list-item><a>-->
-<!--            <mat-icon>person</mat-icon>-->
-<!--            Admin</a></mat-list-item>-->
-<!--        </mat-expansion-panel-header>-->
-<!--        <ng-container *ngFor="let menuItem of admMenuItems">-->
-<!--          <mat-list-item *ngIf="menuItem.accessFlag">-->
-<!--            <mat-list-item class="item" [routerLink]="menuItem.accessFlag ? menuItem.routerLink : null">-->
-<!--              <a>{{ menuItem.name }}</a></mat-list-item>-->
-<!--          </mat-list-item>-->
-<!--        </ng-container>-->
-<!--      </mat-expansion-panel>-->
+      <mat-expansion-panel *ngIf="isMenuVisible('Admin')">
+        <mat-expansion-panel-header>
+          <mat-list-item><a>
+            <mat-icon>person</mat-icon>
+            Admin</a></mat-list-item>
+        </mat-expansion-panel-header>
+        <ng-container *ngFor="let menuItem of admMenuItems">
+          <mat-list-item *ngIf="menuItem.accessFlag">
+            <mat-list-item class="item" [routerLink]="menuItem.accessFlag ? menuItem.routerLink : null">
+              <a>{{ menuItem.name }}</a></mat-list-item>
+          </mat-list-item>
+        </ng-container>
+      </mat-expansion-panel>
 
 <!--      <mat-expansion-panel *ngIf="isMenuVisible('Academic')">-->
 <!--        <mat-expansion-panel-header>-->

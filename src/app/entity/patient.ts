@@ -14,9 +14,9 @@ export class Patient{
   public gender !: Gender;
   public guardianName !: string;
   public guardianContactNo !: string;
+  public status !: number;
 
-
-  constructor(id: number, title: string, firstName: string, lastName: string, photo: string, dob: string, nic: string, address: string, contactNo: string, email: string, gender: Gender, guardianName: string, guardianContactNo: string) {
+  constructor(id: number, title: string, firstName: string, lastName: string, photo: string, dob: string, nic: string, address: string, contactNo: string, email: string, gender: Gender, guardianName: string, guardianContactNo: string, status: number) {
     this.id = id;
     this.title = title;
     this.firstName = firstName;
@@ -30,6 +30,7 @@ export class Patient{
     this.gender = gender;
     this.guardianName = guardianName;
     this.guardianContactNo = guardianContactNo;
+    this.status = status;
   }
 }
 

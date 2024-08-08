@@ -100,7 +100,7 @@ export class ScheduleComponent {
 
   initialize() {
     this.dr.getAll('').then((docs: Doctor[]) => {
-      this.doctors = docs;
+      this.doctors = docs.filter(doc => doc.status === 1);
     });
 
     this.ros.getAll('').then((rooms: Room[]) => {

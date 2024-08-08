@@ -20,4 +20,9 @@ export class PatientService {
     return this.http.post<[]>('http://localhost:8080/patient', patient).toPromise();
   }
 
+  async inactive(id: number): Promise<[]|undefined>{
+    // @ts-ignore
+    return this.http.post('http://localhost:8080/patient/' + id).toPromise();
+  }
+
 }

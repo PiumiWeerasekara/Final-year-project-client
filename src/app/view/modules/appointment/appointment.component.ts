@@ -256,6 +256,7 @@ export class AppointmentComponent {
     this.ps.getAll('')
       .then((patients: Patient[]) => {
         this.patients = patients;
+        this.patients = patients.filter(pat => pat.status === 1);
       });
   }
 

@@ -35,6 +35,8 @@ export class DoctorComponent {
   doctor!: Doctor;
   oldDoctor!: Doctor;
 
+  maxDate: Date;
+
   selectedrow: any;
 
   imageurl: string = 'assets/default.png'
@@ -53,7 +55,7 @@ export class DoctorComponent {
 
   uiassist: UiAssist;
 
-  displayedColumns: string[] = ['name', 'nic', 'contactNo', 'email', 'specialization', 'edit', 'delete'];
+  displayedColumns: string[] = ['name', 'nic', 'contactNo', 'email', 'specialization', 'edit', 'active'];
   dataSource: MatTableDataSource<Doctor>;
   doctors: Array<Doctor> = [];
 
@@ -99,6 +101,9 @@ export class DoctorComponent {
 
 
     this.dataSource = new MatTableDataSource(this.doctors);
+    this.maxDate = new Date();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 20);
+
   }
 
   ngAfterViewInit() {
@@ -315,13 +320,13 @@ export class DoctorComponent {
     return updates;
   }
 
-  delete(doctor: Doctor) {
+  inactive(doctor: Doctor) {
 
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
       data: {
-        heading: "Confirmation - Doctor Delete",
-        message: "Are you sure to Delete following Doctor? <br> <br>" + doctor.title + ". " + doctor.firstName + " " + doctor.lastName
+        heading: "Confirmation - Doctor Inactive",
+        message: "Are you sure to Inactive following Doctor? <br> <br>" + doctor.title + ". " + doctor.firstName + " " + doctor.lastName
       }
     });
 
@@ -330,7 +335,7 @@ export class DoctorComponent {
         let delstatus: boolean = false;
         let delmessage: string = "Server Not Found";
 
-        this.dcs.delete(doctor.id).then((responce: [] | undefined) => {
+        this.dcs.inactive(doctor.id).then((responce: [] | undefined) => {
 
           if (responce != undefined) { // @ts-ignore
             delstatus = responce['errors'] == "";
@@ -343,7 +348,7 @@ export class DoctorComponent {
           }
         }).finally(() => {
           if (delstatus) {
-            delmessage = "Successfully Deleted";
+            delmessage = "Successfully Inactivated";
             // this.form.reset();
             // this.clearImage();
             // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
@@ -352,7 +357,7 @@ export class DoctorComponent {
 
           const stsmsg = this.dg.open(MessageComponent, {
             width: '500px',
-            data: {heading: "Status - Doctor Delete ", message: delmessage}
+            data: {heading: "Status - Doctor Inactive ", message: delmessage}
           });
           stsmsg.afterClosed().subscribe(async result => {
             if (!result) {
@@ -425,6 +430,7 @@ export class DoctorComponent {
       });
     } else {
       this.doctor = this.form.getRawValue();
+      this.doctor.status = 1;
       if (!this.isCreate) {
         let updates: string = this.getUpdates();
 

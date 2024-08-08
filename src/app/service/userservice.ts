@@ -2,6 +2,7 @@ import {Employee} from "../entity/employee";
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../entity/user";
+import {Schedule} from "../entity/schedule";
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,11 @@ export class UserService {
     // console.log("aaaa");
     console.log(user);
     return this.http.post<[]>('http://localhost:8080/users', user).toPromise();
+  }
+
+  async get(name: string): Promise<Schedule |undefined>{
+    // @ts-ignore
+    return this.http.get('http://localhost:8080/users/byName?name=' + name).toPromise();
   }
 
 

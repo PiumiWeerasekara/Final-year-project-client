@@ -21,6 +21,7 @@ import {RoomComponent} from "./view/modules/room/room.component";
 import {ScheduleComponent} from "./view/modules/schedule/schedule.component";
 import {AppointmentComponent} from "./view/modules/appointment/appointment.component";
 import {PrescriptionComponent} from "./view/modules/prescription/prescription.component";
+import {StaffComponent} from "./view/modules/staff/staff.component";
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -51,6 +52,9 @@ const routes: Routes = [
       {path: "schedule",component:ScheduleComponent},
       {path: "appointment",component:AppointmentComponent},
       {path: "prescription",component:PrescriptionComponent},
+      {path: "privilage",component:PrivilageComponent},
+      {path: "operation",component:OperationComponent},
+      {path: "staff",component:StaffComponent},
 
     ]
   }];

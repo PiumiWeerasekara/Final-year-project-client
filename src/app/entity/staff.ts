@@ -1,7 +1,8 @@
 import {Gender} from "./gender";
 import {Specialization} from "./specialization";
+import {StaffType} from "./staffType";
 
-export class Doctor{
+export class Staff{
 
   public id !: number;
   public title !: string;
@@ -14,13 +15,11 @@ export class Doctor{
   public contactNo !: string;
   public email !: string;
   public gender !: Gender;
-  public speciality !: Specialization;
-  public  medicalLicenseNo !: string;
-  public  licenseEXPDate !: string;
-  public  status!: number;
+  public staffType !: StaffType;
+  public status!: number;
 
 
-  constructor(id: number, title: string, firstName: string, lastName: string, photo: string, dob: string, nic: string, address: string, contactNo: string, email: string, gender: Gender, speciality: Specialization, medicalLicenseNo: string, licenseEXPDate: string, status: number) {
+  constructor(id: number, title: string, firstName: string, lastName: string, photo: string, dob: string, nic: string, address: string, contactNo: string, email: string, gender: Gender, staffType: StaffType, status: number) {
     this.id = id;
     this.title = title;
     this.firstName = firstName;
@@ -32,9 +31,7 @@ export class Doctor{
     this.contactNo = contactNo;
     this.email = email;
     this.gender = gender;
-    this.speciality = speciality;
-    this.medicalLicenseNo = medicalLicenseNo;
-    this.licenseEXPDate = licenseEXPDate;
+    this.staffType = staffType;
     this.status = status;
   }
 }
