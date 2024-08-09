@@ -211,7 +211,8 @@ export class PrescriptionComponent {
   }
 
   loadTable(query: string) {
-    query = query + "&username=" + this.authService.getUsername();
+    if (this.authService.getUsername() != null && this.authService.getUsername().trim() != "") query = query + "&username=" + this.authService.getUsername();
+    if (query != "") query = query.replace(/^./, "?");
     this.ap.getMyCurrentScheduleAppointments(query)
       .then((appointments: Appointment[]) => {
         this.appointments = appointments;
@@ -258,7 +259,6 @@ export class PrescriptionComponent {
     if (name != null && name.trim() != "") query = query + "&name=" + name;
     if (nic != null && nic.trim() != "") query = query + "&nic=" + nic;
     if (appointmentNo != null && appointmentNo.trim() != "") query = query + "&appointmentNo=" + appointmentNo;
-
     if (query != "") query = query.replace(/^./, "?")
 
     this.loadTable(query);
@@ -286,6 +286,11 @@ export class PrescriptionComponent {
     this.loadTable("");
     this.ssearch.reset();
     this.isFormEnable = false;
+
+    this.desForm.reset();
+    this.selectedDrugs = [];
+    this.drugDataSource = new MatTableDataSource(this.selectedDrugs);
+    this.drugDataSource.paginator = this.paginator;
   }
 
   addRow() {
@@ -430,7 +435,11 @@ export class PrescriptionComponent {
               });
 
               this.loadTable("");
+              this.desForm.reset();
+              this.selectedDrugs = [];
               this.isFormEnable = false;
+              this.drugDataSource = new MatTableDataSource(this.selectedDrugs);
+              this.drugDataSource.paginator = this.paginator;
             }
 
             const stsmsg = this.dg.open(MessageComponent, {

@@ -81,6 +81,7 @@ export class MainwindowComponent {
 
       // @ts-ignore
       this.aur.setUserRole(stf.staffType.type);
+      this.aur.setStaff(stf);
       //this.userRole = stf.staffType.type;
     });
   }

@@ -76,6 +76,8 @@ export class AppointmentComponent {
   doctors: Array<Doctor> = [];
   allSchedules: Array<Schedule> = [];
   patients: Array<Patient> = [];
+
+  isShow: boolean = false;
   //schedules: Array<Schedule> = [];
 
   regexes: any;
@@ -255,7 +257,7 @@ export class AppointmentComponent {
   getPatients() {
     this.ps.getAll('')
       .then((patients: Patient[]) => {
-        this.patients = patients;
+        //this.patients = patients;
         this.patients = patients.filter(pat => pat.status === 1);
       });
   }
@@ -304,6 +306,7 @@ export class AppointmentComponent {
           formattedDate: this.formatDate(schedule.scheduleDate),
           formattedTime: this.formatTime(schedule.startTime)
         }));
+        this.isShow = true;
       })
       .catch((error) => {
         console.log(error);
@@ -356,7 +359,6 @@ export class AppointmentComponent {
     if (query != "") query = query.replace(/^./, "?")
 
     this.loadScheduleTable(query);
-
   }
 
   btnSearchClearMc(): void {
@@ -397,6 +399,7 @@ export class AppointmentComponent {
   fillForm(appointment: Appointment) {
     this.formNo = 3;
     this.isCreate = false;
+    this.isShow= false;
 
     // this.enableButtons(false,true,true);
 
@@ -539,7 +542,6 @@ export class AppointmentComponent {
   book() {
     this.formNo = 2;
     this.isCreate = true;
-    this.loadScheduleTable('');
   }
 
   back() {
@@ -686,8 +688,8 @@ export class AppointmentComponent {
                 control.markAsTouched();
               });
 
-              this.loadTable("");
-              //this.formNo = 1;
+
+              //this.loadScheduleTable("");
             }
 
             const stsmsg = this.dg.open(MessageComponent, {
@@ -698,6 +700,10 @@ export class AppointmentComponent {
             stsmsg.afterClosed().subscribe(async result => {
               if (!result) {
                 return;
+              }else {
+                this.formNo = 2
+                this.isShow = false;
+                this.sSearchSchedule.reset();
               }
             });
           });

@@ -150,7 +150,7 @@ export class PatientComponent {
     this.form.controls['nic'].setValidators([Validators.pattern(this.regexes['nic']['regex'])]);
     //this.form.controls['photo'].setValidators([Validators.required]);
     this.form.controls['email'].setValidators([Validators.required, Validators.pattern(this.regexes['email']['regex'])]);
-    this.form.controls['contactNo'].setValidators([Validators.required, Validators.pattern(this.regexes['contactNo']['regex'])]);
+    this.form.controls['contactNo'].setValidators([Validators.required, Validators.pattern(this.regexes['mobile']['regex'])]);
     this.form.controls['address'].setValidators([Validators.required, Validators.pattern(this.regexes['address']['regex'])]);
     this.form.controls['guardianName'].setValidators([Validators.required]);
     this.form.controls['guardianContactNo'].setValidators([Validators.required]);
@@ -520,6 +520,9 @@ export class PatientComponent {
   }
 
   calculateAge(dob: Date): number {
+    if (!this.isCreate){
+      dob = new Date(dob);
+    }
     const today = new Date();
     let age = today.getFullYear() - dob.getFullYear();
     const monthDiff = today.getMonth() - dob.getMonth();
@@ -530,7 +533,7 @@ export class PatientComponent {
   }
 
   inactive(patient: Patient) {
-
+    if (patient.status == 0) return;
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
       data: {

@@ -96,6 +96,7 @@ export class DoctorComponent {
       "medicalLicenseNo": new FormControl('', [Validators.required]),
       "licenseEXPDate": new FormControl('', [Validators.required]),
       "speciality": new FormControl('', [Validators.required]),
+      "fee": new FormControl('', [Validators.required])
 
     }, {updateOn: 'change'});
 
@@ -153,6 +154,7 @@ export class DoctorComponent {
     this.form.controls['medicalLicenseNo'].setValidators([Validators.required]);
     this.form.controls['licenseEXPDate'].setValidators([Validators.required]);
     this.form.controls['speciality'].setValidators([Validators.required]);
+    this.form.controls['fee'].setValidators([Validators.required]);
 
 
     Object.values(this.form.controls).forEach(control => {
@@ -321,7 +323,7 @@ export class DoctorComponent {
   }
 
   inactive(doctor: Doctor) {
-
+    if (doctor.status == 0) return;
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
       data: {

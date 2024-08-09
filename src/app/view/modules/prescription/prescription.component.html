@@ -88,14 +88,14 @@
           <ng-container matColumnDef="doctor">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Doctor</th>
             <td mat-cell *matCellDef="let row" class="mat-column-doctor">
-              {{ row.schedule.doctor.title }} {{ row.schedule.doctor.firstName }} {{ row.schedule.doctor.lastName }}
+              {{ row.schedule.doctor.title }}. {{ row.schedule.doctor.firstName }} {{ row.schedule.doctor.lastName }}
             </td>
           </ng-container>
 
           <ng-container matColumnDef="patient">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Patient</th>
             <td mat-cell *matCellDef="let row" class="mat-column-patient">
-              {{ row.patient.title }} {{ row.patient.firstName }} {{ row.patient.lastName }}
+              {{ row.patient.title }}. {{ row.patient.firstName }} {{ row.patient.lastName }}
             </td>
           </ng-container>
 

@@ -117,7 +117,7 @@ export class StaffComponent {
     });
 
     this.sp.getAllList().then((specs: StaffType[]) => {
-      this.staffTypes = specs;
+      this.staffTypes = specs.filter(st => st.type !== "Doctor");
     });
 
     this.rs.get('employee').then((regs: []) => {
@@ -184,7 +184,8 @@ export class StaffComponent {
 
     this.dcs.getAll(query)
       .then((staffs: Staff[]) => {
-        this.staffs = staffs;
+        //this.staffs = staffs;
+        this.staffs = staffs.filter(st => st.staffType.type !== "Doctor");
         this.imageurl = 'assets/default.png';
       })
       .catch((error) => {
@@ -312,7 +313,7 @@ export class StaffComponent {
   }
 
   inactive(staff: Staff) {
-
+if (staff.status == 0) return;
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
       data: {

@@ -233,7 +233,7 @@
       <!--        <input matInput (keyup)="applyFilter($event)" #input>-->
       <!--      </mat-form-field>-->
 
-      <div class="mat-elevation-z2" *ngIf="dataSourceSchedule.data.length > 0">
+      <div class="mat-elevation-z2" *ngIf="dataSourceSchedule.data.length > 0 && isShow">
         <table mat-table id="tblSchedule" [dataSource]="dataSourceSchedule" matSort>
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef mat-sort-header hidden>Date</th>

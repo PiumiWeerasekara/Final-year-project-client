@@ -469,13 +469,12 @@ export class User1Component {
             if (status) {
               message = "Successfully Saved";
               this.form.reset();
-              this.clearImage();
               Object.values(this.form.controls).forEach(control => {
                 control.markAsTouched();
               });
               this.loadTable("");
             }
-
+            this.loadTable("");
             const stsmsg = this.dg.open(MessageComponent, {
               width: '500px',
               data: {heading: "Status -User Save", message: message}

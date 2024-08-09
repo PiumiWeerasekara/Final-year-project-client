@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Prescription} from "../entity/prescription";
 import {Doctor} from "../entity/doctor";
+import {Appointment} from "../entity/appointment";
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +55,14 @@ export class PrescriptionService {
       console.error('Error fetching prescription:', error);
       return undefined;
     }
+  }
+
+  async getPrescriptionsForPay(query:string): Promise<Array<Prescription>> {
+    const pres = await this.http.get<Array<Prescription>>('http://localhost:8080/prescription/currentPrescriptionsToPay'+query).toPromise();
+    if(pres == undefined){
+      return [];
+    }
+    return pres;
   }
 
 

@@ -12,8 +12,9 @@
       <label class="lbl-user">{{ currentDate | date:'dd-MM-yyyy'}}</label>
       <label class="lbl-user">{{ currentDate | date:'HH:mm:ss'}}</label>
       <label class="lbl-user">{{authService.getUsername().toUpperCase()}}</label>
+<!--      <label class="lbl-user">{{aur.getStaff()?.firstName?.toUpperCase()}}</label>-->
       <img src="assets/user.png" class="img-user"/>
-<!--      <img [src]="staff.photo ? imageUrl : 'assets/user.png'" class="img-user"/>-->
+<!--      <img [src]="aur.getStaff()?.photo? imageUrl : 'assets/user.png'" class="img-user"/>-->
       <button mat-icon-button (click)="logout()" class="btn-logout"><mat-icon>exit_to_app</mat-icon> </button>
     </span>
 
@@ -61,7 +62,7 @@
       </mat-list-item>
 
       <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin || aur.getUserRole() == UserRole.CounterClerk">
-        <a routerLink="appointment"><mat-icon>payment</mat-icon>Payment</a>
+        <a routerLink="payments"><mat-icon>payment</mat-icon>Payment</a>
       </mat-list-item>
 
       <mat-list-item *ngIf="aur.getUserRole() == UserRole.Doctor">
