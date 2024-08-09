@@ -29,6 +29,7 @@ import {Drug} from "../../../entity/drug";
 import {Titles} from "../../../shared/constant/titles";
 import {DrugService} from "../../../service/DrugService";
 import {PrescriptionDetail} from "../../../entity/prescriptionDetail";
+import {ActiveUserRoleService} from "../../../service/activeUserRoleServie";
 
 @Component({
   selector: 'app-prescription',
@@ -91,6 +92,7 @@ export class PrescriptionComponent {
     private ss: ScheduleService,
     private ps: PrescriptionService,
     private us: UserService,
+    public aur: ActiveUserRoleService,
     public authService: AuthorizationManager) {
     this.uiassist = new UiAssist(this);
     this.dataSource = new MatTableDataSource(this.appointments);
@@ -209,7 +211,7 @@ export class PrescriptionComponent {
   }
 
   loadTable(query: string) {
-
+    query = query + "&username=" + this.authService.getUsername();
     this.ap.getMyCurrentScheduleAppointments(query)
       .then((appointments: Appointment[]) => {
         this.appointments = appointments;
@@ -472,8 +474,8 @@ export class PrescriptionComponent {
 
     this.loadAppointmentDetails(appointment);
 
-    this.ps.getPrescription(appointment.id).then((prescription: Prescription|undefined) => {
-      if (prescription!=undefined){
+    this.ps.getPrescription(appointment.id).then((prescription: Prescription | undefined) => {
+      if (prescription != undefined) {
         this.selectedDrugs = prescription.prescriptionDetails;
         this.prescription = prescription;
         this.desForm.controls['description'].setValue(prescription.description);

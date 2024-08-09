@@ -1,0 +1,229 @@
+<!--<mat-grid-list [cols]="12" rowHeight="4rem">-->
+
+<!--  <mat-grid-tile [colspan]="4" [rowspan]="10">-->
+<mat-card>
+  <mat-card-header>
+    <div class="row col-12 col-md-12">
+      <div class="col-6 col-md-6">
+        <mat-card-title>User Details Management</mat-card-title>
+      </div>
+      <div class="col-6 col-md-6 text-right button-pannel">
+        <button *ngIf="!isFormEnable" mat-raised-button color="primary" class="header-btn-add" (click)="create()">
+          <mat-icon>add</mat-icon>
+          Add
+        </button>
+
+        <button *ngIf="isFormEnable" mat-raised-button color="primary" class="header-btn-add" (click)="back()">
+          <mat-icon>arrow_back_ios</mat-icon>
+          Back
+        </button>
+        <button *ngIf="isFormEnable" mat-raised-button (click)="save()" class="btn-save">
+          <mat-icon>save</mat-icon>
+          Save
+        </button>
+        <button *ngIf="isFormEnable" mat-raised-button (click)="clear()" class="btn-clear-form">
+          <mat-icon> clear_all</mat-icon>
+          Clear
+        </button>
+      </div>
+    </div>
+
+  </mat-card-header>
+  <mat-card-content id="form">
+    <div class="table-container" *ngIf="!isFormEnable">
+      <mat-card id="ssearch" class="search-container">
+        <mat-card-content>
+          <mat-form [formGroup]="ssearch">
+            <div class="row">
+              <div class="col-4 col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Member</mat-label>
+                  <input matInput formControlName="ssName">
+                </mat-form-field>
+              </div>
+
+              <div class="col-4 col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Username</mat-label>
+                  <input matInput formControlName="ssuserName">
+                </mat-form-field>
+              </div>
+
+              <div class="col-4 col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Member Type</mat-label>
+                  <mat-select formControlName="ssType">
+                    <mat-option [value]="null" selected>Not Selected</mat-option>
+                    <mat-option *ngFor="let spec of staffTypes" [value]="spec.id">{{ spec.type }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row search-btn-container">
+              <div class="col-4 col-md-4">
+                <button mat-raised-button color="primary" class="btn-search search-container-btn"
+                        style="margin-left: -5px;" (click)="btnSearchMc()">
+                  <mat-icon>search</mat-icon>
+                  Search
+                </button>
+                <button mat-raised-button color="primary" class="btn-clear search-container-btn"
+                        (click)="btnSearchClearMc()">
+                  <mat-icon>reorder</mat-icon>
+                  Clear
+                </button>
+              </div>
+            </div>
+          </mat-form>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-form-field class="table-filter">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input>
+      </mat-form-field>
+
+      <div class="mat-elevation-z2">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="memberName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Member Name</th>
+            <td mat-cell *matCellDef="let row"> {{ row.staff.title }}. {{ row.staff.firstName }} {{ row.staff.lastName }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+            <td mat-cell *matCellDef="let row"> {{ row.staff.staffType.type }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="userName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>User Name</th>
+            <td mat-cell *matCellDef="let row"> {{ row.username }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="createddate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Created Date</th>
+            <td mat-cell *matCellDef="let row"> {{ row.docreated }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+            <td mat-cell *matCellDef="let row"> {{ row.description }}</td>
+          </ng-container>
+
+          <!--          <ng-container matColumnDef="type">-->
+          <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>-->
+          <!--            <td mat-cell *matCellDef="let row"> {{ row.staffType.type }}</td>-->
+          <!--          </ng-container>-->
+
+          <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button class="btn-edit" (click)="fillForm(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <!--          <ng-container matColumnDef="active">-->
+          <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Activation</th>-->
+          <!--            <td mat-cell *matCellDef="let row">-->
+          <!--              <mat-slide-toggle (click)="inactive(row)"-->
+          <!--                                class="example-margin"-->
+          <!--                                [checked]="row.status == 1"-->
+          <!--                                [disabled]="row.status == 0">-->
+          <!--              </mat-slide-toggle>-->
+          <!--            </td>-->
+          <!--          </ng-container>-->
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
+          </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 100, 200]" aria-label="Select page of users"></mat-paginator>
+      </div>
+    </div>
+    <div *ngIf="isFormEnable" class="form-container">
+
+
+      <mat-form [formGroup]="form">
+        <div class="row" style="padding: 15px 15px">
+
+
+          <div class="col-6 col-md-6 form-field">
+<!--            <mat-form-field appearance="outline">-->
+<!--              <mat-label>Employee</mat-label>-->
+<!--              <mat-select formControlName="employee">-->
+<!--                <mat-option [value]="null" selected disabled>Not Selected</mat-option>-->
+<!--                <mat-option *ngFor="let employee of employees" [value]="employee">{{employee.callingname}}</mat-option>-->
+<!--              </mat-select>-->
+<!--            </mat-form-field>-->
+            <mat-form-field appearance="outline">
+              <mat-label>Staff Member</mat-label>
+              <mat-select formControlName="staff">
+                <mat-option [value]="null">Not Selected</mat-option>
+                <mat-option *ngFor="let staff of staffs" [value]="staff">{{ staff.title }}
+                  . {{ staff.firstName }} {{ staff.lastName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-6 col-md-6 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username">
+            </mat-form-field>
+          </div>
+
+          <div class="col-6 col-md-6 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password">
+            </mat-form-field>
+          </div>
+          <div class="col-6 col-md-6 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm Password</mat-label>
+              <input matInput type="password" formControlName="confirmpassword">
+            </mat-form-field>
+          </div>
+
+          <div class="col-6 col-md-6 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="col-6 col-md-6 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Created Time</mat-label>
+              <input matInput readonly formControlName="tocreated">
+            </mat-form-field>
+          </div>
+
+          <div class="col-6 col-md-6 form-field">
+            <mat-form-field appearance="outline">
+              <mat-label>Create Date</mat-label>
+              <input matInput [matDatepicker]="crdate" formControlName="docreated">
+              <mat-datepicker-toggle matIconSuffix [for]="crdate"></mat-datepicker-toggle>
+              <mat-datepicker #crdate min="new Date()"></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </mat-form>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+
+
+

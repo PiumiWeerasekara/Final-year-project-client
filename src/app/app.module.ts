@@ -54,6 +54,7 @@ import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import { AppointmentComponent } from './view/modules/appointment/appointment.component';
 import { PrescriptionComponent } from './view/modules/prescription/prescription.component';
 import { StaffComponent } from './view/modules/staff/staff.component';
+import { User1Component } from './view/modules/user1/user1.component';
 
 
 @NgModule({
@@ -82,7 +83,8 @@ import { StaffComponent } from './view/modules/staff/staff.component';
     ScheduleComponent,
     AppointmentComponent,
     PrescriptionComponent,
-    StaffComponent
+    StaffComponent,
+    User1Component
   ],
   imports: [
     MatDatepickerModule,

@@ -40,15 +40,16 @@ mat-toolbar-row {
 }
 
 .lbl-user {
-  font-size: 14px;
+  font-size: 16px;
   color: white;
-  margin: 0px 5px 0px 0px;
+  margin: 0px 40px 0px 0px;
 }
 
 .img-user {
   height: 40px;
   border-radius: 50%;
   vertical-align: middle;
+  margin: 0px 40px 0px 0px;
 }
 
 .btn-logout {

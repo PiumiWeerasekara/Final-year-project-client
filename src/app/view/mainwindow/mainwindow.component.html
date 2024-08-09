@@ -9,10 +9,15 @@
     </span>
 
     <span class="toolbar-right">
+      <label class="lbl-user">{{ currentDate | date:'dd-MM-yyyy'}}</label>
+      <label class="lbl-user">{{ currentDate | date:'HH:mm:ss'}}</label>
       <label class="lbl-user">{{authService.getUsername().toUpperCase()}}</label>
       <img src="assets/user.png" class="img-user"/>
+<!--      <img [src]="staff.photo ? imageUrl : 'assets/user.png'" class="img-user"/>-->
       <button mat-icon-button (click)="logout()" class="btn-logout"><mat-icon>exit_to_app</mat-icon> </button>
     </span>
+
+
 
   </mat-toolbar-row>
 </mat-toolbar>
@@ -31,51 +36,51 @@
         <a routerLink="dashboard"><mat-icon>widgets</mat-icon>Dashboard</a>
       </mat-list-item>
 
-      <mat-list-item>
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin || aur.getUserRole() == UserRole.Receptionist">
         <a routerLink="appointment"><mat-icon>today</mat-icon>Appointment</a>
       </mat-list-item>
 
-      <mat-list-item>
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin || aur.getUserRole() == UserRole.Receptionist">
         <a routerLink="patient"><mat-icon>person_add</mat-icon>Patient Details</a>
       </mat-list-item>
 
-      <mat-list-item>
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin">
         <a routerLink="doctor"><mat-icon>person_outline</mat-icon>Doctor</a>
       </mat-list-item>
 
-      <mat-list-item>
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin || aur.getUserRole() == UserRole.Receptionist">
         <a routerLink="schedule"><mat-icon>schedule</mat-icon>Schedule</a>
       </mat-list-item>
 
-      <mat-list-item>
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin">
         <a routerLink="staff"><mat-icon>people</mat-icon>Staff</a>
       </mat-list-item>
 
-      <mat-list-item>
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin || aur.getUserRole() == UserRole.Receptionist">
         <a routerLink="room"><mat-icon>room</mat-icon>Room</a>
       </mat-list-item>
 
-      <mat-list-item>
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin || aur.getUserRole() == UserRole.CounterClerk">
         <a routerLink="appointment"><mat-icon>payment</mat-icon>Payment</a>
       </mat-list-item>
 
-      <mat-list-item>
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Doctor">
         <a routerLink="prescription"><mat-icon>receipt</mat-icon>Presctiption</a>
       </mat-list-item>
 
-      <mat-expansion-panel *ngIf="isMenuVisible('Admin')">
-        <mat-expansion-panel-header>
-          <mat-list-item><a>
-            <mat-icon>person</mat-icon>
-            Admin</a></mat-list-item>
-        </mat-expansion-panel-header>
-        <ng-container *ngFor="let menuItem of admMenuItems">
-          <mat-list-item *ngIf="menuItem.accessFlag">
-            <mat-list-item class="item" [routerLink]="menuItem.accessFlag ? menuItem.routerLink : null">
-              <a>{{ menuItem.name }}</a></mat-list-item>
-          </mat-list-item>
-        </ng-container>
-      </mat-expansion-panel>
+<!--      <mat-expansion-panel *ngIf="isMenuVisible('Admin')">-->
+<!--        <mat-expansion-panel-header>-->
+<!--          <mat-list-item><a>-->
+<!--            <mat-icon>person</mat-icon>-->
+<!--            Admin</a></mat-list-item>-->
+<!--        </mat-expansion-panel-header>-->
+<!--        <ng-container *ngFor="let menuItem of admMenuItems">-->
+<!--          <mat-list-item *ngIf="menuItem.accessFlag">-->
+<!--            <mat-list-item class="item" [routerLink]="menuItem.accessFlag ? menuItem.routerLink : null">-->
+<!--              <a>{{ menuItem.name }}</a></mat-list-item>-->
+<!--          </mat-list-item>-->
+<!--        </ng-container>-->
+<!--      </mat-expansion-panel>-->
 
 <!--      <mat-expansion-panel *ngIf="isMenuVisible('Academic')">-->
 <!--        <mat-expansion-panel-header>-->
@@ -118,6 +123,9 @@
 <!--          </mat-list-item>-->
 <!--        </ng-container>-->
 <!--      </mat-expansion-panel>-->
+      <mat-list-item *ngIf="aur.getUserRole() == UserRole.Admin">
+        <a routerLink="user1"><mat-icon>person_pin</mat-icon>User</a>
+      </mat-list-item>
 
       <mat-list-item>
         <a routerLink="reports"><mat-icon>poll</mat-icon>Report</a>

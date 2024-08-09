@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {UserRole} from "../../shared/constant/userRole";
+import {ActiveUserRoleService} from "../../service/activeUserRoleServie";
 
 @Component({
   selector: 'app-home',
@@ -6,6 +8,11 @@ import {Component} from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+
+  constructor(public aur: ActiveUserRoleService) {
+
+  }
+
 
   userspecmessages: any[] = [
     {name: 'ashan.d@earth.lk', updated: new Date('5/30/23')},
@@ -20,4 +27,5 @@ export class HomeComponent {
     {name: 'it@earth.lk', updated: new Date('5/28/23')},
     {name: 'it@earth.lk', updated: new Date('4/28/23')}
   ];
+    protected readonly UserRole = UserRole;
 }

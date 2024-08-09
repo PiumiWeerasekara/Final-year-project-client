@@ -22,6 +22,7 @@ import {ScheduleComponent} from "./view/modules/schedule/schedule.component";
 import {AppointmentComponent} from "./view/modules/appointment/appointment.component";
 import {PrescriptionComponent} from "./view/modules/prescription/prescription.component";
 import {StaffComponent} from "./view/modules/staff/staff.component";
+import {User1Component} from "./view/modules/user1/user1.component";
 
 const routes: Routes = [
   {path: "login", component: LoginComponent},
@@ -55,6 +56,7 @@ const routes: Routes = [
       {path: "privilage",component:PrivilageComponent},
       {path: "operation",component:OperationComponent},
       {path: "staff",component:StaffComponent},
+      {path: "user1",component:User1Component},
 
     ]
   }];

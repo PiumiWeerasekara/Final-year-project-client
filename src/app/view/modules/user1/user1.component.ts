@@ -1,7 +1,9 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Staff} from "../../../entity/staff";
 import {MatPaginator} from "@angular/material/paginator";
 import {Gender} from "../../../entity/gender";
+import {StaffType} from "../../../entity/staffType";
 import {UiAssist} from "../../../util/ui/ui.assist";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
@@ -9,29 +11,42 @@ import {GenderService} from "../../../service/genderservice";
 import {RegexService} from "../../../service/regexservice";
 import {MatDialog} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
+import {StaffService} from "../../../service/staff.service";
+import {StaffTypeService} from "../../../service/StaffTypeService";
 import {AuthorizationManager} from "../../../service/authorizationmanager";
 import {ConfirmComponent} from "../../../util/dialog/confirm/confirm.component";
 import {MessageComponent} from "../../../util/dialog/message/message.component";
-import {Titles} from "../../../shared/constant/titles";
-import {Staff} from "../../../entity/staff";
-import {StaffType} from "../../../entity/staffType";
-import {StaffTypeService} from "../../../service/StaffTypeService";
-import {StaffService} from "../../../service/staff.service";
+import {Employee} from "../../../entity/employee";
+import {Userstatus} from "../../../entity/userstatus";
+import {Usrtype} from "../../../entity/usrtype";
+import {User} from "../../../entity/user";
+import {Userrole} from "../../../entity/userrole";
+import {Role} from "../../../entity/role";
+import {UserService} from "../../../service/userservice";
+import {User2} from "../../../entity/user2";
+import {User1} from "../../../entity/user1";
+import {User1Service} from "../../../service/user1service";
+import {Doctor} from "../../../entity/doctor";
 
 @Component({
-  selector: 'app-staff',
-  templateUrl: './staff.component.html',
-  styleUrls: ['./staff.component.css']
+  selector: 'app-user1',
+  templateUrl: './user1.component.html',
+  styleUrls: ['./user1.component.css']
 })
-export class StaffComponent {
-  public ssearch!: FormGroup;
+export class User1Component {
   public form!: FormGroup;
+  public ssearch!: FormGroup;
+
+  staffs: Array<Staff> = [];
+
+  users: Array<User1> = [];
+
+  user!:User1;
+  olduser!:User1;
 
   public isFormEnable: boolean = false;
   public isCreate: boolean = false;
 
-  staff!: Staff;
-  oldStaff!: Staff;
 
   selectedrow: any;
 
@@ -44,59 +59,45 @@ export class StaffComponent {
 
   genders: Array<Gender> = [];
   staffTypes: Array<StaffType> = [];
-  //Title = Title;
-  Titles = Titles;
-
-  maxDate: Date;
 
   regexes: any;
 
   uiassist: UiAssist;
 
-  displayedColumns: string[] = ['name', 'nic', 'contactNo', 'email', 'type', 'edit', 'active'];
-  dataSource: MatTableDataSource<Staff>;
-  staffs: Array<Staff> = [];
+  displayedColumns: string[] = ['memberName', 'type', 'userName', 'createddate', 'description', 'edit'];
+  dataSource: MatTableDataSource<User1>;
 
   @ViewChild(MatSort) sort!: MatSort;constructor(
-    private gs: GenderService,
     private rs: RegexService,
     private fb: FormBuilder,
     private dg: MatDialog,
     private dp: DatePipe,
     private dcs: StaffService,
     private sp: StaffTypeService,
+    private  us: User1Service,
     public authService: AuthorizationManager) {
 
     this.uiassist = new UiAssist(this);
 
     this.ssearch = this.fb.group({
       "ssName": new FormControl(),
-      "ssNic": new FormControl(),
+      "ssuserName": new FormControl(),
       "ssType": new FormControl(),
     });
 
 
     this.form = this.fb.group({
-      "title": new FormControl('', [Validators.required]),
-      "firstName": new FormControl('', [Validators.required]),
-      "lastName": new FormControl('', [Validators.required]),
-      "dob": new FormControl('', [Validators.required]),
-      "nic": new FormControl('', [Validators.required]),
-      "gender": new FormControl('', [Validators.required]),
-      "photo": new FormControl('', [Validators.required]),
+      "staff": new FormControl('',[Validators.required]),
+      "username": new FormControl('',[Validators.required]),
+      "password": new FormControl('',[Validators.required]),
+      "confirmpassword": new FormControl(),
+      "docreated": new FormControl('',[Validators.required]),
+      "tocreated": new FormControl(this.dp.transform(Date.now(),"hh:mm:ss"),[Validators.required]),
+      "description": new FormControl('',Validators.required),
+    });
 
-      "email": new FormControl('', [Validators.required]),
-      "contactNo": new FormControl('', [Validators.required]),
-      "address": new FormControl('', [Validators.required]),
-      "staffType": new FormControl('', [Validators.required]),
+    this.dataSource = new MatTableDataSource(this.users);
 
-    }, {updateOn: 'change'});
-
-
-    this.dataSource = new MatTableDataSource(this.staffs);
-
-    this.maxDate = new Date();
-    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
   ngAfterViewInit() {
@@ -112,15 +113,11 @@ export class StaffComponent {
 
     this.createView();
 
-    this.gs.getAllList().then((gens: Gender[]) => {
-      this.genders = gens;
+    this.dcs.getAll('').then((stafs: Staff[]) => {
+      this.staffs = stafs;//stafs.filter(st => st.status === 1);
     });
 
-    this.sp.getAllList().then((specs: StaffType[]) => {
-      this.staffTypes = specs;
-    });
-
-    this.rs.get('employee').then((regs: []) => {
+    this.rs.get("users").then((regs:[])=>{
       this.regexes = regs;
       this.createForm();
     });
@@ -133,17 +130,14 @@ export class StaffComponent {
 
 
   createForm() {
-    this.form.controls['title'].setValidators([Validators.required]);
-    this.form.controls['firstName'].setValidators([Validators.required]);
-    this.form.controls['lastName'].setValidators([Validators.required]);
-    this.form.controls['dob'].setValidators([Validators.required]);
-    this.form.controls['gender'].setValidators([Validators.required]);
-    this.form.controls['nic'].setValidators([Validators.required, Validators.pattern(this.regexes['nic']['regex'])]);
-    this.form.controls['photo'].setValidators([Validators.required]);
-    this.form.controls['email'].setValidators([Validators.required, Validators.pattern(this.regexes['email']['regex'])]);
-    this.form.controls['contactNo'].setValidators([Validators.required, Validators.pattern(this.regexes['mobile']['regex'])]);
-    this.form.controls['address'].setValidators([Validators.required, Validators.pattern(this.regexes['address']['regex'])]);
-    this.form.controls['staffType'].setValidators([Validators.required]);
+    this.form.controls['staff'].setValidators([Validators.required]);
+    this.form.controls['username'].setValidators([Validators.required, Validators.pattern(this.regexes['username']['regex'])]);
+    this.form.controls['password'].setValidators([Validators.required, Validators.pattern(this.regexes['password']['regex'])]);
+    this.form.controls['confirmpassword'].setValidators([Validators.required, Validators.pattern(this.regexes['password']['regex'])]);
+    this.form.controls['docreated'].setValidators([Validators.required]);
+    this.form.controls['tocreated'].setValidators([Validators.required]);
+    this.form.controls['description'].setValidators([Validators.required, Validators.pattern(this.regexes['description']['regex'])]);
+    Object.values(this.form.controls).forEach( control => { control.markAsTouched(); } );
 
 
     Object.values(this.form.controls).forEach(control => {
@@ -153,13 +147,10 @@ export class StaffComponent {
     for (const controlName in this.form.controls) {
       const control = this.form.controls[controlName];
       control.valueChanges.subscribe(value => {
-          // @ts-ignore
-          if (controlName == "dob" || controlName == "licenseExpDate")
-            value = this.dp.transform(new Date(value), 'yyyy-MM-dd');
 
-          if (this.oldStaff != undefined && control.valid) {
+          if (this.olduser != undefined && control.valid) {
             // @ts-ignore
-            if (value === this.staff[controlName]) {
+            if (value === this.user[controlName]) {
               control.markAsPristine();
             } else {
               control.markAsDirty();
@@ -182,17 +173,15 @@ export class StaffComponent {
 
   loadTable(query: string) {
 
-    this.dcs.getAll(query)
-      .then((staffs: Staff[]) => {
-        this.staffs = staffs;
-        this.imageurl = 'assets/default.png';
+    this.us.getAll(query)
+      .then((usr: User1[]) => {
+        this.users = usr;
       })
       .catch((error) => {
         console.log(error);
-        this.imageurl = 'assets/rejected.png';
       })
       .finally(() => {
-        this.dataSource = new MatTableDataSource(this.staffs);
+        this.dataSource = new MatTableDataSource(this.users);
         this.dataSource.paginator = this.paginator;
       });
 
@@ -203,14 +192,14 @@ export class StaffComponent {
     const sserchdata = this.ssearch.getRawValue();
 
     let name = sserchdata.ssName;
-    let nic = sserchdata.ssNic;
-    let specId = sserchdata.ssType;
+    let username = sserchdata.ssuserName;
+    let type = sserchdata.ssType;
 
     let query = "";
 
     if (name != null && name.trim() != "") query = query + "&name=" + name;
-    if (nic != null && nic.trim() != "") query = query + "&nic=" + nic;
-    if (specId != null) query = query + "&specialityId=" + specId;
+    if (username != null && username.trim() != "") query = query + "&username=" + username;
+    if (type != null) query = query + "&type=" + type;
 
     if (query != "") query = query.replace(/^./, "?")
 
@@ -277,23 +266,12 @@ export class StaffComponent {
 
     this.selectedrow = stf;
 
-    this.staff = JSON.parse(JSON.stringify(stf));
-    this.oldStaff = JSON.parse(JSON.stringify(stf));
+    this.user = JSON.parse(JSON.stringify(stf));
+    this.olduser = JSON.parse(JSON.stringify(stf));
+//@ts-ignore
+    this.user.staff = this.staffs.find(g => g.id === this.user.staff.id);
 
-    if (this.staff.photo != null) {
-      this.imageurl = atob(this.staff.photo);
-      this.form.controls['photo'].clearValidators();
-    } else {
-      this.clearImage();
-    }
-    this.staff.photo = "";
-
-    //@ts-ignore
-    this.staff.gender = this.genders.find(g => g.id === this.staff.gender.id);
-    //@ts-ignore
-    this.staff.staffType = this.staffTypes.find(s => s.id === this.staff.staffType.id);
-
-    this.form.patchValue(this.staff);
+    this.form.patchValue(this.user);
     this.form.markAsPristine();
 
   }
@@ -311,61 +289,61 @@ export class StaffComponent {
     return updates;
   }
 
-  inactive(staff: Staff) {
-
-    const confirm = this.dg.open(ConfirmComponent, {
-      width: '500px',
-      data: {
-        heading: "Confirmation - Staff Member Inactive",
-        message: "Are you sure to Inactive following Staff Member? <br> <br>" + staff.title + ". " + staff.firstName + " " + staff.lastName
-      }
-    });
-
-    confirm.afterClosed().subscribe(async result => {
-      if (result) {
-        let delstatus: boolean = false;
-        let delmessage: string = "Server Not Found";
-
-        this.dcs.inactive(staff.id).then((responce: [] | undefined) => {
-
-          if (responce != undefined) { // @ts-ignore
-            delstatus = responce['errors'] == "";
-            if (!delstatus) { // @ts-ignore
-              delmessage = responce['errors'];
-            }
-          } else {
-            delstatus = false;
-            delmessage = "Content Not Found"
-          }
-        }).finally(() => {
-          if (delstatus) {
-            delmessage = "Successfully Inactivated";
-            // this.form.reset();
-            // this.clearImage();
-            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
-            this.loadTable("");
-          }
-
-          const stsmsg = this.dg.open(MessageComponent, {
-            width: '500px',
-            data: {heading: "Status - Staff Inactive ", message: delmessage}
-          });
-          stsmsg.afterClosed().subscribe(async result => {
-            if (!result) {
-              return;
-            }
-          });
-
-        });
-      }
-    });
-  }
+  // inactive(staff: Staff) {
+  //
+  //   const confirm = this.dg.open(ConfirmComponent, {
+  //     width: '500px',
+  //     data: {
+  //       heading: "Confirmation - Staff Member Inactive",
+  //       message: "Are you sure to Inactive following Staff Member? <br> <br>" + staff.title + ". " + staff.firstName + " " + staff.lastName
+  //     }
+  //   });
+  //
+  //   confirm.afterClosed().subscribe(async result => {
+  //     if (result) {
+  //       let delstatus: boolean = false;
+  //       let delmessage: string = "Server Not Found";
+  //
+  //       this.dcs.inactive(staff.id).then((responce: [] | undefined) => {
+  //
+  //         if (responce != undefined) { // @ts-ignore
+  //           delstatus = responce['errors'] == "";
+  //           if (!delstatus) { // @ts-ignore
+  //             delmessage = responce['errors'];
+  //           }
+  //         } else {
+  //           delstatus = false;
+  //           delmessage = "Content Not Found"
+  //         }
+  //       }).finally(() => {
+  //         if (delstatus) {
+  //           delmessage = "Successfully Inactivated";
+  //           // this.form.reset();
+  //           // this.clearImage();
+  //           // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
+  //           this.loadTable("");
+  //         }
+  //
+  //         const stsmsg = this.dg.open(MessageComponent, {
+  //           width: '500px',
+  //           data: {heading: "Status - Staff Inactive ", message: delmessage}
+  //         });
+  //         stsmsg.afterClosed().subscribe(async result => {
+  //           if (!result) {
+  //             return;
+  //           }
+  //         });
+  //
+  //       });
+  //     }
+  //   });
+  // }
 
   clear(): void {
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
       data: {
-        heading: "Confirmation - Staff Detail Clear",
+        heading: "Confirmation - User Detail Clear",
         message: "Are you sure to Clear following Details ? <br> <br>"
       }
     });
@@ -398,7 +376,6 @@ export class StaffComponent {
     this.isCreate = true;
     this.isFormEnable = false;
     this.form.reset();
-    this.clearImage();
 
   }
 
@@ -412,7 +389,7 @@ export class StaffComponent {
     if (errors != "") {
       const errmsg = this.dg.open(MessageComponent, {
         width: '500px',
-        data: {heading: "Errors - Staff Member Save ", message: "You have the following Errors <br> " + errors}
+        data: {heading: "Errors - User Save ", message: "You have the following Errors <br> " + errors}
       });
       errmsg.afterClosed().subscribe(async result => {
         if (!result) {
@@ -420,15 +397,22 @@ export class StaffComponent {
         }
       });
     } else {
-      this.staff = this.form.getRawValue();
-      this.staff.status = 1;
+      this.user = this.form.getRawValue();
+      // this.user.usetype= new Usrtype(1, 'Active');
+      // this.user.usestatus= new Userstatus(1, 'Registered');
+      //
+      // let arr: Array<Userrole> = []; // Initialize the array
+      // arr.push(new Userrole(new Role(1, 'Admin')));
+      // this.user.userroles= arr;
+
+      // this.user.user = 1;
       if (!this.isCreate) {
         let updates: string = this.getUpdates();
 
         if (updates == "") {
           const updmsg = this.dg.open(MessageComponent, {
             width: '500px',
-            data: {heading: "Confirmation - Staff Member Update", message: "Nothing Changed"}
+            data: {heading: "Confirmation - User Update", message: "Nothing Changed"}
           });
           return;
           // updmsg.afterClosed().subscribe(async result => {
@@ -437,19 +421,17 @@ export class StaffComponent {
           //   }
           // });
         } else {
-          this.staff.id = this.selectedrow.id;
-          heading = "Confirmation - Staff Member Update";
+          this.user.id = this.selectedrow.id;
+          heading = "Confirmation - User Update";
           confirmationMessage = "Are you sure to Save following Updates?";
         }
       } else {
         let drData: string = "";
 
-        drData = this.staff.title + ". " + this.staff.firstName + " " + this.staff.lastName;
-        heading = "Confirmation - Staff Member Add";
-        confirmationMessage = "Are you sure to Save the following Staff Member? <br> <br>" + drData;
+        drData = this.user.username;
+        heading = "Confirmation - User Add";
+        confirmationMessage = "Are you sure to Save the following User? <br> <br>" + drData;
       }
-
-      this.staff.photo = btoa(this.imageurl);
 
       let status: boolean = false;
       let message: string = "Server Not Found";
@@ -466,7 +448,7 @@ export class StaffComponent {
         if (result) {
           // console.log("EmployeeService.add(emp)");
 
-          this.dcs.save(this.staff).then((responce: [] | undefined) => {
+          this.us.save(this.user).then((responce: [] | undefined) => {
             //console.log("Res-" + responce);
             //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
@@ -496,7 +478,7 @@ export class StaffComponent {
 
             const stsmsg = this.dg.open(MessageComponent, {
               width: '500px',
-              data: {heading: "Status -Staff Member Save", message: message}
+              data: {heading: "Status -User Save", message: message}
             });
 
             stsmsg.afterClosed().subscribe(async result => {
@@ -510,5 +492,3 @@ export class StaffComponent {
     }
   }
 }
-
-
