@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AuthoritySevice } from './authoritysevice';
+import {Injectable} from '@angular/core';
+import {AuthoritySevice} from './authoritysevice';
 
 @Injectable()
 export class AuthorizationManager {
@@ -16,35 +16,36 @@ export class AuthorizationManager {
   public enadel = false;
 
   admMenuItems = [
-    { name: 'Employee', accessFlag: true, routerLink: 'employee' },
-    { name: 'User', accessFlag: true, routerLink: 'user' },
-    { name: 'Privilege', accessFlag: true, routerLink: 'privilege' },
-    { name: 'Operations', accessFlag: true, routerLink: 'operation' }
+    {name: 'Employee', accessFlag: true, routerLink: 'employee'},
+    {name: 'User', accessFlag: true, routerLink: 'user'},
+    {name: 'Privilege', accessFlag: true, routerLink: 'privilege'},
+    {name: 'Operations', accessFlag: true, routerLink: 'operation'}
   ];
 
   acdMenuItems = [
-    { name: 'Program', accessFlag: true, routerLink: 'program' },
-    { name: 'Course', accessFlag: true, routerLink: 'course' },
-    { name: 'Batch', accessFlag: true, routerLink: 'batch' },
-    { name: 'Payment Schedule', accessFlag: true, routerLink: 'pymtschedule' },
-    { name: 'Course Material', accessFlag: true, routerLink: 'crsmaterial' }
+    {name: 'Program', accessFlag: true, routerLink: 'program'},
+    {name: 'Course', accessFlag: true, routerLink: 'course'},
+    {name: 'Batch', accessFlag: true, routerLink: 'batch'},
+    {name: 'Payment Schedule', accessFlag: true, routerLink: 'pymtschedule'},
+    {name: 'Course Material', accessFlag: true, routerLink: 'crsmaterial'}
   ];
 
   regMenuItems = [
-    { name: 'Student', accessFlag: true, routerLink: 'students' },
-    { name: 'Batch Registration', accessFlag: true, routerLink: 'batchregistration' },
-    { name: 'Payments', accessFlag: true, routerLink: 'payments' },
-    { name: 'Mat. Distribution', accessFlag: true, routerLink: 'matdistribution' }
+    {name: 'Student', accessFlag: true, routerLink: 'students'},
+    {name: 'Batch Registration', accessFlag: true, routerLink: 'batchregistration'},
+    {name: 'Payments', accessFlag: true, routerLink: 'payments'},
+    {name: 'Mat. Distribution', accessFlag: true, routerLink: 'matdistribution'}
   ];
 
   clsMenuItems = [
-    { name: 'Attendance', accessFlag: true, routerLink: 'attendance' },
-    { name: 'Class Schedule', accessFlag: true, routerLink: 'clsschedule' },
-    { name: 'Progress Review', accessFlag: true, routerLink: 'prgreview' }
+    {name: 'Attendance', accessFlag: true, routerLink: 'attendance'},
+    {name: 'Class Schedule', accessFlag: true, routerLink: 'clsschedule'},
+    {name: 'Progress Review', accessFlag: true, routerLink: 'prgreview'}
   ];
 
 
-  constructor(private am: AuthoritySevice) {}
+  constructor(private am: AuthoritySevice) {
+  }
 
   enableButtons(authorities: { module: string; operation: string }[]): void {
     this.enaadd = authorities.some(authority => authority.operation === 'insert');
@@ -52,7 +53,11 @@ export class AuthorizationManager {
     this.enadel = authorities.some(authority => authority.operation === 'delete');
 
     // Save button state in localStorage
-    localStorage.setItem(this.localStorageButtonKey, JSON.stringify({ enaadd: this.enaadd, enaupd: this.enaupd, enadel: this.enadel }));
+    localStorage.setItem(this.localStorageButtonKey, JSON.stringify({
+      enaadd: this.enaadd,
+      enaupd: this.enaupd,
+      enadel: this.enadel
+    }));
   }
 
   enableMenues(modules: { module: string; operation: string }[]): void {
@@ -90,7 +95,7 @@ export class AuthorizationManager {
       if (result !== undefined) {
         const authorities = result.map(authority => {
           const [module, operation] = authority.split('-');
-          return { module, operation };
+          return {module, operation};
         });
         console.log(authorities);
 
@@ -128,7 +133,7 @@ export class AuthorizationManager {
   initializeButtonState(): void {
     const buttonState = localStorage.getItem(this.localStorageButtonKey);
     if (buttonState) {
-      const { enaadd, enaupd, enadel } = JSON.parse(buttonState);
+      const {enaadd, enaupd, enadel} = JSON.parse(buttonState);
       this.enaadd = enaadd;
       this.enaupd = enaupd;
       this.enadel = enadel;

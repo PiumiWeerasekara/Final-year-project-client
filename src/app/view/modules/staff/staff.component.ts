@@ -38,13 +38,8 @@ export class StaffComponent {
   imageurl: string = 'assets/default.png'
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // enaadd:boolean = false;
-  // enaupd:boolean = false;
-  // enadel:boolean = false;
-
   genders: Array<Gender> = [];
   staffTypes: Array<StaffType> = [];
-  //Title = Title;
   Titles = Titles;
 
   maxDate: Date;
@@ -57,7 +52,9 @@ export class StaffComponent {
   dataSource: MatTableDataSource<Staff>;
   staffs: Array<Staff> = [];
 
-  @ViewChild(MatSort) sort!: MatSort;constructor(
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(
     private gs: GenderService,
     private rs: RegexService,
     private fb: FormBuilder,
@@ -171,14 +168,7 @@ export class StaffComponent {
       );
 
     }
-    // this.enableButtons(true,false,false);
   }
-
-  // enableButtons(add:boolean, upd:boolean, del:boolean){
-  //   this.enaadd=add;
-  //   this.enaupd=upd;
-  //   this.enadel=del;
-  // }
 
   loadTable(query: string) {
 
@@ -296,7 +286,6 @@ export class StaffComponent {
 
     this.form.patchValue(this.staff);
     this.form.markAsPristine();
-
   }
 
 
@@ -313,7 +302,7 @@ export class StaffComponent {
   }
 
   inactive(staff: Staff) {
-if (staff.status == 0) return;
+    if (staff.status == 0) return;
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
       data: {
@@ -341,9 +330,6 @@ if (staff.status == 0) return;
         }).finally(() => {
           if (delstatus) {
             delmessage = "Successfully Inactivated";
-            // this.form.reset();
-            // this.clearImage();
-            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
             this.loadTable("");
           }
 
@@ -432,11 +418,6 @@ if (staff.status == 0) return;
             data: {heading: "Confirmation - Staff Member Update", message: "Nothing Changed"}
           });
           return;
-          // updmsg.afterClosed().subscribe(async result => {
-          //   if (!result) {
-          //     return;
-          //   }
-          // });
         } else {
           this.staff.id = this.selectedrow.id;
           heading = "Confirmation - Staff Member Update";
@@ -468,8 +449,6 @@ if (staff.status == 0) return;
           // console.log("EmployeeService.add(emp)");
 
           this.dcs.save(this.staff).then((responce: [] | undefined) => {
-            //console.log("Res-" + responce);
-            //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
               console.log("Add-" + responce['id'] + "-" + responce['url'] + "-" + (responce['errors'] == ""));
               // @ts-ignore

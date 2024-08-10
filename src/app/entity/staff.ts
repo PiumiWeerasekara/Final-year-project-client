@@ -1,8 +1,7 @@
 import {Gender} from "./gender";
-import {Specialization} from "./specialization";
 import {StaffType} from "./staffType";
 
-export class Staff{
+export class Staff {
 
   public id !: number;
   public title !: string;

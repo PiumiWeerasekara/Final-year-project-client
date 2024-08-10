@@ -4,7 +4,7 @@
     <mat-card style="border-width: 2px; border-radius: 0px; border-style: solid; border-image: linear-gradient(to right, #01b6ad 85%, #0271b9); border-image-slice: 1;"><img id="headImg" src="assets/title_img.png"></mat-card>
   </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="4" [rowspan]="4" id="quicklinks">
+    <mat-grid-tile [colspan]="4" [rowspan]="4" id="quicklinks" *ngIf="aur.getUserRole() == UserRole.Admin || aur.getUserRole() == UserRole.Receptionist">
       <mat-card *ngIf="aur.getUserRole() == UserRole.Admin || aur.getUserRole() == UserRole.Receptionist">
         <mat-card-content>
           <div class="row" style="display: flex; flex-direction: row; width: 300px; height: 93px;">
@@ -40,8 +40,50 @@
 
 
     </mat-grid-tile>
+<!--  <ng-container *ngFor="let row in appointments"></ng-container>-->
+<!--  <mat-grid-tile [colspan]="4" [rowspan]="4">-->
+<!--    -->
+<!--    <div class="col-md-4 docDetail_div">-->
+<!--      <h2 class="drName">{{ doctorName.toUpperCase() }}</h2>-->
+<!--      <hr>-->
+<!--      <h2 style="color: gray">{{ speciality.toUpperCase() }}</h2>-->
 
-<!--  <mat-grid-tile [colspan]="4" [rowspan]="4" id="quicklinks">-->
+<!--    </div>-->
+<!--  </mat-grid-tile>-->
+<!--  <mat-grid-list cols="3" rowHeight="1:1">-->
+    <mat-grid-tile *ngFor="let ap of appointments" [colspan]="1" [rowspan]="3">
+      <div class="docDetail_div">
+        <h2 class="drName">{{ ap.schedule.doctor.title.toUpperCase() }} {{ ap.schedule.doctor.firstName.toUpperCase() }} {{ ap.schedule.doctor.lastName.toUpperCase() }}</h2>
+        <h2 style="color: gray">{{ ap.schedule.doctor.speciality.name.toUpperCase() }}</h2>
+        <hr>
+        <h2 style="color: gray">Appointments: <span style="color: #04c0b8; margin-left: 60px">{{ ap.appointmentNo }}</span></h2>
+      </div>
+    </mat-grid-tile>
+<!--  </mat-grid-list>-->
+  <ng-container *ngIf="aur.getUserRole() == UserRole.Doctor">
+    <mat-grid-tile [colspan]="4" [rowspan]="1" style="background: lightcyan" *ngIf="upcomings.length>0">
+      <h2 style="text-align: right;">My Upcoming Schedules</h2>
+      <hr>
+    </mat-grid-tile>
+    <mat-grid-tile *ngFor="let ap of appointments" [colspan]="1" [rowspan]="3">
+      <div class="docDetail_div">
+        <h2 class="drName">{{ ap.schedule.doctor.title.toUpperCase() }} {{ ap.schedule.doctor.firstName.toUpperCase() }} {{ ap.schedule.doctor.lastName.toUpperCase() }}</h2>
+        <h2 style="color: gray">{{ ap.schedule.doctor.speciality.name.toUpperCase() }}</h2>
+        <hr>
+        <h2 style="color: gray">
+          <span style="margin-right: 90px;">{{ ap.appointmentDate }}</span>
+          <span style="color: #04c0b8">{{ ap.appointmentNo }}</span>
+        </h2>
+      </div>
+    </mat-grid-tile>
+  </ng-container>
+
+
+
+
+
+
+  <!--  <mat-grid-tile [colspan]="4" [rowspan]="4" id="quicklinks">-->
 <!--    <mat-card>-->
 <!--      <mat-card-content><img  src="assets/payment.png"></mat-card-content>-->
 <!--      <mat-card-footer ><a routerLink="payments">Payments</a></mat-card-footer>-->

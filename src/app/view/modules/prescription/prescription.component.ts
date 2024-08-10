@@ -1,17 +1,12 @@
 import {Component, ViewChild} from '@angular/core';
 import {Doctor} from "../../../entity/doctor";
-import {Specialization} from "../../../entity/specialization";
-import {User} from "../../../entity/user";
-import {map, startWith} from "rxjs/operators";
 import {RegexService} from "../../../service/regexservice";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
 import {AppointmentService} from "../../../service/appointment.service";
-import {SpecializationService} from "../../../service/SpecializationService";
 import {DoctorService} from "../../../service/doctor.service";
 import {ScheduleService} from "../../../service/schedule.service";
-import {PatientService} from "../../../service/patient.service";
 import {UserService} from "../../../service/userservice";
 import {AuthorizationManager} from "../../../service/authorizationmanager";
 import {MatTableDataSource} from "@angular/material/table";
@@ -20,10 +15,7 @@ import {Appointment} from "../../../entity/appointment";
 import {MatPaginator} from "@angular/material/paginator";
 import {MessageComponent} from "../../../util/dialog/message/message.component";
 import {ConfirmComponent} from "../../../util/dialog/confirm/confirm.component";
-import {AppointmentSearch} from "../../../entity/appointmentSearch";
 import {Prescription} from "../../../entity/prescription";
-import {Schedule} from "../../../entity/schedule";
-import {Patient} from "../../../entity/patient";
 import {PrescriptionService} from "../../../service/prescription.service";
 import {Drug} from "../../../entity/drug";
 import {Titles} from "../../../shared/constant/titles";
@@ -42,7 +34,6 @@ export class PrescriptionComponent {
 
   selectedrow: any;
 
-  //prescription!: Prescription;
   oldPrescription!: Prescription;
 
   displayedColumns: string[] = ['patient', 'nic', 'appointmentNo', 'startTime', 'endTime', 'prescription', 'edit'];
@@ -71,7 +62,6 @@ export class PrescriptionComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   prescription: Prescription = {
-    // initialize with default values
     id: 0,
     prescribedDate: '',
     referenceNo: '',
@@ -85,22 +75,14 @@ export class PrescriptionComponent {
     private rs: RegexService,
     private fb: FormBuilder,
     private dg: MatDialog,
-    private dp: DatePipe,
     private ap: AppointmentService,
     private dr: DrugService,
-    private ds: DoctorService,
-    private ss: ScheduleService,
     private ps: PrescriptionService,
-    private us: UserService,
-    public aur: ActiveUserRoleService,
     public authService: AuthorizationManager) {
     this.uiassist = new UiAssist(this);
     this.dataSource = new MatTableDataSource(this.appointments);
     this.drugDataSource = new MatTableDataSource(this.selectedDrugs);
 
-    // this.form = this.fb.group({
-    //   gender: [null]
-    // });
     this.ssearch = this.fb.group({
       "ssName": new FormControl(),
       "ssNic": new FormControl(),
@@ -125,37 +107,14 @@ export class PrescriptionComponent {
   }
 
   initialize() {
-
-    // this.createView();
-
-
     this.dr.getAllList().then((drugs: Drug[]) => {
       this.drugs = drugs;
     });
-
-    // this.sp.getAllList().then((specs: Specialization[]) => {
-    //   this.specializations = specs;
-    // });
 
     this.rs.get('employee').then((regs: []) => {
       this.regexes = regs;
       this.createForm();
     });
-    // this.getPatients();
-    // this.searchControl.valueChanges.subscribe(value => {
-    //   this.filterPatients();
-    // });
-
-    // @ts-ignore
-    // this.us.get(this.authService.getUsername()).then((user: User) => {
-    //   this.user = user;
-    // });
-
-    // this.filteredPatients = this.searchControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this.filterPatients(value))
-    // );
-
     this.loadTable("");
   }
 
@@ -180,10 +139,6 @@ export class PrescriptionComponent {
     for (const controlName in this.form.controls) {
       const control = this.form.controls[controlName];
       control.valueChanges.subscribe(value => {
-          // @ts-ignore
-          // if (controlName == "dob" || controlName == "licenseExpDate")
-          //   value = this.dp.transform(new Date(value), 'yyyy-MM-dd');
-
           if (this.oldPrescription != undefined && control.valid) {
             // @ts-ignore
             if (value === this.prescription[controlName]) {
@@ -196,9 +151,7 @@ export class PrescriptionComponent {
           }
         }
       );
-
     }
-    // this.enableButtons(true,false,false);
   }
 
   applyFilter(event: Event) {
@@ -237,13 +190,7 @@ export class PrescriptionComponent {
     this.prescription.appointment = appointment;
     this.prescription.prescribedDate = appointment.appointmentDate;
     this.prescription.status = 1;
-    // this.prescription = JSON.parse(JSON.stringify(this.prescription));
-    // this.form.patchValue(this.prescription);
     this.form.markAsPristine();
-    // this.form.controls['appointmentNo'].setValue(this.prescription.appointment.appointmentNo);
-    //     this.form.controls['prescribedDate'].setValue(this.prescription.appointment.appointmentDate);
-
-
   }
 
   btnSearchMc(): void {
@@ -278,7 +225,6 @@ export class PrescriptionComponent {
         this.loadTable("");
       }
     });
-
   }
 
   back() {
@@ -364,21 +310,6 @@ export class PrescriptionComponent {
 
 
       if (!this.isCreate) {
-        //let updates: string = this.getUpdates();
-
-        // if (updates == "") {
-        //   const updmsg = this.dg.open(MessageComponent, {
-        //     width: '500px',
-        //     data: {heading: "Confirmation - Appointment Update", message: "Nothing Changed"}
-        //   });
-        //   return;
-        //   // updmsg.afterClosed().subscribe(async result => {
-        //   //   if (!result) {
-        //   //     return;
-        //   //   }
-        //   // });
-        // } else {
-        //this.prescription.id = this.selectedrow.id;
         heading = "Confirmation - Prescription Update";
         confirmationMessage = "Are you sure to Update this Prescription?";
         // }
@@ -406,12 +337,8 @@ export class PrescriptionComponent {
           // @ts-ignore
           this.prescription.description = this.desForm.get('description').value;
           this.prescription.prescriptionDetails = this.selectedDrugs;
-          //this.appointment.user = this.user;
-          // console.log("EmployeeService.add(emp)");
 
           this.ps.save(this.prescription).then((responce: [] | undefined) => {
-            //console.log("Res-" + responce);
-            //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
               console.log("Add-" + responce['id'] + "-" + responce['url'] + "-" + (responce['errors'] == ""));
               // @ts-ignore
@@ -494,31 +421,6 @@ export class PrescriptionComponent {
       }
 
     });
-
-
-    // // this.enableButtons(false,true,true);
-    //
-    // this.selectedrow = doctor;
-    //
-    // this.doctor = JSON.parse(JSON.stringify(doctor));
-    // this.oldDoctor = JSON.parse(JSON.stringify(doctor));
-    //
-    // if (this.doctor.photo != null) {
-    //   this.imageurl = atob(this.doctor.photo);
-    //   this.form.controls['photo'].clearValidators();
-    // } else {
-    //   this.clearImage();
-    // }
-    // this.doctor.photo = "";
-    //
-    // //@ts-ignore
-    // this.doctor.gender = this.genders.find(g => g.id === this.doctor.gender.id);
-    // //@ts-ignore
-    // this.doctor.speciality = this.specializations.find(s => s.id === this.doctor.speciality.id);
-    //
-    // this.form.patchValue(this.doctor);
-    // this.form.markAsPristine();
-
   }
 
   padZero(value: number): string {

@@ -1,6 +1,3 @@
-<!--<mat-grid-list [cols]="12" rowHeight="4rem">-->
-
-<!--  <mat-grid-tile [colspan]="4" [rowspan]="10">-->
 <mat-card>
   <mat-card-header>
     <div class="row col-12 col-md-12">
@@ -8,10 +5,6 @@
         <mat-card-title>Payment Details Management</mat-card-title>
       </div>
       <div class="col-6 col-md-6 text-right button-pannel">
-        <!--        <button *ngIf="!isCreate" mat-raised-button color="primary" style="background: #13bcb1 !important;" class="header-btn-add" (click)="book()">-->
-        <!--          <mat-icon>add</mat-icon>-->
-        <!--          Book-->
-        <!--        </button>-->
 
         <button *ngIf="isFormEnable" mat-raised-button color="primary" class="header-btn-add"
                 (click)="back()">
@@ -23,10 +16,6 @@
           <mat-icon>save</mat-icon>
           Save
         </button>
-        <!--        <button *ngIf="formNo==3" mat-raised-button (click)="clear()" class="btn-clear-form" [disabled]="!isCreate">-->
-        <!--          <mat-icon> clear_all</mat-icon>-->
-        <!--          Clear-->
-        <!--        </button>-->
       </div>
     </div>
 
@@ -140,15 +129,6 @@
       </div>
     </div>
     <div *ngIf="isFormEnable" class="form-container">
-
-
-      <!--        <div class="col-md-4 docDetail_div">-->
-      <!--          <h2 class="drName">{{ doctorName.toUpperCase() }}</h2>-->
-      <!--          <hr>-->
-      <!--          <h2 style="color: gray">{{ speciality.toUpperCase() }}</h2>-->
-      <!--          &lt;!&ndash;          <mat-label>{{ doctorName }}</mat-label>&ndash;&gt;-->
-
-      <!--        </div>-->
       <div class="col-md-12" style="padding-top: 15px">
         <h4>Appointment Information</h4>
         <hr>
@@ -234,8 +214,6 @@
           <tr mat-header-row *matHeaderRowDef="displayedDrugColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedDrugColumns;"></tr>
         </table>
-
-        <!--        <mat-paginator [pageSizeOptions]="[10, 25, 100, 200]" aria-label="Select page of users"></mat-paginator>-->
       </div>
 
       <div class="col-md-12" style="padding-top: 15px">
@@ -257,7 +235,6 @@
 
         </div>
         <div class="col-md-6" style="padding-top: 15px">
-          <!--        <div class="row">-->
           <mat-form [formGroup]="desForm">
             <div class="row">
               <div class="form-field">
@@ -268,7 +245,6 @@
               </div>
             </div>
           </mat-form>
-          <!--        </div>-->
         </div>
 
       </div>
@@ -309,61 +285,11 @@
               <span> Rs.{{ prescription.appointment.schedule.doctor.fee + aur.getCharges() }}.00</span>
             </div>
           </div>
-
         </div>
         <div class="col-md-6" style="padding-top: 15px">
-
         </div>
-
       </div>
-
-      <!--      <div class="row" style="padding: 10px 35px">-->
-      <!--        <div class="col-2 col-md-2 form-field">-->
-      <!--          <span class="lbl">Doctor charges   :</span>-->
-      <!--        </div>-->
-      <!--        <div class="col-2 col-md-2 form-field text">-->
-      <!--          <span> Rs.{{ prescription.appointment.schedule.doctor.fee }}</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--      <div class="row" style="padding: 10px 35px">-->
-      <!--        <div class="col-2 col-md-2 form-field">-->
-      <!--          <span class="lbl">Center charges   :</span>-->
-      <!--        </div>-->
-      <!--        <div class="col-2 col-md-2 form-field text">-->
-      <!--          <span> Rs.{{ aur.getCharges() }}</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--      <div class="row" style="padding: 10px 35px">-->
-      <!--        <div class="col-2 col-md-2 form-field">-->
-      <!--          <span class="lbl">Total Amount   :</span>-->
-      <!--        </div>-->
-      <!--        <div class="col-2 col-md-2 form-field text">-->
-      <!--          <span> Rs.{{ prescription.appointment.schedule.doctor.fee + aur.getCharges() }}</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
-
-      <!--      <mat-form [formGroup]="desForm">-->
-      <!--        <div class="row" style="padding: 10px 35px">-->
-      <!--          <div class="col-5 col-md-5 form-field">-->
-      <!--            <mat-form-field appearance="outline">-->
-      <!--              <mat-label>Received Amount</mat-label>-->
-      <!--              <input matInput formControlName="received">-->
-      <!--            </mat-form-field>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </mat-form>-->
-
-      <!--      <div class="row" style="padding: 10px 35px">-->
-      <!--        <div class="col-2 col-md-2 form-field">-->
-      <!--          <span class="lbl">Change   :</span>-->
-      <!--        </div>-->
-      <!--        <div class="col-2 col-md-2 form-field text">-->
-      <!--          <span> Rs.{{ prescription.appointment.schedule.doctor.fee + aur.getCharges() }}</span>-->
-      <!--        </div>-->
-      <!--      </div>-->
     </div>
-
-
   </mat-card-content>
 </mat-card>
 

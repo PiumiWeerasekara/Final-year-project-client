@@ -42,7 +42,6 @@ export class AppointmentComponent {
   public isCreate: boolean = false;
   public formNo: number = 1;
 
-  //appointment!: Appointment;
   appointment: Appointment = {
     // initialize with default values
     id: 0,
@@ -53,8 +52,6 @@ export class AppointmentComponent {
     status: 1,
     schedule: {} as Schedule,
     patient: {} as Patient
-    // user: {} as User
-    // other properties of Appointment
   };
   oldAppointment!: Appointment;
 
@@ -68,17 +65,11 @@ export class AppointmentComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // enaadd:boolean = false;
-  // enaupd:boolean = false;
-  // enadel:boolean = false;
-
   specializations: Array<Specialization> = [];
   doctors: Array<Doctor> = [];
-  allSchedules: Array<Schedule> = [];
   patients: Array<Patient> = [];
 
   isShow: boolean = false;
-  //schedules: Array<Schedule> = [];
 
   regexes: any;
 
@@ -94,7 +85,6 @@ export class AppointmentComponent {
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  //filteredPatients = [...this.patients];
   searchTerm: string = '';
 
   filteredPatients!: Observable<any[]>;
@@ -116,7 +106,6 @@ export class AppointmentComponent {
     public authService: AuthorizationManager) {
 
     this.uiassist = new UiAssist(this);
-    //this.appointment = {}; // schedule is optional
 
     this.ssearch = this.fb.group({
       "ssName": new FormControl(),
@@ -138,24 +127,11 @@ export class AppointmentComponent {
       "startTime": new FormControl('', [Validators.required]),
       "endTime": new FormControl('', [Validators.required]),
       "patient": new FormControl(null, [Validators.required])
-      // "gender": new FormControl('', [Validators.required]),
-      // "photo": new FormControl('', [Validators.required]),
-      //
-      // "email": new FormControl('', [Validators.required]),
-      // "contactNo": new FormControl('', [Validators.required]),
-      // "address": new FormControl('', [Validators.required]),
-      //
-      // "medicalLicenseNo": new FormControl('', [Validators.required]),
-      // "licenseEXPDate": new FormControl('', [Validators.required]),
-      // "speciality": new FormControl('', [Validators.required]),
 
     }, {updateOn: 'change'});
     this.dataSource = new MatTableDataSource(this.appointments);
     this.dataSourceSchedule = new MatTableDataSource(this.schedules);
 
-    // this.form = this.fb.group({
-    //   gender: [null]
-    // });
     this.searchControl = new FormControl('');
 
   }
@@ -190,9 +166,6 @@ export class AppointmentComponent {
       //this.createForm();
     });
     this.getPatients();
-    // this.searchControl.valueChanges.subscribe(value => {
-    //   this.filterPatients();
-    // });
 
     // @ts-ignore
     this.us.get(this.authService.getUsername()).then((user: User) => {
@@ -216,15 +189,7 @@ export class AppointmentComponent {
     this.form.controls['appointmentDate'].setValidators([Validators.required]);
     this.form.controls['startTime'].setValidators([Validators.required]);
     this.form.controls['endTime'].setValidators([Validators.required]);
-    // this.form.controls['nic'].setValidators([Validators.required, Validators.pattern(this.regexes['nic']['regex'])]);
     this.form.controls['patient'].setValidators([Validators.required]);
-    // this.form.controls['email'].setValidators([Validators.required, Validators.pattern(this.regexes['email']['regex'])]);
-    // this.form.controls['contactNo'].setValidators([Validators.required, Validators.pattern(this.regexes['mobile']['regex'])]);
-    // this.form.controls['address'].setValidators([Validators.required, Validators.pattern(this.regexes['address']['regex'])]);
-    // this.form.controls['medicalLicenseNo'].setValidators([Validators.required]);
-    // this.form.controls['licenseEXPDate'].setValidators([Validators.required]);
-    // this.form.controls['speciality'].setValidators([Validators.required]);
-
 
     Object.values(this.form.controls).forEach(control => {
       control.markAsTouched();
@@ -249,24 +214,15 @@ export class AppointmentComponent {
           }
         }
       );
-
     }
-    // this.enableButtons(true,false,false);
   }
 
   getPatients() {
     this.ps.getAll('')
       .then((patients: Patient[]) => {
-        //this.patients = patients;
         this.patients = patients.filter(pat => pat.status === 1);
       });
   }
-
-  // enableButtons(add:boolean, upd:boolean, del:boolean){
-  //   this.enaadd=add;
-  //   this.enaupd=upd;
-  //   this.enadel=del;
-  // }
 
   loadTable(query: string) {
 
@@ -285,19 +241,6 @@ export class AppointmentComponent {
   }
 
   loadScheduleTable(query: string) {
-
-    // this.ap.getAlltoMakeAppointment(query)
-    //   .then((schedules: Schedule[]) => {
-    //     this.schedules = schedules;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    //   .finally(() => {
-    //     this.dataSourceSchedule = new MatTableDataSource(this.schedules);
-    //     this.dataSourceSchedule.paginator = this.paginator;
-    //   });
-
     this.ap.getAlltoMakeAppointment(query)
       .then((schedules: any[]) => {
         // Format the schedules
@@ -399,25 +342,13 @@ export class AppointmentComponent {
   fillForm(appointment: Appointment) {
     this.formNo = 3;
     this.isCreate = false;
-    this.isShow= false;
+    this.isShow = false;
 
     // this.enableButtons(false,true,true);
 
     this.selectedrow = appointment;
 
     this.appointment = JSON.parse(JSON.stringify(appointment));
-    //this.oldAppointment = JSON.parse(JSON.stringify(appointment));
-
-    // //@ts-ignore
-    // this.doctor.gender = this.genders.find(g => g.id === this.doctor.gender.id);
-    // //@ts-ignore
-    // this.doctor.speciality = this.specializations.find(s => s.id === this.doctor.speciality.id);
-
-    // this.schedule.startTime = this.convertTo12HourFormat(this.schedule.startTime);
-    // this.schedule.endTime = this.convertTo12HourFormat(this.schedule.endTime);
-
-    //this.form.patchValue(this.appointment);
-    //this.form.markAsPristine();
 
     this.doctorName = `${this.capitalize(this.appointment.schedule.doctor.title)} ${this.capitalize(this.appointment.schedule.doctor.firstName)} ${this.capitalize(this.appointment.schedule.doctor.lastName)}`;
     this.speciality = this.appointment.schedule.doctor.speciality.name;
@@ -433,13 +364,6 @@ export class AppointmentComponent {
     if (selectedPatient) {
       this.form.get('patient')?.setValue(selectedPatient);
     }
-
-    // });
-    // @ts-ignore
-    // this.form.controls['patient'].setValue(appointment.patient);
-    // this.form.get('patient')?.setValue(appointment.patient);
-    //this.appointment.patient = this.patients.find(g => g.id === appointment.patient.id);
-
   }
 
 
@@ -454,56 +378,6 @@ export class AppointmentComponent {
     }
     return updates;
   }
-
-  // cancel(appointment: Appointment) {
-  //
-  //   const confirm = this.dg.open(ConfirmComponent, {
-  //     width: '500px',
-  //     data: {
-  //       heading: "Confirmation - Cancel Appointment",
-  //       message: "Are you sure to Cancel following Appointment? <br> <br>" + appointment.appointmentNo
-  //     }
-  //   });
-  //
-  //   // confirm.afterClosed().subscribe(async result => {
-  //   //   if (result) {
-  //   //     let delstatus: boolean = false;
-  //   //     let delmessage: string = "Server Not Found";
-  //   //
-  //   //     this.dcs.delete(doctor.id).then((responce: [] | undefined) => {
-  //   //
-  //   //       if (responce != undefined) { // @ts-ignore
-  //   //         delstatus = responce['errors'] == "";
-  //   //         if (!delstatus) { // @ts-ignore
-  //   //           delmessage = responce['errors'];
-  //   //         }
-  //   //       } else {
-  //   //         delstatus = false;
-  //   //         delmessage = "Content Not Found"
-  //   //       }
-  //   //     }).finally(() => {
-  //   //       if (delstatus) {
-  //   //         delmessage = "Successfully Deleted";
-  //   //         // this.form.reset();
-  //   //         // this.clearImage();
-  //   //         // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
-  //   //         this.loadTable("");
-  //   //       }
-  //   //
-  //   //       const stsmsg = this.dg.open(MessageComponent, {
-  //   //         width: '500px',
-  //   //         data: {heading: "Status - Doctor Delete ", message: delmessage}
-  //   //       });
-  //   //       stsmsg.afterClosed().subscribe(async result => {
-  //   //         if (!result) {
-  //   //           return;
-  //   //         }
-  //   //       });
-  //   //
-  //   //     });
-  //   //   }
-  //   // });
-  // }
 
   clear(): void {
     const confirm = this.dg.open(ConfirmComponent, {
@@ -584,14 +458,11 @@ export class AppointmentComponent {
             this.form.controls['endTime'].setValue(this.formatTime(this.newEndTime(schedule.startTime)));
           }
         });
-
-
       }
 
 
     }).catch((error) => {
       console.error('Error fetching schedule:', error);
-      // Handle the error as needed
     });
 
   }
@@ -625,11 +496,6 @@ export class AppointmentComponent {
             data: {heading: "Confirmation - Appointment Update", message: "Nothing Changed"}
           });
           return;
-          // updmsg.afterClosed().subscribe(async result => {
-          //   if (!result) {
-          //     return;
-          //   }
-          // });
         } else {
           this.appointment.id = this.selectedrow.id;
           heading = "Confirmation - Doctor Update";
@@ -660,12 +526,8 @@ export class AppointmentComponent {
           this.appointment.endTime = this.convertTo24HourFormat(this.appointment.endTime);
           this.appointment.schedule = this.selectedSchedule;
           this.appointment.status = 1;
-          //this.appointment.user = this.user;
-          // console.log("EmployeeService.add(emp)");
 
           this.ap.save(this.appointment).then((responce: [] | undefined) => {
-            //console.log("Res-" + responce);
-            //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
               console.log("Add-" + responce['id'] + "-" + responce['url'] + "-" + (responce['errors'] == ""));
               // @ts-ignore
@@ -687,9 +549,6 @@ export class AppointmentComponent {
               Object.values(this.form.controls).forEach(control => {
                 control.markAsTouched();
               });
-
-
-              //this.loadScheduleTable("");
             }
 
             const stsmsg = this.dg.open(MessageComponent, {
@@ -700,7 +559,7 @@ export class AppointmentComponent {
             stsmsg.afterClosed().subscribe(async result => {
               if (!result) {
                 return;
-              }else {
+              } else {
                 this.formNo = 2
                 this.isShow = false;
                 this.sSearchSchedule.reset();
@@ -750,20 +609,6 @@ export class AppointmentComponent {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
   }
-
-  // onOpen() {
-  //   this.filteredPatients = [...this.patients];
-  // }
-
-  // filterPatients() {
-  //   if (this.searchTerm) {
-  //     this.filteredPatients = this.patients.filter(patient =>
-  //       patient.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) || patient.lastName.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //     );
-  //   } else {
-  //     this.filteredPatients = [...this.patients];
-  //   }
-  // }
 
   newEndTime(time: string) {
     const [hours, minutes, seconds] = time.split(':').map(Number);
@@ -864,12 +709,8 @@ export class AppointmentComponent {
           if (delstatus) {
             delmessage = "Successfully Cancelled";
             this.form.reset();
-            // this.clearImage();
-            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
             this.loadTable("");
-            //this.getRoomNumber();
           }
-
           const stsmsg = this.dg.open(MessageComponent, {
             width: '500px',
             data: {heading: "Status - Appointment Cancel ", message: delmessage}

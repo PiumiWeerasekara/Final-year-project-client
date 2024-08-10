@@ -4,6 +4,7 @@ import {ArrearsByProgram} from "../../entity/arrearsbyprogram";
 import { CdkTableModule } from '@angular/cdk/table';
 import {CountByDesignation} from "../../entity/countbydesignation";
 import {ReportService} from "../../reportservice";
+import {DatePipe} from "@angular/common";
 
 
 
@@ -26,14 +27,15 @@ export class ArrearsByProgramComponent implements OnInit {
 
   total!:number[];
   ftext:string = "Total Counts"
-
+currentMonth : string = '';
 
   @ViewChild('columnchart', { static: false }) columnchart: any;
   @ViewChild('piechart', { static: false }) piechart: any;
 
 
-  constructor(private rs: ReportService) {
-
+  constructor(private rs: ReportService, public datePipe: DatePipe) {
+    // @ts-ignore
+    this.currentMonth = this.datePipe.transform(new Date(), 'MMMM yyyy');
   }
 
   ngOnInit(): void {
@@ -51,9 +53,9 @@ export class ArrearsByProgramComponent implements OnInit {
         });
 
         const pieOptions = {
-          title: 'Monthly Appointment Count By Doctor',
-          height: 400,
-          width: 700,
+          title: '  ',
+          height: 700,
+          width: 1100,
           pieSliceText: 'percentage', // Displays the percentage value on each slice
           tooltip: {
             text: 'value' // Displays the numerical value when hovering over a slice
@@ -65,7 +67,7 @@ export class ArrearsByProgramComponent implements OnInit {
 
       }).finally(() => {
       // this.loadTable();
-      // this.loadCharts();
+      this.loadCharts();
     });
 
     let bit: ArrearsByProgram = new ArrearsByProgram("BIT", 1, 10, 450000, 135000, 315000, 94500, 30);

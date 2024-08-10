@@ -42,10 +42,7 @@ export class LoginComponent implements OnInit{
 
     this.as.post(username,password)
       .then((response: any) => {
-        // console.log("PPPPP-"+response);
-        // console.log(response.headers);
         let token = response.headers.get('Authorization');
-        //console.log("AAAA-"+token);
         localStorage.setItem('Authorization', token);
         this.router.navigateByUrl("main/home");
         this.ut.getAuth(username);

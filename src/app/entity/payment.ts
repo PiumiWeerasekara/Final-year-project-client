@@ -1,6 +1,3 @@
-import {Patient} from "./patient";
-import {User} from "./user";
-import {Schedule} from "./schedule";
 import {Prescription} from "./prescription";
 
 export class Payment {

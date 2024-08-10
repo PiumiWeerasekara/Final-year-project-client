@@ -3,7 +3,7 @@ import {Prescription} from "./prescription";
 
 export class PrescriptionDetail {
 
-  public id : number = 0;
+  public id: number = 0;
   public dosage !: string;
   public instruction !: string;
   public prescription !: Prescription;

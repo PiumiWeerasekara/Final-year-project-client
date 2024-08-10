@@ -7,8 +7,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HomeComponent} from './view/home/home.component';
 import {LoginComponent} from './view/login/login.component';
 import {MainwindowComponent} from './view/mainwindow/mainwindow.component';
-import {EmployeeComponent} from './view/modules/employee/employee.component';
-import {UserComponent} from './view/modules/user/user.component';
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatCardModule} from "@angular/material/card";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -38,13 +36,7 @@ import { PrivilageComponent } from './view/modules/privilage/privilage.component
 import {JwtInterceptor} from "./service/JwtInterceptor";
 import {AuthorizationManager} from "./service/authorizationmanager";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import { OperationComponent } from './view/modules/operation/operation.component';
 import { PaymentComponent } from './view/modules/payment/payment.component';
-import { AttendanceComponent } from './view/modules/attendance/attendance.component';
-import { StudentComponent } from './view/modules/student/student.component';
-import { BatchregistrationComponent } from './view/modules/batchregistration/batchregistration.component';
-import { ClassComponent } from './view/modules/class/class.component';
-import { BookdistributionComponent } from './view/modules/bookdistribution/bookdistribution.component';
 import { DoctorComponent } from './view/modules/doctor/doctor.component';
 import {MatSortModule} from "@angular/material/sort";
 import { PatientComponent } from './view/modules/patient/patient.component';
@@ -55,6 +47,9 @@ import { AppointmentComponent } from './view/modules/appointment/appointment.com
 import { PrescriptionComponent } from './view/modules/prescription/prescription.component';
 import { StaffComponent } from './view/modules/staff/staff.component';
 import { User1Component } from './view/modules/user1/user1.component';
+import { PrescriptionHistoryComponent } from './view/modules/Reports/prescription-history/prescription-history.component';
+import { PatientVisitComponent } from './view/modules/Reports/patient-visit/patient-visit.component';
+import { YearlyPaymentComponent } from './view/modules/Reports/yearly-payment/yearly-payment.component';
 
 
 @NgModule({
@@ -63,20 +58,12 @@ import { User1Component } from './view/modules/user1/user1.component';
     HomeComponent,
     LoginComponent,
     MainwindowComponent,
-    EmployeeComponent,
-    UserComponent,
     ConfirmComponent,
     ArrearsByProgramComponent,
     CountByDesignationComponent,
     MessageComponent,
     PrivilageComponent,
-    OperationComponent,
     PaymentComponent,
-    AttendanceComponent,
-    StudentComponent,
-    BatchregistrationComponent,
-    ClassComponent,
-    BookdistributionComponent,
     DoctorComponent,
     PatientComponent,
     RoomComponent,
@@ -84,7 +71,10 @@ import { User1Component } from './view/modules/user1/user1.component';
     AppointmentComponent,
     PrescriptionComponent,
     StaffComponent,
-    User1Component
+    User1Component,
+    PrescriptionHistoryComponent,
+    PatientVisitComponent,
+    YearlyPaymentComponent
   ],
   imports: [
     MatDatepickerModule,
@@ -114,7 +104,6 @@ import { User1Component } from './view/modules/user1/user1.component';
     NgxMaterialTimepickerModule
   ],
   providers: [
-    OperationComponent,
     EmployeeService,
     DatePipe,
     AuthorizationManager,

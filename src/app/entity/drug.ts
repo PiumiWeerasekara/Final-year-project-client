@@ -1,4 +1,4 @@
-export class Drug{
+export class Drug {
 
   public id !: number;
   public name !: string;

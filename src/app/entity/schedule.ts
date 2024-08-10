@@ -1,9 +1,7 @@
-import {Gender} from "./gender";
-import {Specialization} from "./specialization";
 import {Room} from "./room";
 import {Doctor} from "./doctor";
 
-export class Schedule{
+export class Schedule {
 
   public id !: number;
   public scheduleDate !: string;
@@ -12,7 +10,7 @@ export class Schedule{
   public room !: Room;
   public doctor !: Doctor;
   public noOfpatient !: number;
-  public status : number = 1;
+  public status: number = 1;
 
 
   constructor(id: number, scheduleDate: string, startTime: string, endTime: string, room: Room, doctor: Doctor, noOfpatient: number, status: number) {

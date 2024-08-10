@@ -41,12 +41,7 @@ export class PatientComponent {
   // imageurl: string = 'assets/default.png'
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // enaadd:boolean = false;
-  // enaupd:boolean = false;
-  // enadel:boolean = false;
-
   genders: Array<Gender> = [];
-  // specializations: Array<Specialization> = [];
   Title = Title;
   Titles = Titles;
 
@@ -180,14 +175,7 @@ export class PatientComponent {
       );
 
     }
-    // this.enableButtons(true,false,false);
   }
-
-  // enableButtons(add:boolean, upd:boolean, del:boolean){
-  //   this.enaadd=add;
-  //   this.enaupd=upd;
-  //   this.enadel=del;
-  // }
 
 
   loadTable(query: string) {
@@ -195,11 +183,9 @@ export class PatientComponent {
     this.dcs.getAll(query)
       .then((patients: Patient[]) => {
         this.patients = patients;
-        // this.imageurl = 'assets/default.png';
       })
       .catch((error) => {
         console.log(error);
-        // this.imageurl = 'assets/rejected.png';
       })
       .finally(() => {
         this.dataSource = new MatTableDataSource(this.patients);
@@ -244,22 +230,6 @@ export class PatientComponent {
 
   }
 
-  // selectImage(e: any): void {
-  //   if (e.target.files) {
-  //     let reader = new FileReader();
-  //     reader.readAsDataURL(e.target.files[0]);
-  //     reader.onload = (event: any) => {
-  //       // this.imageurl = event.target.result;
-  //      // this.form.controls['photo'].clearValidators();
-  //     }
-  //   }
-  // }
-
-  // clearImage(): void {
-  //   // this.imageurl = 'assets/default.png';
-  //   //this.form.controls['photo'].setErrors({'required': true});
-  // }
-
   getErrors(): string {
 
     let errors: string = "";
@@ -290,14 +260,6 @@ export class PatientComponent {
     this.patient = JSON.parse(JSON.stringify(patient));
     this.oldPatient = JSON.parse(JSON.stringify(patient));
 
-    // if (this.patient.photo != null) {
-    //   // this.imageurl = atob(this.patient.photo);
-    //   // this.form.controls['photo'].clearValidators();
-    // } else {
-    //   // this.clearImage();
-    // }
-    // this.patient.photo = "";
-
     //@ts-ignore
     this.patient.gender = this.genders.find(g => g.id === this.patient.gender.id);
     //@ts-ignore
@@ -319,56 +281,6 @@ export class PatientComponent {
     return updates;
   }
 
-  // delete(patient: Patient) {
-  //
-  //   const confirm = this.dg.open(ConfirmComponent, {
-  //     width: '500px',
-  //     data: {
-  //       heading: "Confirmation - Patient Delete",
-  //       message: "Are you sure to Delete following Patient? <br> <br>" + patient.title + ". " + patient.firstName + " " + patient.lastName
-  //     }
-  //   });
-  //
-  //   confirm.afterClosed().subscribe(async result => {
-  //     if (result) {
-  //       let delstatus: boolean = false;
-  //       let delmessage: string = "Server Not Found";
-  //
-  //       this.dcs.delete(patient.id).then((responce: [] | undefined) => {
-  //
-  //         if (responce != undefined) { // @ts-ignore
-  //           delstatus = responce['errors'] == "";
-  //           if (!delstatus) { // @ts-ignore
-  //             delmessage = responce['errors'];
-  //           }
-  //         } else {
-  //           delstatus = false;
-  //           delmessage = "Content Not Found"
-  //         }
-  //       }).finally(() => {
-  //         if (delstatus) {
-  //           delmessage = "Successfully Deleted";
-  //           // this.form.reset();
-  //           // this.clearImage();
-  //           // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
-  //           this.loadTable("");
-  //         }
-  //
-  //         const stsmsg = this.dg.open(MessageComponent, {
-  //           width: '500px',
-  //           data: {heading: "Status - Patient Delete ", message: delmessage}
-  //         });
-  //         stsmsg.afterClosed().subscribe(async result => {
-  //           if (!result) {
-  //             return;
-  //           }
-  //         });
-  //
-  //       });
-  //     }
-  //   });
-  // }
-
   clear(): void {
     const confirm = this.dg.open(ConfirmComponent, {
       width: '500px',
@@ -385,9 +297,6 @@ export class PatientComponent {
     });
   }
 
-  //added by me
-
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -397,18 +306,16 @@ export class PatientComponent {
     }
   }
 
-  create(isExternal:boolean=false) {
+  create(isExternal: boolean = false) {
     this.isFormEnable = true;
     this.isCreate = true;
-    this.isDisableBackButton= isExternal;
+    this.isDisableBackButton = isExternal;
   }
 
   back() {
     this.isCreate = true;
     this.isFormEnable = false;
     this.form.reset();
-    //this.clearImage();
-
   }
 
   save() {
@@ -440,11 +347,6 @@ export class PatientComponent {
             data: {heading: "Confirmation - Patient Update", message: "Nothing Changed"}
           });
           return;
-          // updmsg.afterClosed().subscribe(async result => {
-          //   if (!result) {
-          //     return;
-          //   }
-          // });
         } else {
           this.patient.id = this.selectedrow.id;
           heading = "Confirmation - Patient Update";
@@ -457,8 +359,6 @@ export class PatientComponent {
         heading = "Confirmation - Patient Add";
         confirmationMessage = "Are you sure to Save the following Patient? <br> <br>" + drData;
       }
-
-      // this.patient.photo = btoa(this.imageurl);
 
       let status: boolean = false;
       let message: string = "Server Not Found";
@@ -473,11 +373,7 @@ export class PatientComponent {
 
       confirm.afterClosed().subscribe(async result => {
         if (result) {
-          // console.log("EmployeeService.add(emp)");
-
           this.dcs.save(this.patient).then((responce: [] | undefined) => {
-            //console.log("Res-" + responce);
-            //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
               console.log("Add-" + responce['id'] + "-" + responce['url'] + "-" + (responce['errors'] == ""));
               // @ts-ignore
@@ -520,7 +416,7 @@ export class PatientComponent {
   }
 
   calculateAge(dob: Date): number {
-    if (!this.isCreate){
+    if (!this.isCreate) {
       dob = new Date(dob);
     }
     const today = new Date();
@@ -561,9 +457,6 @@ export class PatientComponent {
         }).finally(() => {
           if (delstatus) {
             delmessage = "Successfully Inactivated";
-            // this.form.reset();
-            // this.clearImage();
-            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
             this.loadTable("");
           }
 

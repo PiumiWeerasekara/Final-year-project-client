@@ -8,12 +8,13 @@ import {HttpClient} from "@angular/common/http";
 
 export class DesignationService {
 
-  constructor(private http: HttpClient) {  }
+  constructor(private http: HttpClient) {
+  }
 
   async getAllList(): Promise<Array<Designation>> {
 
     const designations = await this.http.get<Array<Designation>>('http://localhost:8080/designations/list').toPromise();
-    if(designations == undefined){
+    if (designations == undefined) {
       return [];
     }
     return designations;

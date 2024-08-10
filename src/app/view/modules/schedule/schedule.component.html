@@ -40,7 +40,9 @@
                   <mat-label>Doctor</mat-label>
                   <mat-select formControlName="ssDoctor">
                     <mat-option [value]="null" selected>Not Selected</mat-option>
-                    <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.title }}. {{ doctor.firstName }} {{ doctor.lastName }}</mat-option>
+                    <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.title }}
+                      . {{ doctor.firstName }} {{ doctor.lastName }}
+                    </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -62,16 +64,6 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-
-<!--              <div class="col-4 col-md-4">-->
-<!--                <mat-form-field appearance="outline">-->
-<!--                  <mat-label>Specialization</mat-label>-->
-<!--                  <mat-select formControlName="ssSpecification">-->
-<!--                    <mat-option [value]="null" selected>Not Selected</mat-option>-->
-<!--                    <mat-option *ngFor="let spec of specializations" [value]="spec.id">{{ spec.name }}</mat-option>-->
-<!--                  </mat-select>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
             </div>
 
             <div class="row search-btn-container">
@@ -101,7 +93,9 @@
 
           <ng-container matColumnDef="doctor">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Doctor</th>
-            <td mat-cell class="mat-column-20" *matCellDef="let row"> {{ row.doctor.title }}. {{ row.doctor.firstName }} {{ row.doctor.lastName }}</td>
+            <td mat-cell class="mat-column-20" *matCellDef="let row"> {{ row.doctor.title }}
+              . {{ row.doctor.firstName }} {{ row.doctor.lastName }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="room">
@@ -126,12 +120,14 @@
 
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-            <td mat-cell class="mat-column-15"  *matCellDef="let row"> {{ row.status == 1 ? 'Available': 'Cancelled' }}</td>
+            <td mat-cell class="mat-column-15"
+                *matCellDef="let row"> {{ row.status == 1 ? 'Available' : 'Cancelled' }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
-            <td mat-cell class="mat-column-5"  *matCellDef="let row">
+            <td mat-cell class="mat-column-5" *matCellDef="let row">
               <button mat-icon-button class="btn-edit" (click)="fillForm(row)" [disabled]="row.status == 0">
                 <mat-icon>edit</mat-icon>
               </button>
@@ -140,7 +136,7 @@
 
           <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Cancel</th>
-            <td mat-cell class="mat-column-5"  *matCellDef="let row">
+            <td mat-cell class="mat-column-5" *matCellDef="let row">
               <button mat-icon-button class="btn-delete" (click)="delete(row)" [disabled]="row.status == 0">
                 <mat-icon>clear</mat-icon>
               </button>
@@ -171,7 +167,9 @@
               <mat-label>Doctor</mat-label>
               <mat-select formControlName="doctor">
                 <mat-option [value]="null" selected>Not Selected</mat-option>
-                <mat-option *ngFor="let doctor of doctors" [value]="doctor">{{ doctor.title }}. {{ doctor.firstName }} {{ doctor  .lastName }}</mat-option>
+                <mat-option *ngFor="let doctor of doctors" [value]="doctor">{{ doctor.title }}
+                  . {{ doctor.firstName }} {{ doctor.lastName }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -187,25 +185,21 @@
 
           <div class="col-3 col-md-3 form-field">
             <mat-form-field appearance="fill">
-              <input matInput [ngxTimepicker]="startTime" formControlName="startTime" placeholder="Select Start Time" readonly>
+              <input matInput [ngxTimepicker]="startTime" formControlName="startTime" placeholder="Select Start Time"
+                     readonly>
               <ngx-material-timepicker #startTime></ngx-material-timepicker>
             </mat-form-field>
           </div>
 
           <div class="col-3 col-md-3 form-field">
             <mat-form-field appearance="fill">
-              <input matInput [ngxTimepicker]="endTime" formControlName="endTime" placeholder="Select End Time" readonly>
+              <input matInput [ngxTimepicker]="endTime" formControlName="endTime" placeholder="Select End Time"
+                     readonly>
               <ngx-material-timepicker #endTime></ngx-material-timepicker>
             </mat-form-field>
           </div>
-<!--          (closed)="onTimeChange('endTime')"-->
-
-<!--          <input matInput formControlName="status" hidden="hidden">-->
-
         </div>
         <div class="row" style="padding: 15px 15px">
-
-
 
 
           <div class="col-3 col-md-3 form-field">
@@ -217,14 +211,12 @@
               </mat-select>
             </mat-form-field>
           </div>
-
           <div class="col-3 col-md-3 form-field">
             <mat-form-field appearance="outline">
               <mat-label>No of Appointment</mat-label>
               <input matInput formControlName="noOfPatient" type="number" [min]="0">
             </mat-form-field>
           </div>
-
         </div>
       </mat-form>
     </div>

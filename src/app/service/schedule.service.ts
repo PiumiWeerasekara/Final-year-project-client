@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Room} from "../entity/room";
 import {Schedule} from "../entity/schedule";
@@ -8,34 +8,36 @@ import {Schedule} from "../entity/schedule";
 })
 export class ScheduleService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  async getAllAvailableRooms(query:string): Promise<Array<Room>> {
-    const rooms = await this.http.get<Array<Room>>('http://localhost:8080/schedule/availableRooms'+query).toPromise();
-    if(rooms == undefined){
+  async getAllAvailableRooms(query: string): Promise<Array<Room>> {
+    const rooms = await this.http.get<Array<Room>>('http://localhost:8080/schedule/availableRooms' + query).toPromise();
+    if (rooms == undefined) {
       return [];
     }
     return rooms;
   }
 
-  async save(schedule: Schedule): Promise<[]|undefined>{
+  async save(schedule: Schedule): Promise<[] | undefined> {
     return this.http.post<[]>('http://localhost:8080/schedule', schedule).toPromise();
   }
 
 
-  async cancel(id: number): Promise<[]|undefined>{
+  async cancel(id: number): Promise<[] | undefined> {
     // @ts-ignore
     return this.http.post('http://localhost:8080/schedule/cancel/' + id).toPromise();
   }
 
-  async getAll(query:string): Promise<Array<Schedule>> {
-    const schedules = await this.http.get<Array<Schedule>>('http://localhost:8080/schedule'+query).toPromise();
-    if(schedules == undefined){
+  async getAll(query: string): Promise<Array<Schedule>> {
+    const schedules = await this.http.get<Array<Schedule>>('http://localhost:8080/schedule' + query).toPromise();
+    if (schedules == undefined) {
       return [];
     }
     return schedules;
   }
-  async getById(id: number): Promise<Schedule |undefined>{
+
+  async getById(id: number): Promise<Schedule | undefined> {
     // @ts-ignore
     return this.http.get('http://localhost:8080/schedule/byScheduleId?id=' + id).toPromise();
   }

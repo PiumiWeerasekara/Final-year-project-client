@@ -2,7 +2,7 @@ import {Gender} from "./gender";
 import {Specialization} from "./specialization";
 import {Staff} from "./staff";
 
-export class Doctor{
+export class Doctor {
 
   public id !: number;
   public title !: string;
@@ -16,10 +16,10 @@ export class Doctor{
   public email !: string;
   public gender !: Gender;
   public speciality !: Specialization;
-  public  medicalLicenseNo !: string;
-  public  licenseEXPDate !: string;
-  public  status!: number;
-  public  fee!: number;
+  public medicalLicenseNo !: string;
+  public licenseEXPDate !: string;
+  public status!: number;
+  public fee!: number;
   public staff!: Staff;
 
 

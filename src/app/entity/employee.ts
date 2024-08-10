@@ -3,7 +3,7 @@ import {Designation} from "./designation";
 import {Empstatus} from "./empstatus";
 import {Emptype} from "./emptype";
 
-export class Employee{
+export class Employee {
 
   public id !: number;
   public fullname !: string;
@@ -24,31 +24,31 @@ export class Employee{
   public emptype !: Emptype;
 
 
-  constructor(id:number, fullname:string, number:string,
-              callingname:string, photo:string, dobirth:string,
-              nic:string, address:string, mobile:string,
-              land:string,email:string, doassignment:string, description:string,
-              gender:Gender, designation:Designation,
-              empstatus:Empstatus,
-              emptype:Emptype ) {
+  constructor(id: number, fullname: string, number: string,
+              callingname: string, photo: string, dobirth: string,
+              nic: string, address: string, mobile: string,
+              land: string, email: string, doassignment: string, description: string,
+              gender: Gender, designation: Designation,
+              empstatus: Empstatus,
+              emptype: Emptype) {
 
-    this.id=id;
-    this.fullname=fullname;
-    this.number=number;
-    this.callingname=callingname;
-    this.photo=photo;
-    this.dobirth=dobirth;
-    this.nic=nic;
-    this.address=address;
-    this.mobile=mobile;
-    this.land=land;
-    this.email=email;
-    this.doassignment=doassignment;
-    this.description=description;
-    this.gender=gender;
-    this.designation=designation;
-    this.empstatus=empstatus;
-    this.emptype=emptype;
+    this.id = id;
+    this.fullname = fullname;
+    this.number = number;
+    this.callingname = callingname;
+    this.photo = photo;
+    this.dobirth = dobirth;
+    this.nic = nic;
+    this.address = address;
+    this.mobile = mobile;
+    this.land = land;
+    this.email = email;
+    this.doassignment = doassignment;
+    this.description = description;
+    this.gender = gender;
+    this.designation = designation;
+    this.empstatus = empstatus;
+    this.emptype = emptype;
   }
 
 }

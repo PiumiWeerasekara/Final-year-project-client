@@ -6,7 +6,6 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {RegexService} from "../../../service/regexservice";
 import {MatDialog} from "@angular/material/dialog";
-import {DatePipe} from "@angular/common";
 import {AuthorizationManager} from "../../../service/authorizationmanager";
 import {ConfirmComponent} from "../../../util/dialog/confirm/confirm.component";
 import {MessageComponent} from "../../../util/dialog/message/message.component";
@@ -27,12 +26,7 @@ export class RoomComponent {
 
   selectedrow: any;
 
-  // imageurl: string = 'assets/default.png'
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  // enaadd:boolean = false;
-  // enaupd:boolean = false;
-  // enadel:boolean = false;
 
   regexes: any;
 
@@ -52,12 +46,6 @@ export class RoomComponent {
     public authService: AuthorizationManager) {
 
     this.uiassist = new UiAssist(this);
-
-    // this.ssearch = this.fb.group({
-    //   "ssName": new FormControl(),
-    //   "ssNic": new FormControl()
-    // });
-
 
     this.form = this.fb.group({
       "number": new FormControl('', [Validators.required]),
@@ -89,7 +77,6 @@ export class RoomComponent {
   }
 
   createView() {
-    // this.imageurl = 'assets/pending.gif';
   }
 
   getRoomNumber() {
@@ -125,18 +112,8 @@ export class RoomComponent {
           }
         }
       );
-
     }
-    // this.enableButtons(true,false,false);
-
   }
-
-  // enableButtons(add:boolean, upd:boolean, del:boolean){
-  //   this.enaadd=add;
-  //   this.enaupd=upd;
-  //   this.enadel=del;
-  // }
-
 
   loadTable(query: string) {
 
@@ -175,8 +152,6 @@ export class RoomComponent {
 
   fillForm(room: Room) {
     this.isCreate = false;
-
-    // this.enableButtons(false,true,true);
 
     this.selectedrow = room;
 
@@ -231,8 +206,6 @@ export class RoomComponent {
           if (delstatus) {
             delmessage = "Successfully Deleted";
             this.form.reset();
-            // this.clearImage();
-            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
             this.loadTable("");
             this.getRoomNumber();
           }
@@ -267,9 +240,6 @@ export class RoomComponent {
       }
     });
   }
-
-  //added by me
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -344,8 +314,6 @@ export class RoomComponent {
           // console.log("EmployeeService.add(emp)");
 
           this.ros.save(this.room).then((responce: [] | undefined) => {
-            //console.log("Res-" + responce);
-            //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
               console.log("Add-" + responce['id'] + "-" + responce['url'] + "-" + (responce['errors'] == ""));
               // @ts-ignore
@@ -364,7 +332,6 @@ export class RoomComponent {
             if (status) {
               message = "Successfully Saved";
               this.form.reset();
-              //this.clearImage();
               Object.values(this.form.controls).forEach(control => {
                 control.markAsTouched();
               });
@@ -377,7 +344,6 @@ export class RoomComponent {
               width: '500px',
               data: {heading: "Status -Room Save", message: message}
             });
-
             stsmsg.afterClosed().subscribe(async result => {
               if (!result) {
                 return;

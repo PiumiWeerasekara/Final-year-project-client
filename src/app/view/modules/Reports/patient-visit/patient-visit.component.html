@@ -1,0 +1,110 @@
+<mat-card>
+  <mat-card-header>
+    <div class="row col-12 col-md-12">
+      <div class="col-6 col-md-6">
+        <mat-card-title>Patient Visit Report for {{ currentYear }}</mat-card-title>
+      </div>
+    </div>
+
+  </mat-card-header>
+  <mat-card-content id="form">
+    <div class="table-container">
+      <mat-card id="ssearch" class="search-container">
+        <mat-card-content>
+          <mat-form [formGroup]="ssearch">
+            <div class="row">
+              <div class="col-4 col-md-4">
+                <mat-form-field appearance="outline">
+                  <mat-label>Patient</mat-label>
+                  <mat-select formControlName="patient" (openedChange)="onOpen()" (selectionChange)="onClose()"
+                  >
+                    <!-- Using a div to contain the search input instead of mat-option -->
+                    <div *ngIf="dropdownOpen" style="padding: 8px">
+                      <input #searchInput matInput placeholder="Search Patient" [formControl]="searchControl"
+                             (focus)="focusSearchInput()" (keydown)="onSearchInputKeyDown($event)">
+                    </div>
+                    <mat-option [value]="null">Not Selected</mat-option>
+                    <mat-option *ngFor="let patient of filteredPatients | async" [value]="patient">
+                      {{ patient.title }}. {{ patient.firstName }} {{ patient.lastName }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+
+            </div>
+            <div class="row search-btn-container">
+              <div class="col-4 col-md-4">
+                <button mat-raised-button color="primary" class="btn-search search-container-btn"
+                        style="margin-left: -5px;" (click)="btnSearchMc()">
+                  <mat-icon>search</mat-icon>
+                  Search
+                </button>
+
+              </div>
+            </div>
+          </mat-form>
+        </mat-card-content>
+
+      </mat-card>
+      <mat-card *ngIf="patient!=null">
+        <mat-card-content>
+          <div class="row" style="padding: 5px 35px">
+            <div class="col-2 col-md-2 form-field">
+              <span class="lbl">Patient Name   :</span>
+            </div>
+            <div class="col-2 col-md-2 form-field text">
+            <span>{{ patient.title }}
+              . {{ patient.firstName }} {{ patient.lastName }} </span>
+            </div>
+          </div>
+          <div class="row" style="padding: 5px 35px">
+            <div class="col-2 col-md-2 form-field">
+              <span class="lbl">Patient NIC   :</span>
+            </div>
+            <div class="col-2 col-md-2 form-field text">
+              <span>{{ patient.nic }}</span>
+            </div>
+          </div>
+          <div class="row" style="padding: 5px 35px">
+            <div class="col-2 col-md-2 form-field">
+              <span class="lbl">Age   :</span>
+            </div>
+            <div class="col-2 col-md-2 form-field text">
+              <span>{{ calculateAge(patient.dob) }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="arr.length > 0">
+        <mat-card-content>
+          <div class="mat-elevation-z2" *ngIf="arr.length > 0">
+            <table mat-table id="tblAll" [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="month">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                <td mat-cell *matCellDef="let row" class="mat-column-time">{{ getMonthName(row[0]) }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Count</th>
+                <td mat-cell *matCellDef="let row" class="mat-column-time">{{ row[1] }}</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[10, 25, 100, 200]" aria-label="Select page of users"></mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+
+
+

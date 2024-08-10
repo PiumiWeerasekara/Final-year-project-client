@@ -42,10 +42,6 @@ export class DoctorComponent {
   imageurl: string = 'assets/default.png'
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // enaadd:boolean = false;
-  // enaupd:boolean = false;
-  // enadel:boolean = false;
-
   genders: Array<Gender> = [];
   specializations: Array<Specialization> = [];
   Title = Title;
@@ -182,14 +178,8 @@ export class DoctorComponent {
       );
 
     }
-    // this.enableButtons(true,false,false);
   }
 
-  // enableButtons(add:boolean, upd:boolean, del:boolean){
-  //   this.enaadd=add;
-  //   this.enaupd=upd;
-  //   this.enadel=del;
-  // }
 
   loadTable(query: string) {
 
@@ -276,7 +266,6 @@ export class DoctorComponent {
         }
       }
     }
-
     return errors;
   }
 
@@ -306,9 +295,7 @@ export class DoctorComponent {
 
     this.form.patchValue(this.doctor);
     this.form.markAsPristine();
-
   }
-
 
   getUpdates(): string {
 
@@ -351,9 +338,6 @@ export class DoctorComponent {
         }).finally(() => {
           if (delstatus) {
             delmessage = "Successfully Inactivated";
-            // this.form.reset();
-            // this.clearImage();
-            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
             this.loadTable("");
           }
 
@@ -442,11 +426,6 @@ export class DoctorComponent {
             data: {heading: "Confirmation - Doctor Update", message: "Nothing Changed"}
           });
           return;
-          // updmsg.afterClosed().subscribe(async result => {
-          //   if (!result) {
-          //     return;
-          //   }
-          // });
         } else {
           this.doctor.id = this.selectedrow.id;
           heading = "Confirmation - Doctor Update";
@@ -478,8 +457,6 @@ export class DoctorComponent {
           // console.log("EmployeeService.add(emp)");
 
           this.dcs.save(this.doctor).then((responce: [] | undefined) => {
-            //console.log("Res-" + responce);
-            //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
               console.log("Add-" + responce['id'] + "-" + responce['url'] + "-" + (responce['errors'] == ""));
               // @ts-ignore
@@ -504,12 +481,10 @@ export class DoctorComponent {
               });
               this.loadTable("");
             }
-
             const stsmsg = this.dg.open(MessageComponent, {
               width: '500px',
               data: {heading: "Status -Doctor Save", message: message}
             });
-
             stsmsg.afterClosed().subscribe(async result => {
               if (!result) {
                 return;

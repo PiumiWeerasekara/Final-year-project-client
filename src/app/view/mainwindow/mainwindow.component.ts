@@ -2,12 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthorizationManager} from "../../service/authorizationmanager";
 import {DarkModeService} from "../../service/DarkModeService";
-import {Gender} from "../../entity/gender";
 import {User1Service} from "../../service/user1service";
 import {Staff} from "../../entity/staff";
 import {UserRole} from "../../shared/constant/userRole";
 import {ActiveUserRoleService} from "../../service/activeUserRoleServie";
 import {DatePipe} from "@angular/common";
+import {Appointment} from "../../entity/appointment";
+import {AppointmentService} from "../../service/appointment.service";
 
 
 @Component({
@@ -21,11 +22,16 @@ export class MainwindowComponent {
 
   staff!: Staff;
   //userRole!: string;
-  currentDate=new Date();
+  currentDate = new Date();
   imageUrl!: string;
 
 
-  constructor(private router: Router, public authService: AuthorizationManager, public darkModeSevice: DarkModeService, private us: User1Service, public aur: ActiveUserRoleService, public dp: DatePipe) {
+  constructor(private router: Router,
+              public authService: AuthorizationManager,
+              public darkModeSevice: DarkModeService,
+              private us: User1Service,
+              public aur: ActiveUserRoleService,
+              public dp: DatePipe) {
     this.getUser();
   }
 
@@ -70,7 +76,7 @@ export class MainwindowComponent {
 
   getUser() {
     this.us.get(this.authService.getUsername()).then((stf: Staff | undefined) => {
-      if (stf != undefined){
+      if (stf != undefined) {
         this.staff = stf;
         if (this.staff.photo) {
           this.imageUrl = 'data:image/jpeg;base64,' + atob(this.staff.photo);
@@ -82,7 +88,6 @@ export class MainwindowComponent {
       // @ts-ignore
       this.aur.setUserRole(stf.staffType.type);
       this.aur.setStaff(stf);
-      //this.userRole = stf.staffType.type;
     });
   }
 

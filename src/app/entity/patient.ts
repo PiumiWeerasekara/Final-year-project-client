@@ -1,5 +1,6 @@
 import {Gender} from "./gender";
-export class Patient{
+
+export class Patient {
 
   public id !: number;
   public title !: string;

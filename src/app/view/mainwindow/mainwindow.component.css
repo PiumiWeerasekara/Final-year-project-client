@@ -24,19 +24,12 @@ mat-toolbar-row {
 .img-logo {
   height: 70px;
   border-radius: 5px;
-  /*margin-left: 10px;*/
   vertical-align: middle;
 }
 
 
 .btn-nav.mat-mdc-icon-button {
-  /*background-color: #2b3815;*/
-  /*color: #ffffff;*/
-  /*vertical-align: middle;*/
-  /*box-shadow: 1px 1px 6px #333333;*/
-  /*border: #c0d9c3 solid 2px;*/
   padding: 0px;
-  /*--mat-mdc-button-ripple-color: rgba(255, 255, 255, 0.2);*/
 }
 
 .lbl-user {
@@ -108,8 +101,13 @@ mat-nav-list mat-expansion-panel-header:hover {
 mat-nav-list mat-expansion-panel mat-list-item {
   height: 28px;
 }
-mat-list-item a{
+
+mat-list-item a {
   color: white;
+}
+
+.mat-expansion-panel{
+  background: rgb(15, 16, 86);
 }
 
 

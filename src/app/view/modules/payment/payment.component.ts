@@ -34,9 +34,6 @@ export class PaymentComponent {
 
   selectedrow: any;
 
-  //prescription!: Prescription;
-  //oldPrescription!: Prescription;
-
   displayedColumns: string[] = ['patient', 'appointmentNo', 'doctor', 'prescribedDate', 'referenceNo', 'select'];
   dataSource: MatTableDataSource<Prescription>;
   prescriptions: Array<Prescription> = [];
@@ -65,7 +62,6 @@ export class PaymentComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   prescription: Prescription = {
-    // initialize with default values
     id: 0,
     prescribedDate: '',
     referenceNo: '',
@@ -87,23 +83,13 @@ export class PaymentComponent {
     private rs: RegexService,
     private fb: FormBuilder,
     private dg: MatDialog,
-    private dp: DatePipe,
-    private ap: AppointmentService,
-    private dr: DrugService,
-    private ds: DoctorService,
-    private ss: ScheduleService,
     private ps: PrescriptionService,
-    private us: UserService,
     public aur: ActiveUserRoleService,
     private pas: PaymentService,
     public authService: AuthorizationManager) {
     this.uiassist = new UiAssist(this);
     this.dataSource = new MatTableDataSource(this.prescriptions);
     this.drugDataSource = new MatTableDataSource(this.selectedDrugs);
-
-    // this.form = this.fb.group({
-    //   gender: [null]
-    // });
     this.ssearch = this.fb.group({
       "ssName": new FormControl(),
       "ssRef": new FormControl(),
@@ -122,44 +108,12 @@ export class PaymentComponent {
   }
 
   initialize() {
-
-    // this.createView();
-
-
-    // this.dr.getAllList().then((drugs: Drug[]) => {
-    //   this.drugs = drugs;
-    // });
-
-    // this.sp.getAllList().then((specs: Specialization[]) => {
-    //   this.specializations = specs;
-    // });
-
     this.rs.get('employee').then((regs: []) => {
       this.regexes = regs;
     });
-    // this.getPatients();
-    // this.searchControl.valueChanges.subscribe(value => {
-    //   this.filterPatients();
-    // });
-
-    // @ts-ignore
-    // this.us.get(this.authService.getUsername()).then((user: User) => {
-    //   this.user = user;
-    // });
-
-    // this.filteredPatients = this.searchControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this.filterPatients(value))
-    // );
 
     this.loadTable("");
   }
-
-  // getRefNumber() {
-  //   this.ps.getNumber().then((number: String) => {
-  //     this.prescription.referenceNo = number.toString();
-  //   });
-  // }
 
   createForm() {
 
@@ -174,9 +128,6 @@ export class PaymentComponent {
       const control = this.form.controls[controlName];
       control.valueChanges.subscribe(value => {
           // @ts-ignore
-          // if (controlName == "dob" || controlName == "licenseExpDate")
-          //   value = this.dp.transform(new Date(value), 'yyyy-MM-dd');
-
           if (this.oldPrescription != undefined && control.valid) {
             // @ts-ignore
             if (value === this.prescription[controlName]) {
@@ -189,9 +140,7 @@ export class PaymentComponent {
           }
         }
       );
-
     }
-    // this.enableButtons(true,false,false);
   }
 
   applyFilter(event: Event) {
@@ -204,9 +153,6 @@ export class PaymentComponent {
   }
 
   loadTable(query: string) {
-    // if (this.authService.getUsername() != null && this.authService.getUsername().trim() != "") query = query + "&username=" + this.authService.getUsername();
-    // if (query != "") query = query.replace(/^./, "?");
-
     this.ps.getPrescriptionsForPay(query)
       .then((pres: Prescription[]) => {
         this.prescriptions = pres;
@@ -224,7 +170,6 @@ export class PaymentComponent {
   create(row: Prescription) {
     this.isFormEnable = true;
     this.isCreate = true;
-    // this.getRefNumber();
     this.loadPrescriptionDetails(row);
   }
 
@@ -233,15 +178,6 @@ export class PaymentComponent {
     this.selectedDrugs = pres.prescriptionDetails;
     this.drugDataSource = new MatTableDataSource(this.selectedDrugs);
     this.drugDataSource.paginator = this.paginator;
-    //this.prescription.prescribedDate = appointment.appointmentDate;
-    //this.prescription.status = 1;
-    // this.prescription = JSON.parse(JSON.stringify(this.prescription));
-    // this.form.patchValue(this.prescription);
-    //this.form.markAsPristine();
-    // this.form.controls['appointmentNo'].setValue(this.prescription.appointment.appointmentNo);
-    //     this.form.controls['prescribedDate'].setValue(this.prescription.appointment.appointmentDate);
-
-
   }
 
   btnSearchMc(): void {
@@ -276,7 +212,6 @@ export class PaymentComponent {
         this.loadTable("");
       }
     });
-
   }
 
   back() {
@@ -328,11 +263,11 @@ export class PaymentComponent {
         }
       });
     } else {
-        let drData: string = "";
+      let drData: string = "";
 
-        drData = "Prescription Reference  RX" + this.prescription.referenceNo;
-        heading = "Confirmation - Payment Save";
-        confirmationMessage = "Are you sure to Save the following Payment? <br> <br>" + drData;
+      drData = "Prescription Reference  RX" + this.prescription.referenceNo;
+      heading = "Confirmation - Payment Save";
+      confirmationMessage = "Are you sure to Save the following Payment? <br> <br>" + drData;
 
 
       let status: boolean = false;
@@ -348,15 +283,7 @@ export class PaymentComponent {
 
       confirm.afterClosed().subscribe(async result => {
         if (result) {
-          // @ts-ignore
-          //this.prescription.description = this.desForm.get('description').value;
-          //this.prescription.prescriptionDetails = this.selectedDrugs;
-          //this.appointment.user = this.user;
-          // console.log("EmployeeService.add(emp)");
-
           this.pas.save(this.payment).then((responce: [] | undefined) => {
-            //console.log("Res-" + responce);
-            //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
               console.log("Add-" + responce['id'] + "-" + responce['url'] + "-" + (responce['errors'] == ""));
               // @ts-ignore
@@ -375,9 +302,6 @@ export class PaymentComponent {
             if (status) {
               message = "Successfully Saved";
               this.desForm.reset();
-              // Object.values(this.form.controls).forEach(control => {
-              //   control.markAsTouched();
-              // });
               this.loadTable("");
               this.desForm.reset();
               this.isFormEnable = false;
@@ -418,50 +342,6 @@ export class PaymentComponent {
 
     return errors;
   }
-
-  // fillForm(appointment: Appointment) {
-  //   this.isFormEnable = true;
-  //   this.isCreate = false;
-  //
-  //   this.loadPrescriptionDetails(appointment);
-  //
-  //   this.ps.getPrescription(appointment.id).then((prescription: Prescription | undefined) => {
-  //     if (prescription != undefined) {
-  //       this.selectedDrugs = prescription.prescriptionDetails;
-  //       this.prescription = prescription;
-  //       this.desForm.controls['description'].setValue(prescription.description);
-  //
-  //       this.drugDataSource = new MatTableDataSource(this.selectedDrugs);
-  //       this.drugDataSource.paginator = this.paginator;
-  //     }
-  //
-  //   });
-  //
-  //
-  //   // // this.enableButtons(false,true,true);
-  //   //
-  //   // this.selectedrow = doctor;
-  //   //
-  //   // this.doctor = JSON.parse(JSON.stringify(doctor));
-  //   // this.oldDoctor = JSON.parse(JSON.stringify(doctor));
-  //   //
-  //   // if (this.doctor.photo != null) {
-  //   //   this.imageurl = atob(this.doctor.photo);
-  //   //   this.form.controls['photo'].clearValidators();
-  //   // } else {
-  //   //   this.clearImage();
-  //   // }
-  //   // this.doctor.photo = "";
-  //   //
-  //   // //@ts-ignore
-  //   // this.doctor.gender = this.genders.find(g => g.id === this.doctor.gender.id);
-  //   // //@ts-ignore
-  //   // this.doctor.speciality = this.specializations.find(s => s.id === this.doctor.speciality.id);
-  //   //
-  //   // this.form.patchValue(this.doctor);
-  //   // this.form.markAsPristine();
-  //
-  // }
 
   padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;

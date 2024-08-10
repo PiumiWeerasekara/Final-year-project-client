@@ -46,13 +46,6 @@ mat-card #headImg{
   margin: 0 20px 0 20px;
   border: solid #01b6ad;
 }
-/*#quicklinks mat-card{*/
-/*  height: unset!important;*/
-/*  padding-top: 4px;*/
-/*  width: 150px;*/
-/*  margin: 0 20px 0 20px;*/
-/*  border: solid gold;*/
-/*}*/
 
 mat-card-footer{
   font-size: 18px;
@@ -69,11 +62,7 @@ mat-card-footer a{
 }
 mat-card div{
   font-size: 20px;
-  /*margin-top: 55px;*/
   text-align: center;
-  /*background-color: gold;*/
-  /*padding-top: 10px;*/
-  /*padding-bottom: 10px;*/
 }
 
 mat-card div a{
@@ -90,4 +79,14 @@ mat-card div div{
 mat-card img{
   height: 40px;
   width: 30%;
+}
+
+.docDetail_div{
+  background: #e8e8e8;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.drName{
+  color: #1577ce;
 }

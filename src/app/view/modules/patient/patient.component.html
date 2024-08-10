@@ -1,6 +1,3 @@
-<!--<mat-grid-list [cols]="12" rowHeight="4rem">-->
-
-<!--  <mat-grid-tile [colspan]="4" [rowspan]="10">-->
 <mat-card>
   <mat-card-header>
     <div class="row col-12 col-md-12">
@@ -13,7 +10,8 @@
           Add
         </button>
 
-        <button *ngIf="isFormEnable && !isDisableBackButton" mat-raised-button color="primary" class="header-btn-add" (click)="back()">
+        <button *ngIf="isFormEnable && !isDisableBackButton" mat-raised-button color="primary" class="header-btn-add"
+                (click)="back()">
           <mat-icon>arrow_back_ios</mat-icon>
           Back
         </button>
@@ -79,7 +77,9 @@
 
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-            <td mat-cell *matCellDef="let row" class="mat-column-20"> {{ row.title }}. {{ row.firstName }} {{ row.lastName }}</td>
+            <td mat-cell *matCellDef="let row" class="mat-column-20"> {{ row.title }}
+              . {{ row.firstName }} {{ row.lastName }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="nic">
@@ -121,16 +121,6 @@
               </mat-slide-toggle>
             </td>
           </ng-container>
-
-          <!--          <ng-container matColumnDef="delete">-->
-          <!--            <th mat-header-cell *matHeaderCellDef mat-sort-header>Delete</th>-->
-          <!--            <td mat-cell *matCellDef="let row">-->
-          <!--              <button mat-icon-button class="btn-delete" (click)="delete(row)">-->
-          <!--                <mat-icon>delete</mat-icon>-->
-          <!--              </button>-->
-          <!--            </td>-->
-          <!--          </ng-container>-->
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
@@ -209,17 +199,6 @@
               <input matInput formControlName="age" readonly>
             </mat-form-field>
           </div>
-
-          <!--          <div id="imgpanel" class="col-6 col-md-6 form-field">-->
-          <!--            <img [src]="imageurl">-->
-          <!--            <input id="userImage" hidden="hidden" (change)="selectImage($event)" Select type="file"-->
-          <!--                   formControlName="photo">-->
-          <!--            <div style="margin: 10px">-->
-          <!--              <label for="userImage" id="selectbutton">Select</label>-->
-          <!--              <label id="clearbutton" (click)="clearImage()">Clear</label>-->
-          <!--            </div>-->
-          <!--          </div>-->
-
         </div>
 
         <div class="col-md-12">

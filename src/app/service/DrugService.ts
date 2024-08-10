@@ -9,12 +9,13 @@ import {Drug} from "../entity/drug";
 
 export class DrugService {
 
-  constructor(private http: HttpClient) {  }
+  constructor(private http: HttpClient) {
+  }
 
   async getAllList(): Promise<Array<Drug>> {
 
     const drugs = await this.http.get<Array<Specialization>>('http://localhost:8080/drug/list').toPromise();
-    if(drugs == undefined){
+    if (drugs == undefined) {
       return [];
     }
     return drugs;

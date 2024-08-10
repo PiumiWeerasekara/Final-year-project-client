@@ -1,14 +1,10 @@
-import {Patient} from "./patient";
-import {User} from "./user";
-import {Schedule} from "./schedule";
-
 export class AppointmentSearch {
   public scheduleDate!: string;
-  public  startTime!: string;
-  public  nextAppointmentNo !: string;
-  public  id!: number;
-  public  doctorId!: number;
-  public  specialityId!: number;
+  public startTime!: string;
+  public nextAppointmentNo !: string;
+  public id!: number;
+  public doctorId!: number;
+  public specialityId!: number;
   public noOfPatient!: number;
 
 

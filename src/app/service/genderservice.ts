@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Specialization} from "../entity/specialization";
 import {Gender} from "../entity/gender";
 
 @Injectable({
@@ -9,12 +8,13 @@ import {Gender} from "../entity/gender";
 
 export class GenderService {
 
-  constructor(private http: HttpClient) {  }
+  constructor(private http: HttpClient) {
+  }
 
   async getAllList(): Promise<Array<Gender>> {
 
     const genders = await this.http.get<Array<Gender>>('http://localhost:8080/genders/list').toPromise();
-    if(genders == undefined){
+    if (genders == undefined) {
       return [];
     }
     return genders;

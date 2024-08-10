@@ -11,7 +11,6 @@ import {RoomService} from "../../../service/room.service";
 import {AuthorizationManager} from "../../../service/authorizationmanager";
 import {ConfirmComponent} from "../../../util/dialog/confirm/confirm.component";
 import {MessageComponent} from "../../../util/dialog/message/message.component";
-import {Specialization} from "../../../entity/specialization";
 import {Schedule} from "../../../entity/schedule";
 import {ScheduleService} from "../../../service/schedule.service";
 import {Doctor} from "../../../entity/doctor";
@@ -36,12 +35,8 @@ export class ScheduleComponent {
   selectedrow: any;
   minDate: Date;
 
-  // imageurl: string = 'assets/default.png'
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  // enaadd:boolean = false;
-  // enaupd:boolean = false;
-  // enadel:boolean = false;
 
   regexes: any;
 
@@ -117,7 +112,6 @@ export class ScheduleComponent {
   }
 
   createView() {
-    // this.imageurl = 'assets/pending.gif';
   }
 
   getAvailableRooms() {
@@ -149,11 +143,6 @@ export class ScheduleComponent {
     });
   }
 
-  // onTimeChange(controlName: string) {
-  //   const control = this.form.controls[controlName];
-  //   control.markAsDirty();
-  //   control.updateValueAndValidity();
-  // }
   createForm() {
     this.form.controls['doctor'].setValidators([Validators.required]);
     this.form.controls['scheduleDate'].setValidators([Validators.required]);
@@ -183,17 +172,8 @@ export class ScheduleComponent {
           }
         }
       );
-
     }
-    // this.enableButtons(true,false,false);
-
   }
-
-  // enableButtons(add:boolean, upd:boolean, del:boolean){
-  //   this.enaadd=add;
-  //   this.enaupd=upd;
-  //   this.enadel=del;
-  // }
 
 
   loadTable(query: string) {
@@ -318,7 +298,7 @@ export class ScheduleComponent {
       data: {
         heading: "Confirmation - Cancel Schedule",
         message: "Are you sure to Cancel this Schdule? "
-          // "<br> <br>" + schedule.
+        // "<br> <br>" + schedule.
       }
     });
 
@@ -342,12 +322,8 @@ export class ScheduleComponent {
           if (delstatus) {
             delmessage = "Successfully Cancelled";
             this.form.reset();
-            // this.clearImage();
-            // Object.values(this.form.controls).forEach(control => { control.markAsTouched(); });
             this.loadTable("");
-            //this.getRoomNumber();
           }
-
           const stsmsg = this.dg.open(MessageComponent, {
             width: '500px',
             data: {heading: "Status - Schedule Cancel ", message: delmessage}
@@ -379,8 +355,6 @@ export class ScheduleComponent {
     });
   }
 
-  //added by me
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -400,7 +374,6 @@ export class ScheduleComponent {
     this.isCreate = true;
     this.isFormEnable = false;
     this.form.reset();
-    //this.clearImage();
 
   }
 
@@ -428,29 +401,19 @@ export class ScheduleComponent {
       if (this.convertTo24HourFormat(this.schedule.startTime) > this.convertTo24HourFormat(this.schedule.endTime)) {
         const errmsg = this.dg.open(MessageComponent, {
           width: '500px',
-          data: {heading: "Errors - Schedule Save ", message: "End time must be after the start time. Please ensure the end time is set correctly"}
+          data: {
+            heading: "Errors - Schedule Save ",
+            message: "End time must be after the start time. Please ensure the end time is set correctly"
+          }
         });
         return;
       }
 
       if (!this.isCreate) {
         let updates: string = this.getUpdates();
-
-        // if (updates == "") {
-        //   const updmsg = this.dg.open(MessageComponent, {
-        //     width: '500px',
-        //     data: {heading: "Confirmation - Schedule Update", message: "Nothing Changed"}
-        //   });
-        //   return;
-          // updmsg.afterClosed().subscribe(async result => {
-          //   if (!result) {
-          //     return;
-          //   }
-          // });
-        // } else {
-          this.schedule.id = this.selectedrow.id;
-          heading = "Confirmation - Schedule Update";
-          confirmationMessage = "Are you sure to Save following Updates?";
+        this.schedule.id = this.selectedrow.id;
+        heading = "Confirmation - Schedule Update";
+        confirmationMessage = "Are you sure to Save following Updates?";
         // }
       } else {
         let drData: string = "";
@@ -458,9 +421,7 @@ export class ScheduleComponent {
         drData = this.formatDate(this.schedule.scheduleDate) + " From " + this.schedule.startTime + " To " + this.schedule.endTime;
         heading = "Confirmation - Schedule Add";
         confirmationMessage = "Are you sure to Save the following Schedule? <br> <br>" + drData;
-
       }
-
 
       let status: boolean = false;
       let message: string = "Server Not Found";
@@ -480,8 +441,6 @@ export class ScheduleComponent {
           this.schedule.endTime = this.convertTo24HourFormat(this.schedule.endTime);
           this.schedule.status = 1;
           this.ss.save(this.schedule).then((responce: [] | undefined) => {
-            //console.log("Res-" + responce);
-            //console.log("Un-" + responce == undefined);
             if (responce != undefined) { // @ts-ignore
               console.log("Add-" + responce['id'] + "-" + responce['url'] + "-" + (responce['errors'] == ""));
               // @ts-ignore
@@ -506,7 +465,6 @@ export class ScheduleComponent {
               });
               this.loadTable("");
               this.isCreate = true;
-              //this.getRoomNumber();
             }
 
             const stsmsg = this.dg.open(MessageComponent, {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Patient} from "../entity/patient";
 import {HttpClient} from "@angular/common/http";
 
@@ -7,20 +7,22 @@ import {HttpClient} from "@angular/common/http";
 })
 export class PatientService {
 
-  constructor(private http: HttpClient) { }
-  async getAll(query:string): Promise<Array<Patient>> {
-    const patients = await this.http.get<Array<Patient>>('http://localhost:8080/patient'+query).toPromise();
-    if(patients == undefined){
+  constructor(private http: HttpClient) {
+  }
+
+  async getAll(query: string): Promise<Array<Patient>> {
+    const patients = await this.http.get<Array<Patient>>('http://localhost:8080/patient' + query).toPromise();
+    if (patients == undefined) {
       return [];
     }
     return patients;
   }
 
-  async save(patient: Patient): Promise<[]|undefined>{
+  async save(patient: Patient): Promise<[] | undefined> {
     return this.http.post<[]>('http://localhost:8080/patient', patient).toPromise();
   }
 
-  async inactive(id: number): Promise<[]|undefined>{
+  async inactive(id: number): Promise<[] | undefined> {
     // @ts-ignore
     return this.http.post('http://localhost:8080/patient/' + id).toPromise();
   }
